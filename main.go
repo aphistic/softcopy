@@ -4,6 +4,8 @@ import (
 	"os"
 
 	"github.com/efritz/nacelle"
+
+	"github.com/aphistic/papertrail/ftpserver"
 )
 
 func main() {
@@ -11,6 +13,7 @@ func main() {
 		"papertrail",
 		map[interface{}]interface{}{},
 		func(runner *nacelle.ProcessRunner, container *nacelle.ServiceContainer) error {
+			runner.RegisterProcess(ftpserver.NewProcess())
 			return nil
 		},
 	).Boot()
