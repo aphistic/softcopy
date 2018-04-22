@@ -13,5 +13,9 @@ func TestMain(m *testing.M) {
 	sweet.Run(m, func(s *sweet.S) {
 		s.AddSuite(&CommandSuite{})
 		s.AddSuite(&ResponseSuite{})
+
+		s.AddSuite(&EprtCommandSuite{})
+		s.AddSuite(&PassCommandSuite{})
+		s.AddSuite(&UserCommandSuite{})
 	})
 }
