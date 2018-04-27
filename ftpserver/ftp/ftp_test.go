@@ -14,8 +14,13 @@ func TestMain(m *testing.M) {
 		s.AddSuite(&CommandSuite{})
 		s.AddSuite(&ResponseSuite{})
 
+		s.AddSuite(&CwdCommandSuite{})
 		s.AddSuite(&EprtCommandSuite{})
 		s.AddSuite(&PassCommandSuite{})
+		s.AddSuite(&RetrCommandSuite{})
+		s.AddSuite(&SizeCommandSuite{})
+		s.AddSuite(&StorCommandSuite{})
+		s.AddSuite(&TypeCommandSuite{})
 		s.AddSuite(&UserCommandSuite{})
 	})
 }

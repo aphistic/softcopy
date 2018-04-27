@@ -79,6 +79,10 @@ func (c *ftpConn) commandWorker() {
 			if !netErr.Temporary() {
 				return
 			}
+		} else if err == io.EOF {
+			fmt.Printf("eof on ftp conn\n")
+			c.ctlConn.Close()
+			return
 		} else if err != nil {
 			fmt.Printf("error reading ftp conn: %s\n", err)
 			continue

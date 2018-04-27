@@ -49,6 +49,13 @@ func parseCommand(data []byte) (Command, error) {
 
 func chooseCommand(cmd *BasicCommand) (Command, error) {
 	switch cmd.Command() {
+	case "CWD":
+		c := &CwdCommand{}
+		err := c.UnmarshalText(cmd.other)
+		if err != nil {
+			return nil, err
+		}
+		return c, nil
 	case "EPRT":
 		c := &EprtCommand{}
 		err := c.UnmarshalText(cmd.other)
@@ -58,6 +65,34 @@ func chooseCommand(cmd *BasicCommand) (Command, error) {
 		return c, nil
 	case "PASS":
 		c := &PassCommand{}
+		err := c.UnmarshalText(cmd.other)
+		if err != nil {
+			return nil, err
+		}
+		return c, nil
+	case "RETR":
+		c := &RetrCommand{}
+		err := c.UnmarshalText(cmd.other)
+		if err != nil {
+			return nil, err
+		}
+		return c, nil
+	case "SIZE":
+		c := &SizeCommand{}
+		err := c.UnmarshalText(cmd.other)
+		if err != nil {
+			return nil, err
+		}
+		return c, nil
+	case "STOR":
+		c := &StorCommand{}
+		err := c.UnmarshalText(cmd.other)
+		if err != nil {
+			return nil, err
+		}
+		return c, nil
+	case "TYPE":
+		c := &TypeCommand{}
 		err := c.UnmarshalText(cmd.other)
 		if err != nil {
 			return nil, err
@@ -73,6 +108,20 @@ func chooseCommand(cmd *BasicCommand) (Command, error) {
 	}
 
 	return cmd, nil
+}
+
+type CwdCommand struct {
+	Path string
+}
+
+func (c *CwdCommand) Command() string {
+	return "CWD"
+}
+
+func (c *CwdCommand) UnmarshalText(data []byte) error {
+	c.Path = string(data)
+
+	return nil
 }
 
 type EprtCommand struct {
@@ -146,6 +195,75 @@ func (c *PassCommand) UnmarshalText(data []byte) error {
 }
 func (c *PassCommand) Command() string {
 	return "PASS"
+}
+
+type RetrCommand struct {
+	Path string
+}
+
+func (c *RetrCommand) Command() string {
+	return "RETR"
+}
+
+func (c *RetrCommand) UnmarshalText(data []byte) error {
+	c.Path = string(data)
+
+	return nil
+}
+
+type SizeCommand struct {
+	Path string
+}
+
+func (c *SizeCommand) Command() string {
+	return "SIZE"
+}
+
+func (c *SizeCommand) UnmarshalText(data []byte) error {
+	c.Path = string(data)
+
+	return nil
+}
+
+type StorCommand struct {
+	Path string
+}
+
+func (c *StorCommand) Command() string {
+	return "STOR"
+}
+
+func (c *StorCommand) UnmarshalText(data []byte) error {
+	c.Path = string(data)
+
+	return nil
+}
+
+type TypeCommand struct {
+	Type DataType
+}
+
+func (c *TypeCommand) Command() string {
+	return "TYPE"
+}
+
+func (c *TypeCommand) UnmarshalText(data []byte) error {
+	if len(data) < 1 {
+		return ErrInvalidCommand
+	}
+
+	switch data[0] {
+	case byte('A'):
+		c.Type = TypeASCII
+	case byte('E'):
+		c.Type = TypeEBCDIC
+	case byte('I'):
+		c.Type = TypeImage
+	case byte('L'):
+		c.Type = TypeLocal
+	}
+
+	return nil
 }
 
 type UserCommand struct {
