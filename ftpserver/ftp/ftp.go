@@ -7,9 +7,11 @@ package ftp
 // https://tools.ietf.org/html/rfc3659
 
 import (
+	"context"
 	"fmt"
-	"io"
+	"io/ioutil"
 	"net"
+	"os"
 )
 
 type DataType int
@@ -36,15 +38,112 @@ const (
 	TypeLocal
 )
 
-type FTPServer struct {
-	listener net.Listener
+type FTPOption func(c *config)
+
+// FTPTempPath sets a local path to use for temporary file uploads
+func FTPTempPath(tempPath string) FTPOption {
+	return func(c *config) {
+		c.tempPath = tempPath
+	}
 }
 
-func NewFTPServer() *FTPServer {
-	return &FTPServer{}
+// FTPRandomTempPath picks a random path
+func FTPRandomTempPath(prefix string) FTPOption {
+	return func(c *config) {
+		c.randomTempPath = true
+		c.randomTempPathPrefix = prefix
+	}
+}
+
+func FTPLogger(logger Logger) FTPOption {
+	return func(c *config) {
+		c.logger = logger
+		if c.logger == nil {
+			c.logger = newNilLogger()
+		}
+	}
+}
+
+type FTPServer struct {
+	serviceFactory func() Service
+
+	listener net.Listener
+
+	cfg *config
+}
+
+func NewFTPServer(serviceFactory func() Service, opts ...FTPOption) (*FTPServer, error) {
+	if serviceFactory == nil {
+		return nil, fmt.Errorf("service factory cannot be nil")
+	}
+
+	fs := &FTPServer{
+		serviceFactory: serviceFactory,
+		cfg: &config{
+			logger: newNilLogger(),
+		},
+	}
+
+	for _, f := range opts {
+		f(fs.cfg)
+	}
+
+	return fs, nil
+}
+
+func (s *FTPServer) Close() error {
+	if s.cfg.randomTempPath {
+		err := os.RemoveAll(s.cfg.tempPath)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (s *FTPServer) Listen(port int) error {
+	if s.cfg.randomTempPath {
+		path, err := ioutil.TempDir("", s.cfg.randomTempPathPrefix)
+		if err != nil {
+			return err
+		}
+		s.cfg.tempPath = path
+	}
+	if s.cfg.tempPath != "" {
+		// If we have a temp path set, make sure:
+		// 1. It exists or that we can create it if it doesn't
+		// 2. It is writable
+		fi, err := os.Stat(s.cfg.tempPath)
+		if os.IsNotExist(err) {
+			err := os.MkdirAll(s.cfg.tempPath, 0755)
+			if err != nil {
+				return err
+			}
+		} else if err != nil {
+			return err
+		} else if !fi.IsDir() {
+			return fmt.Errorf("%s is not a directory", s.cfg.tempPath)
+		}
+
+		// The directory exists now, try writing a file to it to see
+		// if it's writable
+		tempFile, err := ioutil.TempFile(s.cfg.tempPath, "")
+		if err != nil {
+			fmt.Printf("path err: %s\n", err)
+			return err
+		}
+		defer os.Remove(tempFile.Name())
+		defer tempFile.Close()
+		n, err := tempFile.WriteString("testing!")
+		if err != nil {
+			return err
+		}
+		if n < 1 {
+			return fmt.Errorf("failed to write to temp directory")
+		}
+	}
+
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		return err
@@ -64,101 +163,15 @@ func (s *FTPServer) worker() {
 			fmt.Printf("error accepting conn: %s\n", err)
 			continue
 		}
-		fmt.Printf("accepted connection from: %s\n", conn.RemoteAddr())
-		go s.connectionHandler(newFtpConn(conn))
-	}
-}
+		s.cfg.logger.Printf("accepted connection from: %s", conn.RemoteAddr())
 
-func (s *FTPServer) connectionHandler(conn *ftpConn) {
-	defer conn.Close()
+		ch := newConnectionHandler(
+			context.Background(),
+			s.cfg,
+			s.serviceFactory(),
+			newFtpConn(conn, s.cfg.logger),
+		)
 
-	conn.Response() <- NewResponse(220, "Give it your all!")
-
-	for {
-		cmd, ok := <-conn.Command()
-		if !ok {
-			fmt.Printf("command chan closed\n")
-			break
-		}
-		fmt.Printf("got command: %v\n", cmd)
-		switch c := cmd.(type) {
-		case *BasicCommand:
-			switch c.Command() {
-			case "ABOR":
-				if conn.dataConn != nil {
-					conn.dataConn.Close()
-					conn.dataConn = nil
-				}
-
-				conn.Response() <- NewResponse(226, "Aborted")
-			case "EPSV":
-				pc, err := bindPassiveConn()
-				if err != nil {
-					fmt.Printf("error binding passive listener: %s\n", err)
-					break
-				}
-				conn.dataConn = pc
-
-				conn.Response() <- NewResponse(229, fmt.Sprintf("Entering EPSV mode (|||%d|)", pc.Port()))
-			case "LIST":
-				conn.Response() <- NewResponse(150, "Here comes the directory listing")
-				simList := []byte("list of files\r\n")
-				_, err := conn.dataConn.Write(simList)
-				if err != nil {
-					fmt.Printf("error writing files: %s\n", err)
-					break
-				}
-				conn.CloseData()
-				conn.Response() <- NewResponse(226, "Directory send OK")
-			case "PWD":
-				conn.Response() <- NewResponse(257, "\"/\"")
-			case "QUIT":
-				conn.Close()
-			case "SYST":
-				conn.Response() <- NewResponse(215, "UNIX")
-			}
-		case *CwdCommand:
-			fmt.Printf("CWD to %s\n", c.Path)
-			conn.Response() <- NewResponse(200, fmt.Sprintf("directory changed to %s", c.Path))
-		case *EprtCommand:
-			addr := fmt.Sprintf("%s", c.Address)
-			if c.Version == 6 {
-				addr = fmt.Sprintf("[%s]", addr)
-			}
-
-			dConn, err := dialActiveConn(addr, c.Port)
-			if err != nil {
-				fmt.Printf("Error dialing data conn: %s\n", err)
-			}
-			conn.dataConn = dConn
-
-			conn.Response() <- NewResponse(200, "EPRT command successful")
-		case *PassCommand:
-			conn.Response() <- NewResponse(230, "User logged in")
-		case *RetrCommand:
-			conn.Response() <- NewResponse(550, fmt.Sprintf("%s not found", c.Path))
-		case *SizeCommand:
-			conn.Response() <- NewResponse(550, fmt.Sprintf("%s not found", c.Path))
-		case *StorCommand:
-			conn.Response() <- NewResponse(150, fmt.Sprintf("Receiving %s", c.Path))
-
-			buf := make([]byte, 4096)
-			for {
-				n, err := conn.dataConn.Read(buf)
-				if err == io.EOF {
-					break
-				} else if err != nil {
-					fmt.Printf("error reading data: %s\n", err)
-					continue
-				}
-				fmt.Printf("Read %d bytes\n", n)
-			}
-
-			conn.Response() <- NewResponse(250, fmt.Sprintf("Received %s", c.Path))
-		case *TypeCommand:
-			conn.Response() <- NewResponse(200, fmt.Sprintf("TYPE set to %s", c.Type))
-		case *UserCommand:
-			conn.Response() <- NewResponse(331, "User ok")
-		}
+		go ch.Run()
 	}
 }

@@ -23,11 +23,24 @@ func (p *Process) Init(config nacelle.Config) error {
 }
 
 func (p *Process) Start() error {
-	fs := ftp.NewFTPServer()
-	err := fs.Listen(8021)
+	fs, err := ftp.NewFTPServer(
+		func() ftp.Service {
+			return &ftpService{}
+		},
+		ftp.FTPRandomTempPath("papertrail-"),
+		ftp.FTPLogger(&logger{
+			logger: p.Logger,
+		}),
+	)
 	if err != nil {
 		return err
 	}
+
+	err = fs.Listen(8021)
+	if err != nil {
+		return err
+	}
+	defer fs.Close()
 
 mainLoop:
 	for {

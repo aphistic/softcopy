@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"strings"
 )
 
 type ftpConn struct {
+	logger Logger
+
 	ctlConn  net.Conn
 	dataConn dataConn
 
@@ -14,8 +17,10 @@ type ftpConn struct {
 	responses chan *Response
 }
 
-func newFtpConn(ctlConn net.Conn) *ftpConn {
+func newFtpConn(ctlConn net.Conn, logger Logger) *ftpConn {
 	fc := &ftpConn{
+		logger: logger,
+
 		ctlConn:   ctlConn,
 		commands:  make(chan Command),
 		responses: make(chan *Response),
@@ -50,7 +55,6 @@ func (c *ftpConn) responseWorker() {
 	for {
 		select {
 		case res := <-c.responses:
-			fmt.Printf("got response\n")
 			data, err := res.MarshalText()
 			if err != nil {
 				fmt.Printf("error marshaling response text: %s\n", err)
@@ -58,7 +62,6 @@ func (c *ftpConn) responseWorker() {
 			}
 			data = append(data, []byte{'\r', '\n'}...)
 
-			fmt.Printf("Writing\n")
 			n, err := c.ctlConn.Write(data)
 			if err != nil {
 				fmt.Printf("error writing response: %s\n", err)
@@ -87,7 +90,7 @@ func (c *ftpConn) commandWorker() {
 			fmt.Printf("error reading ftp conn: %s\n", err)
 			continue
 		}
-		fmt.Printf("read from ftp conn: %s\n", buf[0:n])
+		c.logger.Printf("read from ftp conn: %s", strings.TrimSpace(string(buf[0:n])))
 		cmd, err := parseCommand(buf[0:n])
 		if err != nil {
 			fmt.Printf("error reading command: %s\n", err)
