@@ -160,8 +160,10 @@ func (ch *connectionHandler) Run() {
 
 			err = ch.svc.ReceivedFile(c.Path, file)
 			if err != nil {
-				fmt.Printf("Error receiving file: %s\n", err)
-				conn.Response() <- NewResponse(451, fmt.Sprintf("Could not receive file"))
+				conn.Response() <- newErrorResponse(
+					err,
+					451, "could not receive file",
+				)
 				break
 			}
 

@@ -3,11 +3,13 @@ package ftpserver
 import (
 	"github.com/efritz/nacelle"
 
+	"github.com/aphistic/papertrail/api"
 	"github.com/aphistic/papertrail/ftpserver/ftp"
 )
 
 type Process struct {
 	Logger nacelle.Logger `service:"logger"`
+	API    *api.Client    `service:"api"`
 
 	stopChan chan struct{}
 }
@@ -25,7 +27,7 @@ func (p *Process) Init(config nacelle.Config) error {
 func (p *Process) Start() error {
 	fs, err := ftp.NewFTPServer(
 		func() ftp.Service {
-			return &ftpService{}
+			return newFTPService(p.API, p.Logger)
 		},
 		ftp.FTPRandomTempPath("papertrail-"),
 		ftp.FTPLogger(&logger{

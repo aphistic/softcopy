@@ -68,11 +68,11 @@ func (df *diskFile) Close() error {
 		return err
 	}
 
-	err = os.Remove(df.file.Name())
-	if err != nil {
-		return err
-	}
-
+	/*	err = os.Remove(df.file.Name())
+		if err != nil {
+			return err
+		}
+	*/
 	return nil
 }
 

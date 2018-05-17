@@ -1,13 +1,23 @@
 package ftpserver
 
 import (
-	"fmt"
+	"github.com/efritz/nacelle"
 
+	"github.com/aphistic/papertrail/api"
 	"github.com/aphistic/papertrail/ftpserver/ftp"
-	"io/ioutil"
 )
 
-type ftpService struct{}
+type ftpService struct {
+	logger nacelle.Logger
+	api    *api.Client
+}
+
+func newFTPService(api *api.Client, logger nacelle.Logger) *ftpService {
+	return &ftpService{
+		logger: logger,
+		api:    api,
+	}
+}
 
 func (fs *ftpService) Init() error {
 	return nil
@@ -21,13 +31,15 @@ func (fs *ftpService) Authenticate(username, password string) error {
 }
 
 func (fs *ftpService) ReceivedFile(name string, file ftp.File) error {
-	data, err := ioutil.ReadAll(file)
-	if err != nil {
-		fmt.Printf("read err: %s\n", err)
+	err := fs.api.AddFile(name, file)
+	if err == api.ErrHashCollision {
+		fs.logger.Error("FTP add failed: hash already exists")
+		return ftp.NewFTPError(451, "file hash already exists")
+	} else if err != nil {
 		return err
 	}
 
-	fmt.Printf("Contents:\n%s\n", data)
+	fs.logger.Info("FTP added new file: %s", name)
 
 	return nil
 }
