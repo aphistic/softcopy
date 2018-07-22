@@ -7,6 +7,7 @@ import (
 
 var (
 	ErrInvalidCommand = errors.New("invalid command")
+	ErrUnknown        = errors.New("unknown")
 )
 
 type FTPError struct {

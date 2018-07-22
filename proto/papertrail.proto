@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package ptproto;
+
+import "google/protobuf/timestamp.proto";
+
+message File {
+        string id                               = 1;
+        string hash                             = 2;
+        string filename                         = 3;
+        google.protobuf.Timestamp document_date = 4;
+        int64 size                              = 5;
+}
+
+message TaggedFile {
+        File file         = 1;
+        repeated Tag tags = 2;
+}
+
+
+message Tag {
+        int64 id        = 1;
+        string name     = 2;
+        string category = 3;
+        bool system     = 4;
+}
+
+message GetFileRequest {
+        string id = 1;
+}
+message GetFileResponse {
+        TaggedFile file = 1;
+}
+
+message FindFilesWithTagsRequest {
+        repeated string tag_names = 1;
+}
+message FindFilesWithTagsResponse {
+        repeated File files = 1;
+}
+
+message FindFilesWithIdPrefixRequest {
+        string id_prefix = 1;
+}
+message FindFilesWithIdPrefixResponse {
+        repeated File files = 1;
+}
+
+service Papertrail {
+        rpc GetFile(GetFileRequest) returns (GetFileResponse) {}
+
+        rpc FindFilesWithIdPrefix(FindFilesWithIdPrefixRequest) returns (FindFilesWithIdPrefixResponse) {}
+        rpc FindFilesWithTags(FindFilesWithTagsRequest) returns (FindFilesWithTagsResponse) {}
+}

@@ -36,6 +36,7 @@ func (fs *ftpService) ReceivedFile(name string, file ftp.File) error {
 		fs.logger.Error("FTP add failed: hash already exists")
 		return ftp.NewFTPError(451, "file hash already exists")
 	} else if err != nil {
+		fs.logger.Error("Unknown error receiving file: %s", err)
 		return err
 	}
 

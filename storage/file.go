@@ -10,7 +10,7 @@ import (
 )
 
 type File interface {
-	WriteFile(filePath string, r io.Reader) (string, error)
+	WriteFile(filePath string, r io.Reader) (string, int64, error)
 }
 
 type FileLocal struct {
@@ -49,7 +49,7 @@ func NewFileLocal(basePath string) (*FileLocal, error) {
 	}, nil
 }
 
-func (fl *FileLocal) WriteFile(filePath string, r io.Reader) (string, error) {
+func (fl *FileLocal) WriteFile(filePath string, r io.Reader) (string, int64, error) {
 	writePath := path.Join(fl.basePath, filePath)
 
 	// Make sure the dir we're writing to exists
@@ -58,35 +58,36 @@ func (fl *FileLocal) WriteFile(filePath string, r io.Reader) (string, error) {
 	if os.IsNotExist(err) {
 		err = os.MkdirAll(writeDir, 0755)
 		if err != nil {
-			return "", err
+			return "", 0, err
 		}
 	} else if err != nil {
-		return "", err
+		return "", 0, err
 	} else if !dirStat.IsDir() {
-		return "", fmt.Errorf("destination is not a directory")
+		return "", 0, fmt.Errorf("destination is not a directory")
 	}
 
 	// Open the file for writing
 	f, err := os.OpenFile(writePath, os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
-		return "", err
+		return "", 0, err
 	}
 
 	// Get the sha256 of the file as we're writing it
 	h := sha256.New()
 
+	fileSize := int64(0)
 	buf := make([]byte, 8192)
 	for {
 		readN, err := r.Read(buf)
 		if err == io.EOF {
 			f.Close()
 
-			return fmt.Sprintf("%x", h.Sum(nil)), nil
+			return fmt.Sprintf("%x", h.Sum(nil)), fileSize, nil
 		} else if err != nil {
 			f.Close()
 			os.Remove(writePath)
 
-			return "", err
+			return "", 0, err
 		}
 
 		totalWritten := 0
@@ -96,7 +97,7 @@ func (fl *FileLocal) WriteFile(filePath string, r io.Reader) (string, error) {
 				f.Close()
 				os.Remove(writePath)
 
-				return "", err
+				return "", 0, err
 			}
 
 			totalWritten += writeN
@@ -113,7 +114,7 @@ func (fl *FileLocal) WriteFile(filePath string, r io.Reader) (string, error) {
 				f.Close()
 				os.Remove(writePath)
 
-				return "", err
+				return "", 0, err
 			}
 
 			totalWritten += writeN

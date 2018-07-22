@@ -4,8 +4,10 @@ import (
 	"os"
 
 	"github.com/efritz/nacelle"
+	"github.com/efritz/nacelle/process"
 
 	"github.com/aphistic/papertrail/api"
+	"github.com/aphistic/papertrail/apiserver"
 	"github.com/aphistic/papertrail/ftpserver"
 )
 
@@ -13,7 +15,8 @@ func main() {
 	res := nacelle.NewBootstrapper(
 		"papertrail",
 		map[interface{}]interface{}{
-			api.ConfigToken: &api.Config{},
+			process.GRPCConfigToken: &process.GRPCConfig{},
+			api.ConfigToken:         &api.Config{},
 		},
 		func(runner *nacelle.ProcessRunner, container *nacelle.ServiceContainer) error {
 			runner.RegisterInitializer(
@@ -22,7 +25,11 @@ func main() {
 			)
 			runner.RegisterProcess(
 				ftpserver.NewProcess(),
-				nacelle.WithProcessName("ftp"),
+				nacelle.WithProcessName("ftpserver"),
+			)
+			runner.RegisterProcess(
+				apiserver.NewProcess(),
+				nacelle.WithProcessName("apiserver"),
 			)
 
 			return nil

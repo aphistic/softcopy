@@ -10,7 +10,7 @@ import (
 	"github.com/aphistic/papertrail/storage"
 )
 
-const migrationPath = "storage/sqlite/migrations"
+const migrationPath = "../../storage/sqlite/migrations"
 
 type Client struct {
 	dbPath string
