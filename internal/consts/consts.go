@@ -1,6 +1,6 @@
 package consts
 
 var (
-	ProcessName    = "papertrail"
+	ProcessName    = "softcopy"
 	ProcessVersion = "0.0.1"
 )

@@ -1,2 +1,2 @@
-# papertrail
+# softcopy
 A document management server

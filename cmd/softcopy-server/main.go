@@ -6,14 +6,14 @@ import (
 	"github.com/efritz/nacelle"
 	"github.com/efritz/nacelle/process"
 
-	"github.com/aphistic/papertrail/api"
-	"github.com/aphistic/papertrail/apiserver"
-	"github.com/aphistic/papertrail/ftpserver"
+	"github.com/aphistic/softcopy/api"
+	"github.com/aphistic/softcopy/apiserver"
+	"github.com/aphistic/softcopy/ftpserver"
 )
 
 func main() {
 	res := nacelle.NewBootstrapper(
-		"papertrail",
+		"softcopy",
 		map[interface{}]interface{}{
 			process.GRPCConfigToken: &process.GRPCConfig{},
 			api.ConfigToken:         &api.Config{},

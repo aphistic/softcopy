@@ -8,8 +8,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/aphistic/papertrail/internal/consts"
-	"github.com/aphistic/papertrail/storage/records"
+	"github.com/aphistic/softcopy/internal/consts"
+	"github.com/aphistic/softcopy/storage/records"
 )
 
 func (c *Client) AddFile(name string, data io.Reader) error {

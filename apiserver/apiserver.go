@@ -9,8 +9,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/aphistic/papertrail/api"
-	"github.com/aphistic/papertrail/proto"
+	"github.com/aphistic/softcopy/api"
+	"github.com/aphistic/softcopy/proto"
 )
 
 type apiProcess struct {
@@ -25,7 +25,7 @@ func NewProcess() nacelle.Process {
 }
 
 func (ap *apiProcess) Init(config nacelle.Config, server *grpc.Server) error {
-	ptproto.RegisterPapertrailServer(server, &apiServer{
+	scproto.RegisterSoftcopyServer(server, &apiServer{
 		logger: ap.Logger,
 		api:    ap.API,
 	})
@@ -40,15 +40,15 @@ type apiServer struct {
 
 func (as *apiServer) FindFilesWithTags(
 	ctx context.Context,
-	req *ptproto.FindFilesWithTagsRequest,
-) (*ptproto.FindFilesWithTagsResponse, error) {
+	req *scproto.FindFilesWithTagsRequest,
+) (*scproto.FindFilesWithTagsResponse, error) {
 	files, err := as.api.FindFilesWithTags(req.TagNames)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	res := &ptproto.FindFilesWithTagsResponse{
-		Files: []*ptproto.File{},
+	res := &scproto.FindFilesWithTagsResponse{
+		Files: []*scproto.File{},
 	}
 
 	for _, file := range files {
@@ -64,16 +64,16 @@ func (as *apiServer) FindFilesWithTags(
 
 func (as *apiServer) FindFilesWithIdPrefix(
 	ctx context.Context,
-	req *ptproto.FindFilesWithIdPrefixRequest,
-) (*ptproto.FindFilesWithIdPrefixResponse, error) {
+	req *scproto.FindFilesWithIdPrefixRequest,
+) (*scproto.FindFilesWithIdPrefixResponse, error) {
 	as.logger.Debug("finding files with prefix '%s'", req.IdPrefix)
 	files, err := as.api.FindFilesWithIdPrefix(req.IdPrefix)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	res := &ptproto.FindFilesWithIdPrefixResponse{
-		Files: []*ptproto.File{},
+	res := &scproto.FindFilesWithIdPrefixResponse{
+		Files: []*scproto.File{},
 	}
 
 	for _, file := range files {
@@ -91,8 +91,8 @@ func (as *apiServer) FindFilesWithIdPrefix(
 
 func (as *apiServer) GetFile(
 	ctx context.Context,
-	req *ptproto.GetFileRequest,
-) (*ptproto.GetFileResponse, error) {
+	req *scproto.GetFileRequest,
+) (*scproto.GetFileResponse, error) {
 	as.logger.Debug("getting file %s", req.Id)
 	f, err := as.api.GetFile(req.Id)
 	if err != nil {
@@ -104,8 +104,8 @@ func (as *apiServer) GetFile(
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &ptproto.GetFileResponse{
-		File: &ptproto.TaggedFile{
+	return &scproto.GetFileResponse{
+		File: &scproto.TaggedFile{
 			File: resFile,
 		},
 	}, nil

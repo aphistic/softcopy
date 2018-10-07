@@ -32,7 +32,7 @@ func NewFileLocal(basePath string) (*FileLocal, error) {
 		return nil, err
 	}
 
-	f, err := ioutil.TempFile(basePath, "papertrail-")
+	f, err := ioutil.TempFile(basePath, "softcopy-")
 	if err != nil {
 		return nil, fmt.Errorf("could not write to %s", basePath)
 	}

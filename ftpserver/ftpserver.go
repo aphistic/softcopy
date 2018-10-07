@@ -3,8 +3,8 @@ package ftpserver
 import (
 	"github.com/efritz/nacelle"
 
-	"github.com/aphistic/papertrail/api"
-	"github.com/aphistic/papertrail/ftpserver/ftp"
+	"github.com/aphistic/softcopy/api"
+	"github.com/aphistic/softcopy/ftpserver/ftp"
 )
 
 type Process struct {
@@ -29,7 +29,7 @@ func (p *Process) Start() error {
 		func() ftp.Service {
 			return newFTPService(p.API, p.Logger)
 		},
-		ftp.FTPRandomTempPath("papertrail-"),
+		ftp.FTPRandomTempPath("softcopy-"),
 		ftp.FTPLogger(&logger{
 			logger: p.Logger,
 		}),

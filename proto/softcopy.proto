@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package ptproto;
+package scproto;
 
 import "google/protobuf/timestamp.proto";
 
@@ -46,7 +46,7 @@ message FindFilesWithIdPrefixResponse {
         repeated File files = 1;
 }
 
-service Papertrail {
+service Softcopy {
         rpc GetFile(GetFileRequest) returns (GetFileResponse) {}
 
         rpc FindFilesWithIdPrefix(FindFilesWithIdPrefixRequest) returns (FindFilesWithIdPrefixResponse) {}

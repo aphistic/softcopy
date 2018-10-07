@@ -5,8 +5,8 @@ import (
 
 	"github.com/efritz/nacelle"
 
-	"github.com/aphistic/papertrail/storage"
-	"github.com/aphistic/papertrail/storage/sqlite"
+	"github.com/aphistic/softcopy/storage"
+	"github.com/aphistic/softcopy/storage/sqlite"
 )
 
 type Initializer struct {
@@ -30,7 +30,7 @@ func (i *Initializer) Init(config nacelle.Config) error {
 		return err
 	}
 
-	ds, err := sqlite.NewClient(path.Join(cfg.StorageRoot, "papertrail.db"))
+	ds, err := sqlite.NewClient(path.Join(cfg.StorageRoot, "softcopy.db"))
 	if err != nil {
 		return err
 	}

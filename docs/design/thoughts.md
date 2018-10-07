@@ -1,6 +1,6 @@
 # Thoughts
 
-Various thoughts while working on papertrail stuff...
+Various thoughts while working on softcopy stuff...
 
 ## Documents
 All documents start out with the title as the file they're uploaded as.  When going through the webui "Add Document" it should just be a "file upload" dialog that will upload a document to the Inbox the same way a file uploaded via FTP would be.  This keeps the document management consistent no matter where the document is coming from.
@@ -15,4 +15,4 @@ The Inbox is where documents that have just been uploaded reside.  Any uploaded 
 A tag, when added, does not have a type defined and shows up with a grey background.  Tags can be modified, though, to have a type that will dictate the color the tag will show up as within the app.  For example, there could be a "Business" tag type that is green and any tag with that type would show up with a green background to make it easier to distinguish what tags mean.
 
 ## Database and Filesystem
-The database will probably be SQLite to store metadata and standard files on the filesystem to store documents.  When a document is uploaded it'll be assigned a uuid and that's what it will be stored under in the filesystem.  My goal is to have all data under the same directory so it's easy to back up and restore.  An instance of papertrail should be able to be recovered just by placing backed up data in the data directory and starting the server.
+The database will probably be SQLite to store metadata and standard files on the filesystem to store documents.  When a document is uploaded it'll be assigned a uuid and that's what it will be stored under in the filesystem.  My goal is to have all data under the same directory so it's easy to back up and restore.  An instance of softcopy should be able to be recovered just by placing backed up data in the data directory and starting the server.

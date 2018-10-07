@@ -7,17 +7,17 @@ import (
 
 	"github.com/c-bata/go-prompt"
 
-	"github.com/aphistic/papertrail/proto"
+	"github.com/aphistic/softcopy/proto"
 	"github.com/dustin/go-humanize"
 	"github.com/golang/protobuf/ptypes"
 )
 
 type cmdShow struct {
 	w      Writer
-	client ptproto.PapertrailClient
+	client scproto.SoftcopyClient
 }
 
-func newCmdShow(w Writer, client ptproto.PapertrailClient) *cmdShow {
+func newCmdShow(w Writer, client scproto.SoftcopyClient) *cmdShow {
 	return &cmdShow{
 		w:      w,
 		client: client,
@@ -40,7 +40,7 @@ func (c *cmdShow) Suggestions(d prompt.Document) []prompt.Suggest {
 		return []prompt.Suggest{}
 	}
 
-	res, err := c.client.FindFilesWithIdPrefix(context.Background(), &ptproto.FindFilesWithIdPrefixRequest{
+	res, err := c.client.FindFilesWithIdPrefix(context.Background(), &scproto.FindFilesWithIdPrefixRequest{
 		IdPrefix: idPrefix,
 	})
 	if err != nil {
@@ -61,7 +61,7 @@ func (c *cmdShow) Suggestions(d prompt.Document) []prompt.Suggest {
 
 func (c *cmdShow) Execute(s string) error {
 	id := strings.TrimSpace(s)
-	file, err := c.client.GetFile(context.Background(), &ptproto.GetFileRequest{
+	file, err := c.client.GetFile(context.Background(), &scproto.GetFileRequest{
 		Id: id,
 	})
 	if err != nil {

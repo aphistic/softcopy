@@ -3,17 +3,17 @@ package apiserver
 import (
 	"github.com/golang/protobuf/ptypes"
 
-	"github.com/aphistic/papertrail/proto"
-	"github.com/aphistic/papertrail/storage/records"
+	"github.com/aphistic/softcopy/proto"
+	"github.com/aphistic/softcopy/storage/records"
 )
 
-func fileToGrpc(file *records.File) (*ptproto.File, error) {
+func fileToGrpc(file *records.File) (*scproto.File, error) {
 	ts, err := ptypes.TimestampProto(file.DocumentDate)
 	if err != nil {
 		return nil, err
 	}
 
-	return &ptproto.File{
+	return &scproto.File{
 		Id:           file.ID.String(),
 		Hash:         file.Hash,
 		Filename:     file.Filename,

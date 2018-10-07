@@ -3,17 +3,17 @@ package commander
 import (
 	"github.com/c-bata/go-prompt"
 
-	"github.com/aphistic/papertrail/internal/consts"
-	"github.com/aphistic/papertrail/proto"
+	"github.com/aphistic/softcopy/internal/consts"
+	"github.com/aphistic/softcopy/proto"
 )
 
 type Commander struct {
-	client ptproto.PapertrailClient
+	client scproto.SoftcopyClient
 	writer Writer
 	parser *parser
 }
 
-func NewCommander(client ptproto.PapertrailClient) *Commander {
+func NewCommander(client scproto.SoftcopyClient) *Commander {
 	w := &consoleWriter{}
 
 	return &Commander{
@@ -28,7 +28,7 @@ func NewCommander(client ptproto.PapertrailClient) *Commander {
 }
 
 func (c *Commander) Startup() error {
-	c.writer.Printf("papertrail v%s\n", consts.ProcessVersion)
+	c.writer.Printf("softcopy v%s\n", consts.ProcessVersion)
 	c.writer.Printf("Please use `exit` or `Ctrl-D` to exit.\n")
 	c.writer.Printf("\n")
 	return nil

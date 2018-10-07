@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/aphistic/papertrail/storage/records"
+	"github.com/aphistic/softcopy/storage/records"
 )
 
 func (c *Client) GetTags(names []string) ([]*records.Tag, error) {

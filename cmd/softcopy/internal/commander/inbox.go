@@ -9,16 +9,16 @@ import (
 	"github.com/golang/protobuf/ptypes"
 	"github.com/olekukonko/tablewriter"
 
-	"github.com/aphistic/papertrail/internal/consts"
-	"github.com/aphistic/papertrail/proto"
+	"github.com/aphistic/softcopy/internal/consts"
+	"github.com/aphistic/softcopy/proto"
 )
 
 type cmdInbox struct {
 	w      Writer
-	client ptproto.PapertrailClient
+	client scproto.SoftcopyClient
 }
 
-func newCmdInbox(w Writer, client ptproto.PapertrailClient) *cmdInbox {
+func newCmdInbox(w Writer, client scproto.SoftcopyClient) *cmdInbox {
 	return &cmdInbox{
 		w:      w,
 		client: client,
@@ -38,7 +38,7 @@ func (c *cmdInbox) Suggestions(d prompt.Document) []prompt.Suggest {
 }
 
 func (c *cmdInbox) Execute(s string) error {
-	res, err := c.client.FindFilesWithTags(context.Background(), &ptproto.FindFilesWithTagsRequest{
+	res, err := c.client.FindFilesWithTags(context.Background(), &scproto.FindFilesWithTagsRequest{
 		TagNames: []string{
 			consts.TagUnfiled,
 		},

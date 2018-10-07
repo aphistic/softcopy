@@ -9,9 +9,9 @@ import (
 	"github.com/c-bata/go-prompt"
 	"google.golang.org/grpc"
 
-	"github.com/aphistic/papertrail/cmd/papertrail/internal/commander"
-	"github.com/aphistic/papertrail/internal/consts"
-	"github.com/aphistic/papertrail/proto"
+	"github.com/aphistic/softcopy/cmd/softcopy/internal/commander"
+	"github.com/aphistic/softcopy/internal/consts"
+	"github.com/aphistic/softcopy/proto"
 )
 
 var (
@@ -39,16 +39,16 @@ func main() {
 	}
 	defer conn.Close()
 
-	client := ptproto.NewPapertrailClient(conn)
+	client := scproto.NewSoftcopyClient(conn)
 
-	client.FindFilesWithTags(context.Background(), &ptproto.FindFilesWithTagsRequest{})
+	client.FindFilesWithTags(context.Background(), &scproto.FindFilesWithTagsRequest{})
 
 	cmdr := commander.NewCommander(client)
 	cmdr.Startup()
 	p := prompt.New(
 		cmdr.Executor,
 		cmdr.Completer,
-		prompt.OptionTitle("papertrail"),
+		prompt.OptionTitle("softcopy"),
 		prompt.OptionPrefixTextColor(prompt.Cyan),
 		prompt.OptionLivePrefix(cmdr.LivePrefix),
 	)
