@@ -7,7 +7,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/rubenv/sql-migrate"
 
-	"github.com/aphistic/softcopy/storage"
+	"github.com/aphistic/softcopy/internal/storage"
 )
 
 const migrationPath = "../../storage/sqlite/migrations"

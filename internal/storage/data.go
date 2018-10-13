@@ -3,7 +3,7 @@ package storage
 import (
 	"github.com/google/uuid"
 
-	"github.com/aphistic/softcopy/storage/records"
+	"github.com/aphistic/softcopy/internal/storage/records"
 )
 
 type Data interface {

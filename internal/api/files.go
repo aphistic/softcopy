@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/aphistic/softcopy/internal/consts"
-	"github.com/aphistic/softcopy/storage/records"
+	"github.com/aphistic/softcopy/internal/storage/records"
 )
 
 func (c *Client) AddFile(name string, data io.Reader) error {

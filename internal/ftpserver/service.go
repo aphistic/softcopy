@@ -3,8 +3,8 @@ package ftpserver
 import (
 	"github.com/efritz/nacelle"
 
-	"github.com/aphistic/softcopy/api"
-	"github.com/aphistic/softcopy/ftpserver/ftp"
+	"github.com/aphistic/softcopy/internal/api"
+	"github.com/aphistic/softcopy/internal/ftpserver/ftp"
 )
 
 type ftpService struct {
