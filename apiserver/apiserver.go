@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/efritz/nacelle"
-	"github.com/efritz/nacelle/process"
+	basegrpc "github.com/efritz/nacelle/base/grpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -19,9 +19,7 @@ type apiProcess struct {
 }
 
 func NewProcess() nacelle.Process {
-	return process.NewGRPCServer(
-		&apiProcess{},
-	)
+	return basegrpc.NewServer(&apiProcess{})
 }
 
 func (ap *apiProcess) Init(config nacelle.Config, server *grpc.Server) error {
