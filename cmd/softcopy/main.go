@@ -9,9 +9,9 @@ import (
 	"github.com/c-bata/go-prompt"
 	"google.golang.org/grpc"
 
-	"github.com/aphistic/softcopy/cmd/softcopy/internal/commander"
-	"github.com/aphistic/softcopy/internal/consts"
-	"github.com/aphistic/softcopy/proto"
+	"github.com/aphistic/softcopy/internal/app/softcopy/commander"
+	"github.com/aphistic/softcopy/internal/pkg/consts"
+	"github.com/aphistic/softcopy/pkg/proto"
 )
 
 var (

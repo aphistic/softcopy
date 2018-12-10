@@ -5,9 +5,9 @@ import (
 
 	"github.com/efritz/nacelle"
 
-	"github.com/aphistic/softcopy/internal/api"
-	"github.com/aphistic/softcopy/internal/apiserver"
-	"github.com/aphistic/softcopy/internal/ftpserver"
+	"github.com/aphistic/softcopy/internal/pkg/api"
+	"github.com/aphistic/softcopy/internal/pkg/apiserver"
+	"github.com/aphistic/softcopy/internal/pkg/ftpserver"
 )
 
 func main() {

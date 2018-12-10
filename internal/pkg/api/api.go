@@ -5,8 +5,8 @@ import (
 
 	"github.com/efritz/nacelle"
 
-	"github.com/aphistic/softcopy/internal/storage"
-	"github.com/aphistic/softcopy/internal/storage/sqlite"
+	"github.com/aphistic/softcopy/internal/pkg/storage"
+	"github.com/aphistic/softcopy/internal/pkg/storage/sqlite"
 )
 
 type Initializer struct {

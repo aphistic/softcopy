@@ -6,8 +6,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/aphistic/softcopy/internal/storage"
-	"github.com/aphistic/softcopy/internal/storage/records"
+	"github.com/aphistic/softcopy/internal/pkg/storage"
+	"github.com/aphistic/softcopy/internal/pkg/storage/records"
 )
 
 func (c *Client) GetFile(id uuid.UUID) (*records.File, error) {

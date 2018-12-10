@@ -9,8 +9,8 @@ import (
 	"github.com/golang/protobuf/ptypes"
 	"github.com/olekukonko/tablewriter"
 
-	"github.com/aphistic/softcopy/internal/consts"
-	"github.com/aphistic/softcopy/proto"
+	"github.com/aphistic/softcopy/internal/pkg/consts"
+	"github.com/aphistic/softcopy/pkg/proto"
 )
 
 type cmdInbox struct {

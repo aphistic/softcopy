@@ -3,8 +3,8 @@ package commander
 import (
 	"github.com/c-bata/go-prompt"
 
-	"github.com/aphistic/softcopy/internal/consts"
-	"github.com/aphistic/softcopy/proto"
+	"github.com/aphistic/softcopy/internal/pkg/consts"
+	"github.com/aphistic/softcopy/pkg/proto"
 )
 
 type Commander struct {

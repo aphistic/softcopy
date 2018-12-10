@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/aphistic/softcopy/internal/storage/records"
+	"github.com/aphistic/softcopy/internal/pkg/storage/records"
 )
 
 func (c *Client) GetTags(names []string) ([]*records.Tag, error) {
