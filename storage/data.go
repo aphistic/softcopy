@@ -9,6 +9,7 @@ import (
 type Data interface {
 	FindFilesWithTags(tagNames []string) ([]*records.File, error)
 	FindFilesWithIdPrefix(idPrefix string) ([]*records.File, error)
+	AllFiles() (records.FileIterator, error)
 	GetFile(id uuid.UUID) (*records.File, error)
 	GetFileByHash(hash string) (*records.File, error)
 	CreateFile(*records.File) error
@@ -17,4 +18,5 @@ type Data interface {
 	DeleteFile(id uuid.UUID) error
 
 	GetTags(names []string) ([]*records.Tag, error)
+	GetTagsForFile(id uuid.UUID) (records.TagIterator, error)
 }

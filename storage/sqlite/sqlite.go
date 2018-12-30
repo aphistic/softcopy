@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"os"
 
-	_ "github.com/mattn/go-sqlite3"
-	"github.com/rubenv/sql-migrate"
+	_ "github.com/mattn/go-sqlite3" // import sqlite driver
+	migrate "github.com/rubenv/sql-migrate"
 
 	"github.com/aphistic/softcopy/storage"
 )

@@ -1,14 +1,97 @@
 package sqlite
 
 import (
+	"database/sql"
 	"fmt"
 	"strings"
+	"sync"
 
 	"github.com/google/uuid"
 
 	"github.com/aphistic/softcopy/storage"
 	"github.com/aphistic/softcopy/storage/records"
 )
+
+type sqliteFileIterator struct {
+	rows *sql.Rows
+
+	resChan chan *records.FileItem
+
+	closeOnce sync.Once
+	closeChan chan struct{}
+}
+
+func newSqliteFileIterator(rows *sql.Rows) *sqliteFileIterator {
+	sfi := &sqliteFileIterator{
+		rows:      rows,
+		resChan:   make(chan *records.FileItem),
+		closeChan: make(chan struct{}),
+	}
+
+	go sfi.worker()
+
+	return sfi
+}
+
+func (sfi *sqliteFileIterator) worker() {
+	defer func() {
+		close(sfi.resChan)
+		sfi.rows.Close()
+	}()
+
+	for {
+		ok := sfi.rows.Next()
+		if !ok {
+			sfi.Close()
+			return
+		}
+
+		res := &records.FileItem{}
+		file := &records.File{}
+		err := sfi.rows.Scan(
+			&file.ID,
+			&file.Hash,
+			&file.Filename,
+			&file.DocumentDate,
+			&file.Size,
+		)
+		if err != nil {
+			res.Error = err
+		} else {
+			res.File = file
+		}
+
+		select {
+		case sfi.resChan <- res:
+		case <-sfi.closeChan:
+			sfi.Close()
+			return
+		}
+	}
+}
+
+func (sfi *sqliteFileIterator) Files() <-chan *records.FileItem {
+	return sfi.resChan
+}
+
+func (sfi *sqliteFileIterator) Close() error {
+	sfi.closeOnce.Do(func() {
+		close(sfi.closeChan)
+	})
+	return nil
+}
+
+func (c *Client) AllFiles() (records.FileIterator, error) {
+	rows, err := c.db.Query(`
+		SELECT id, hash, filename, document_date, file_size FROM files
+		ORDER BY filename;
+	`)
+	if err != nil {
+		return nil, err
+	}
+
+	return newSqliteFileIterator(rows), nil
+}
 
 func (c *Client) GetFile(id uuid.UUID) (*records.File, error) {
 	rows, err := c.db.Query(`

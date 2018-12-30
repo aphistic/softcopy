@@ -50,6 +50,15 @@ func (c *Client) AddFile(name string, data io.Reader) error {
 	return nil
 }
 
+func (c *Client) AllFiles() (records.FileIterator, error) {
+	files, err := c.dataStorage.AllFiles()
+	if err != nil {
+		return nil, err
+	}
+
+	return files, nil
+}
+
 func (c *Client) GetFile(id string) (*records.File, error) {
 	fileID, err := uuid.Parse(id)
 	if err != nil {
@@ -62,6 +71,18 @@ func (c *Client) GetFile(id string) (*records.File, error) {
 	}
 
 	return file, nil
+}
+
+func (c *Client) ReadFile(id string) (io.ReadCloser, error) {
+	fileID, err := uuid.Parse(id)
+	if err != nil {
+		return nil, fmt.Errorf("invalid file id")
+	}
+
+	fileDir := fileID.String()[0:4]
+	filePath := path.Join(fileDir, fileID.String()+".dat")
+
+	return c.fileStorage.ReadFile(filePath)
 }
 
 func (c *Client) FindFilesWithTags(tagNames []string) ([]*records.File, error) {

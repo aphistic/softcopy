@@ -10,6 +10,7 @@ import (
 )
 
 type File interface {
+	ReadFile(filePath string) (io.ReadCloser, error)
 	WriteFile(filePath string, r io.Reader) (string, int64, error)
 }
 
@@ -47,6 +48,17 @@ func NewFileLocal(basePath string) (*FileLocal, error) {
 	return &FileLocal{
 		basePath: basePath,
 	}, nil
+}
+
+func (fl *FileLocal) ReadFile(filePath string) (io.ReadCloser, error) {
+	readPath := path.Join(fl.basePath, filePath)
+
+	f, err := os.Open(readPath)
+	if err != nil {
+		return nil, err
+	}
+
+	return f, nil
 }
 
 func (fl *FileLocal) WriteFile(filePath string, r io.Reader) (string, int64, error) {

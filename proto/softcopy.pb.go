@@ -39,7 +39,7 @@ func (m *File) Reset()         { *m = File{} }
 func (m *File) String() string { return proto.CompactTextString(m) }
 func (*File) ProtoMessage()    {}
 func (*File) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_5e9c0e77eed116c0, []int{0}
+	return fileDescriptor_softcopy_e007884a9e150063, []int{0}
 }
 func (m *File) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_File.Unmarshal(m, b)
@@ -106,7 +106,7 @@ func (m *TaggedFile) Reset()         { *m = TaggedFile{} }
 func (m *TaggedFile) String() string { return proto.CompactTextString(m) }
 func (*TaggedFile) ProtoMessage()    {}
 func (*TaggedFile) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_5e9c0e77eed116c0, []int{1}
+	return fileDescriptor_softcopy_e007884a9e150063, []int{1}
 }
 func (m *TaggedFile) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TaggedFile.Unmarshal(m, b)
@@ -154,7 +154,7 @@ func (m *Tag) Reset()         { *m = Tag{} }
 func (m *Tag) String() string { return proto.CompactTextString(m) }
 func (*Tag) ProtoMessage()    {}
 func (*Tag) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_5e9c0e77eed116c0, []int{2}
+	return fileDescriptor_softcopy_e007884a9e150063, []int{2}
 }
 func (m *Tag) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Tag.Unmarshal(m, b)
@@ -213,7 +213,7 @@ func (m *GetFileRequest) Reset()         { *m = GetFileRequest{} }
 func (m *GetFileRequest) String() string { return proto.CompactTextString(m) }
 func (*GetFileRequest) ProtoMessage()    {}
 func (*GetFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_5e9c0e77eed116c0, []int{3}
+	return fileDescriptor_softcopy_e007884a9e150063, []int{3}
 }
 func (m *GetFileRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetFileRequest.Unmarshal(m, b)
@@ -251,7 +251,7 @@ func (m *GetFileResponse) Reset()         { *m = GetFileResponse{} }
 func (m *GetFileResponse) String() string { return proto.CompactTextString(m) }
 func (*GetFileResponse) ProtoMessage()    {}
 func (*GetFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_5e9c0e77eed116c0, []int{4}
+	return fileDescriptor_softcopy_e007884a9e150063, []int{4}
 }
 func (m *GetFileResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetFileResponse.Unmarshal(m, b)
@@ -289,7 +289,7 @@ func (m *FindFilesWithTagsRequest) Reset()         { *m = FindFilesWithTagsReque
 func (m *FindFilesWithTagsRequest) String() string { return proto.CompactTextString(m) }
 func (*FindFilesWithTagsRequest) ProtoMessage()    {}
 func (*FindFilesWithTagsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_5e9c0e77eed116c0, []int{5}
+	return fileDescriptor_softcopy_e007884a9e150063, []int{5}
 }
 func (m *FindFilesWithTagsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_FindFilesWithTagsRequest.Unmarshal(m, b)
@@ -327,7 +327,7 @@ func (m *FindFilesWithTagsResponse) Reset()         { *m = FindFilesWithTagsResp
 func (m *FindFilesWithTagsResponse) String() string { return proto.CompactTextString(m) }
 func (*FindFilesWithTagsResponse) ProtoMessage()    {}
 func (*FindFilesWithTagsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_5e9c0e77eed116c0, []int{6}
+	return fileDescriptor_softcopy_e007884a9e150063, []int{6}
 }
 func (m *FindFilesWithTagsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_FindFilesWithTagsResponse.Unmarshal(m, b)
@@ -365,7 +365,7 @@ func (m *FindFilesWithIdPrefixRequest) Reset()         { *m = FindFilesWithIdPre
 func (m *FindFilesWithIdPrefixRequest) String() string { return proto.CompactTextString(m) }
 func (*FindFilesWithIdPrefixRequest) ProtoMessage()    {}
 func (*FindFilesWithIdPrefixRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_5e9c0e77eed116c0, []int{7}
+	return fileDescriptor_softcopy_e007884a9e150063, []int{7}
 }
 func (m *FindFilesWithIdPrefixRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_FindFilesWithIdPrefixRequest.Unmarshal(m, b)
@@ -403,7 +403,7 @@ func (m *FindFilesWithIdPrefixResponse) Reset()         { *m = FindFilesWithIdPr
 func (m *FindFilesWithIdPrefixResponse) String() string { return proto.CompactTextString(m) }
 func (*FindFilesWithIdPrefixResponse) ProtoMessage()    {}
 func (*FindFilesWithIdPrefixResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_5e9c0e77eed116c0, []int{8}
+	return fileDescriptor_softcopy_e007884a9e150063, []int{8}
 }
 func (m *FindFilesWithIdPrefixResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_FindFilesWithIdPrefixResponse.Unmarshal(m, b)
@@ -430,6 +430,112 @@ func (m *FindFilesWithIdPrefixResponse) GetFiles() []*File {
 	return nil
 }
 
+type AllFileRequest struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *AllFileRequest) Reset()         { *m = AllFileRequest{} }
+func (m *AllFileRequest) String() string { return proto.CompactTextString(m) }
+func (*AllFileRequest) ProtoMessage()    {}
+func (*AllFileRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_e007884a9e150063, []int{9}
+}
+func (m *AllFileRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AllFileRequest.Unmarshal(m, b)
+}
+func (m *AllFileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AllFileRequest.Marshal(b, m, deterministic)
+}
+func (dst *AllFileRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AllFileRequest.Merge(dst, src)
+}
+func (m *AllFileRequest) XXX_Size() int {
+	return xxx_messageInfo_AllFileRequest.Size(m)
+}
+func (m *AllFileRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_AllFileRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AllFileRequest proto.InternalMessageInfo
+
+type DownloadFileRequest struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DownloadFileRequest) Reset()         { *m = DownloadFileRequest{} }
+func (m *DownloadFileRequest) String() string { return proto.CompactTextString(m) }
+func (*DownloadFileRequest) ProtoMessage()    {}
+func (*DownloadFileRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_e007884a9e150063, []int{10}
+}
+func (m *DownloadFileRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DownloadFileRequest.Unmarshal(m, b)
+}
+func (m *DownloadFileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DownloadFileRequest.Marshal(b, m, deterministic)
+}
+func (dst *DownloadFileRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DownloadFileRequest.Merge(dst, src)
+}
+func (m *DownloadFileRequest) XXX_Size() int {
+	return xxx_messageInfo_DownloadFileRequest.Size(m)
+}
+func (m *DownloadFileRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DownloadFileRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DownloadFileRequest proto.InternalMessageInfo
+
+func (m *DownloadFileRequest) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+type DownloadFileResponse struct {
+	Data                 []byte   `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DownloadFileResponse) Reset()         { *m = DownloadFileResponse{} }
+func (m *DownloadFileResponse) String() string { return proto.CompactTextString(m) }
+func (*DownloadFileResponse) ProtoMessage()    {}
+func (*DownloadFileResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_e007884a9e150063, []int{11}
+}
+func (m *DownloadFileResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DownloadFileResponse.Unmarshal(m, b)
+}
+func (m *DownloadFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DownloadFileResponse.Marshal(b, m, deterministic)
+}
+func (dst *DownloadFileResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DownloadFileResponse.Merge(dst, src)
+}
+func (m *DownloadFileResponse) XXX_Size() int {
+	return xxx_messageInfo_DownloadFileResponse.Size(m)
+}
+func (m *DownloadFileResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DownloadFileResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DownloadFileResponse proto.InternalMessageInfo
+
+func (m *DownloadFileResponse) GetData() []byte {
+	if m != nil {
+		return m.Data
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*File)(nil), "scproto.File")
 	proto.RegisterType((*TaggedFile)(nil), "scproto.TaggedFile")
@@ -440,6 +546,9 @@ func init() {
 	proto.RegisterType((*FindFilesWithTagsResponse)(nil), "scproto.FindFilesWithTagsResponse")
 	proto.RegisterType((*FindFilesWithIdPrefixRequest)(nil), "scproto.FindFilesWithIdPrefixRequest")
 	proto.RegisterType((*FindFilesWithIdPrefixResponse)(nil), "scproto.FindFilesWithIdPrefixResponse")
+	proto.RegisterType((*AllFileRequest)(nil), "scproto.AllFileRequest")
+	proto.RegisterType((*DownloadFileRequest)(nil), "scproto.DownloadFileRequest")
+	proto.RegisterType((*DownloadFileResponse)(nil), "scproto.DownloadFileResponse")
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -580,38 +689,194 @@ var _Softcopy_serviceDesc = grpc.ServiceDesc{
 	Metadata: "softcopy.proto",
 }
 
-func init() { proto.RegisterFile("softcopy.proto", fileDescriptor_softcopy_5e9c0e77eed116c0) }
+// SoftcopyAdminClient is the client API for SoftcopyAdmin service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type SoftcopyAdminClient interface {
+	AllFiles(ctx context.Context, in *AllFileRequest, opts ...grpc.CallOption) (SoftcopyAdmin_AllFilesClient, error)
+	DownloadFile(ctx context.Context, in *DownloadFileRequest, opts ...grpc.CallOption) (SoftcopyAdmin_DownloadFileClient, error)
+}
 
-var fileDescriptor_softcopy_5e9c0e77eed116c0 = []byte{
-	// 471 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x92, 0x5f, 0x6f, 0xd3, 0x30,
-	0x14, 0xc5, 0xc9, 0x9f, 0x6d, 0xd9, 0xdd, 0x56, 0x84, 0x11, 0x60, 0x02, 0x88, 0xcc, 0x08, 0xe8,
-	0x53, 0x26, 0x95, 0x07, 0x24, 0x90, 0x80, 0x87, 0x69, 0x88, 0x17, 0x04, 0x21, 0x12, 0x2f, 0xa0,
-	0xca, 0x6b, 0x5c, 0xd7, 0x52, 0x53, 0x87, 0xda, 0x95, 0x28, 0x1f, 0x83, 0x57, 0xbe, 0x2c, 0xca,
-	0x8d, 0x13, 0xa5, 0xb4, 0x03, 0xf1, 0xe6, 0xeb, 0x7b, 0xae, 0xcf, 0xf9, 0xdd, 0x04, 0x06, 0x46,
-	0x4f, 0xed, 0x44, 0x57, 0xeb, 0xb4, 0x5a, 0x6a, 0xab, 0xc9, 0x81, 0x99, 0xe0, 0x21, 0x7e, 0x28,
-	0xb5, 0x96, 0x73, 0x71, 0x86, 0xd5, 0xe5, 0x6a, 0x7a, 0x66, 0x55, 0x29, 0x8c, 0xe5, 0x65, 0xd5,
-	0x28, 0xd9, 0x2f, 0x0f, 0xc2, 0x0b, 0x35, 0x17, 0x64, 0x00, 0xbe, 0x2a, 0xa8, 0x97, 0x78, 0xc3,
-	0xc3, 0xcc, 0x57, 0x05, 0x21, 0x10, 0xce, 0xb8, 0x99, 0x51, 0x1f, 0x6f, 0xf0, 0x4c, 0x62, 0x88,
-	0xa6, 0x6a, 0x2e, 0x16, 0xbc, 0x14, 0x34, 0xc0, 0xfb, 0xae, 0x26, 0xaf, 0xe1, 0xa4, 0xd0, 0x93,
-	0x55, 0x29, 0x16, 0x76, 0x5c, 0x70, 0x2b, 0x68, 0x98, 0x78, 0xc3, 0xa3, 0x51, 0x9c, 0x36, 0x09,
-	0xd2, 0x36, 0x41, 0x9a, 0xb7, 0x09, 0xb2, 0xe3, 0x76, 0xe0, 0x9c, 0x5b, 0x51, 0x1b, 0x1a, 0xf5,
-	0x43, 0xd0, 0xbd, 0xc4, 0x1b, 0x06, 0x19, 0x9e, 0xd9, 0x47, 0x80, 0x9c, 0x4b, 0x29, 0x0a, 0x8c,
-	0x78, 0x0a, 0x61, 0x6d, 0x87, 0x21, 0x8f, 0x46, 0x27, 0xa9, 0x83, 0x4c, 0xeb, 0x66, 0x86, 0x2d,
-	0x92, 0x40, 0x68, 0xb9, 0x34, 0xd4, 0x4f, 0x82, 0xe1, 0xd1, 0xe8, 0xb8, 0x93, 0xe4, 0x5c, 0x66,
-	0xd8, 0x61, 0x5f, 0x21, 0xc8, 0xb9, 0xec, 0xe1, 0x06, 0x2d, 0x2e, 0x62, 0x39, 0x5c, 0x44, 0x8a,
-	0x21, 0x9a, 0x70, 0x2b, 0xa4, 0x5e, 0xae, 0x5b, 0xdc, 0xb6, 0x26, 0xb7, 0x61, 0xdf, 0xac, 0x8d,
-	0x15, 0x25, 0x72, 0x46, 0x99, 0xab, 0x58, 0x02, 0x83, 0xb7, 0xc2, 0x62, 0x22, 0xf1, 0x6d, 0x25,
-	0x8c, 0xfd, 0x73, 0xb1, 0xec, 0x05, 0x5c, 0xef, 0x14, 0xa6, 0xd2, 0x0b, 0x23, 0xc8, 0xd3, 0x0d,
-	0xb0, 0x9b, 0xfd, 0xd4, 0x8e, 0xbd, 0xc1, 0x63, 0xcf, 0x81, 0x5e, 0xa8, 0x05, 0xde, 0x98, 0xcf,
-	0xca, 0xce, 0x72, 0x2e, 0x4d, 0xeb, 0x73, 0x0f, 0x0e, 0x2d, 0x97, 0xe3, 0x3a, 0xb9, 0xa1, 0x5e,
-	0x12, 0xd4, 0x71, 0x2d, 0x97, 0xef, 0xeb, 0x9a, 0xbd, 0x81, 0xbb, 0x3b, 0x06, 0x9d, 0xfd, 0x23,
-	0xd8, 0xab, 0x5f, 0x6f, 0xa6, 0xb6, 0x16, 0xdb, 0xf4, 0xd8, 0x4b, 0xb8, 0xbf, 0xf1, 0xc2, 0xbb,
-	0xe2, 0xc3, 0x52, 0x4c, 0xd5, 0xf7, 0x9e, 0xbd, 0x2a, 0xc6, 0x15, 0xde, 0x39, 0xda, 0x48, 0x39,
-	0x0d, 0x3b, 0x87, 0x07, 0x57, 0x0c, 0xff, 0x47, 0x84, 0xd1, 0x4f, 0x1f, 0xa2, 0x4f, 0xee, 0x47,
-	0x27, 0xaf, 0xe0, 0xc0, 0xad, 0x91, 0xdc, 0xe9, 0xd4, 0x9b, 0xab, 0x8f, 0xe9, 0x76, 0xa3, 0xf1,
-	0x63, 0xd7, 0xc8, 0x0c, 0x6e, 0xed, 0x8c, 0x44, 0x1e, 0xf7, 0xbc, 0xaf, 0xe6, 0x8d, 0x9f, 0xfc,
-	0x4b, 0xd6, 0x39, 0x7d, 0x81, 0x1b, 0x5b, 0xbb, 0x27, 0xa7, 0xbb, 0xc7, 0x7b, 0x1f, 0x34, 0x66,
-	0x7f, 0x93, 0xb4, 0xaf, 0x5f, 0xee, 0xa3, 0xe4, 0xd9, 0xef, 0x00, 0x00, 0x00, 0xff, 0xff, 0xae,
-	0xa4, 0xa9, 0x02, 0x03, 0x04, 0x00, 0x00,
+type softcopyAdminClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewSoftcopyAdminClient(cc *grpc.ClientConn) SoftcopyAdminClient {
+	return &softcopyAdminClient{cc}
+}
+
+func (c *softcopyAdminClient) AllFiles(ctx context.Context, in *AllFileRequest, opts ...grpc.CallOption) (SoftcopyAdmin_AllFilesClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_SoftcopyAdmin_serviceDesc.Streams[0], "/scproto.SoftcopyAdmin/AllFiles", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &softcopyAdminAllFilesClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type SoftcopyAdmin_AllFilesClient interface {
+	Recv() (*TaggedFile, error)
+	grpc.ClientStream
+}
+
+type softcopyAdminAllFilesClient struct {
+	grpc.ClientStream
+}
+
+func (x *softcopyAdminAllFilesClient) Recv() (*TaggedFile, error) {
+	m := new(TaggedFile)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *softcopyAdminClient) DownloadFile(ctx context.Context, in *DownloadFileRequest, opts ...grpc.CallOption) (SoftcopyAdmin_DownloadFileClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_SoftcopyAdmin_serviceDesc.Streams[1], "/scproto.SoftcopyAdmin/DownloadFile", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &softcopyAdminDownloadFileClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type SoftcopyAdmin_DownloadFileClient interface {
+	Recv() (*DownloadFileResponse, error)
+	grpc.ClientStream
+}
+
+type softcopyAdminDownloadFileClient struct {
+	grpc.ClientStream
+}
+
+func (x *softcopyAdminDownloadFileClient) Recv() (*DownloadFileResponse, error) {
+	m := new(DownloadFileResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+// SoftcopyAdminServer is the server API for SoftcopyAdmin service.
+type SoftcopyAdminServer interface {
+	AllFiles(*AllFileRequest, SoftcopyAdmin_AllFilesServer) error
+	DownloadFile(*DownloadFileRequest, SoftcopyAdmin_DownloadFileServer) error
+}
+
+func RegisterSoftcopyAdminServer(s *grpc.Server, srv SoftcopyAdminServer) {
+	s.RegisterService(&_SoftcopyAdmin_serviceDesc, srv)
+}
+
+func _SoftcopyAdmin_AllFiles_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(AllFileRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(SoftcopyAdminServer).AllFiles(m, &softcopyAdminAllFilesServer{stream})
+}
+
+type SoftcopyAdmin_AllFilesServer interface {
+	Send(*TaggedFile) error
+	grpc.ServerStream
+}
+
+type softcopyAdminAllFilesServer struct {
+	grpc.ServerStream
+}
+
+func (x *softcopyAdminAllFilesServer) Send(m *TaggedFile) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _SoftcopyAdmin_DownloadFile_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(DownloadFileRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(SoftcopyAdminServer).DownloadFile(m, &softcopyAdminDownloadFileServer{stream})
+}
+
+type SoftcopyAdmin_DownloadFileServer interface {
+	Send(*DownloadFileResponse) error
+	grpc.ServerStream
+}
+
+type softcopyAdminDownloadFileServer struct {
+	grpc.ServerStream
+}
+
+func (x *softcopyAdminDownloadFileServer) Send(m *DownloadFileResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+var _SoftcopyAdmin_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "scproto.SoftcopyAdmin",
+	HandlerType: (*SoftcopyAdminServer)(nil),
+	Methods:     []grpc.MethodDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "AllFiles",
+			Handler:       _SoftcopyAdmin_AllFiles_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "DownloadFile",
+			Handler:       _SoftcopyAdmin_DownloadFile_Handler,
+			ServerStreams: true,
+		},
+	},
+	Metadata: "softcopy.proto",
+}
+
+func init() { proto.RegisterFile("softcopy.proto", fileDescriptor_softcopy_e007884a9e150063) }
+
+var fileDescriptor_softcopy_e007884a9e150063 = []byte{
+	// 557 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x53, 0x4d, 0x6f, 0xd3, 0x40,
+	0x10, 0xad, 0x63, 0xb7, 0x75, 0x27, 0x1f, 0xc0, 0x96, 0x0f, 0x63, 0x5a, 0xe1, 0x2e, 0x2a, 0x44,
+	0x1c, 0xdc, 0x2a, 0x1c, 0x90, 0x00, 0x01, 0x95, 0xa2, 0x22, 0x2e, 0x7c, 0x98, 0x48, 0x5c, 0x40,
+	0xd1, 0x36, 0xde, 0x6c, 0x56, 0xb2, 0xbd, 0x21, 0xbb, 0x11, 0x84, 0x9f, 0xc1, 0x15, 0x89, 0xdf,
+	0x8a, 0xbc, 0x5e, 0x5b, 0x0e, 0x49, 0x8a, 0x7a, 0xdb, 0x99, 0x79, 0x33, 0xf3, 0xde, 0x3c, 0x1b,
+	0x3a, 0x52, 0x8c, 0xd5, 0x48, 0x4c, 0x17, 0xe1, 0x74, 0x26, 0x94, 0x40, 0xbb, 0x72, 0xa4, 0x1f,
+	0xfe, 0x7d, 0x26, 0x04, 0x4b, 0xe8, 0x89, 0x8e, 0x2e, 0xe6, 0xe3, 0x13, 0xc5, 0x53, 0x2a, 0x15,
+	0x49, 0xa7, 0x05, 0x12, 0xff, 0xb6, 0xc0, 0x39, 0xe7, 0x09, 0x45, 0x1d, 0x68, 0xf0, 0xd8, 0xb3,
+	0x02, 0xab, 0xbb, 0x17, 0x35, 0x78, 0x8c, 0x10, 0x38, 0x13, 0x22, 0x27, 0x5e, 0x43, 0x67, 0xf4,
+	0x1b, 0xf9, 0xe0, 0x8e, 0x79, 0x42, 0x33, 0x92, 0x52, 0xcf, 0xd6, 0xf9, 0x2a, 0x46, 0xaf, 0xa0,
+	0x1d, 0x8b, 0xd1, 0x3c, 0xa5, 0x99, 0x1a, 0xc6, 0x44, 0x51, 0xcf, 0x09, 0xac, 0x6e, 0xb3, 0xe7,
+	0x87, 0x05, 0x83, 0xb0, 0x64, 0x10, 0x0e, 0x4a, 0x06, 0x51, 0xab, 0x6c, 0xe8, 0x13, 0x45, 0xf3,
+	0x85, 0x92, 0xff, 0xa4, 0xde, 0x76, 0x60, 0x75, 0xed, 0x48, 0xbf, 0xf1, 0x47, 0x80, 0x01, 0x61,
+	0x8c, 0xc6, 0x9a, 0xe2, 0x11, 0x38, 0xf9, 0x3a, 0x4d, 0xb2, 0xd9, 0x6b, 0x87, 0x46, 0x64, 0x98,
+	0x17, 0x23, 0x5d, 0x42, 0x01, 0x38, 0x8a, 0x30, 0xe9, 0x35, 0x02, 0xbb, 0xdb, 0xec, 0xb5, 0x2a,
+	0xc8, 0x80, 0xb0, 0x48, 0x57, 0xf0, 0x57, 0xb0, 0x07, 0x84, 0xd5, 0xe4, 0xda, 0xa5, 0x5c, 0x2d,
+	0xcb, 0xc8, 0xd5, 0x92, 0x7c, 0x70, 0x47, 0x44, 0x51, 0x26, 0x66, 0x8b, 0x52, 0x6e, 0x19, 0xa3,
+	0xdb, 0xb0, 0x23, 0x17, 0x52, 0xd1, 0x54, 0xeb, 0x74, 0x23, 0x13, 0xe1, 0x00, 0x3a, 0x6f, 0xa8,
+	0xd2, 0x8c, 0xe8, 0xb7, 0x39, 0x95, 0xea, 0xdf, 0xc3, 0xe2, 0x67, 0x70, 0xad, 0x42, 0xc8, 0xa9,
+	0xc8, 0x24, 0x45, 0x8f, 0x96, 0x84, 0xed, 0xd7, 0x59, 0x1b, 0xed, 0x85, 0x3c, 0xfc, 0x14, 0xbc,
+	0x73, 0x9e, 0xe9, 0x8c, 0xfc, 0xcc, 0xd5, 0x64, 0x40, 0x98, 0x2c, 0xf7, 0xdc, 0x83, 0x3d, 0x45,
+	0xd8, 0x30, 0x67, 0x2e, 0x3d, 0x2b, 0xb0, 0x73, 0xba, 0x8a, 0xb0, 0x77, 0x79, 0x8c, 0x5f, 0xc3,
+	0xdd, 0x35, 0x8d, 0x66, 0xfd, 0x03, 0xd8, 0xce, 0xa7, 0x17, 0x5d, 0x2b, 0x87, 0x2d, 0x6a, 0xf8,
+	0x39, 0x1c, 0x2c, 0x4d, 0x78, 0x1b, 0x7f, 0x98, 0xd1, 0x31, 0xff, 0x51, 0x5b, 0xcf, 0xe3, 0xe1,
+	0x54, 0xe7, 0x8c, 0x5a, 0x97, 0x1b, 0x0c, 0xee, 0xc3, 0xe1, 0x86, 0xe6, 0xab, 0x50, 0xb8, 0x0e,
+	0x9d, 0xb3, 0x24, 0xa9, 0xdd, 0x16, 0x1f, 0xc3, 0x7e, 0x5f, 0x7c, 0xcf, 0x12, 0x41, 0xe2, 0xcb,
+	0x4e, 0xfe, 0x18, 0x6e, 0x2e, 0xc3, 0xcc, 0x56, 0x04, 0x4e, 0x4c, 0x14, 0xd1, 0xc8, 0x56, 0xa4,
+	0xdf, 0xbd, 0x5f, 0x0d, 0x70, 0x3f, 0x99, 0xbf, 0x09, 0xbd, 0x84, 0x5d, 0xe3, 0x15, 0xba, 0x53,
+	0x51, 0x5a, 0xf6, 0xd7, 0xf7, 0x56, 0x0b, 0xc5, 0x78, 0xbc, 0x85, 0x26, 0x70, 0x6b, 0xad, 0x6e,
+	0x74, 0x5c, 0x13, 0xb8, 0xf9, 0xa8, 0xfe, 0xc3, 0xff, 0xc1, 0xaa, 0x4d, 0x5f, 0xe0, 0xc6, 0x8a,
+	0xc1, 0xe8, 0x68, 0x7d, 0x7b, 0xed, 0xab, 0xf1, 0xf1, 0x65, 0x90, 0x72, 0x7a, 0xef, 0x8f, 0x05,
+	0xed, 0xf2, 0x28, 0x67, 0x71, 0xca, 0x33, 0xf4, 0x02, 0x5c, 0xe3, 0x85, 0xac, 0x9d, 0x66, 0xd9,
+	0x1e, 0x7f, 0xdd, 0x97, 0x8c, 0xb7, 0x4e, 0x2d, 0xf4, 0x1e, 0x5a, 0x75, 0x43, 0xd0, 0x41, 0x05,
+	0x5c, 0x63, 0xa7, 0x7f, 0xb8, 0xa1, 0x5a, 0xd2, 0x3b, 0xb5, 0x2e, 0x76, 0x74, 0xfd, 0xc9, 0xdf,
+	0x00, 0x00, 0x00, 0xff, 0xff, 0x6a, 0xda, 0x61, 0x53, 0x09, 0x05, 0x00, 0x00,
 }
