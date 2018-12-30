@@ -7,8 +7,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/aphistic/softcopy/api"
-	scproto "github.com/aphistic/softcopy/proto"
+	"github.com/aphistic/softcopy/internal/pkg/api"
+	scproto "github.com/aphistic/softcopy/pkg/proto"
 )
 
 type apiServer struct {

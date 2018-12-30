@@ -5,13 +5,13 @@ import (
 
 	"github.com/efritz/nacelle"
 
-	"github.com/aphistic/softcopy/storage"
-	"github.com/aphistic/softcopy/storage/sqlite"
+	"github.com/aphistic/softcopy/internal/pkg/storage"
+	"github.com/aphistic/softcopy/internal/pkg/storage/sqlite"
 )
 
 type Initializer struct {
-	Container *nacelle.ServiceContainer `service:"container"`
-	Logger    nacelle.Logger            `service:"logger"`
+	Container nacelle.ServiceContainer `service:"container"`
+	Logger    nacelle.Logger           `service:"logger"`
 }
 
 func NewInitializer() *Initializer {
@@ -19,11 +19,10 @@ func NewInitializer() *Initializer {
 }
 
 func (i *Initializer) Init(config nacelle.Config) error {
-	rawConfig, err := config.Get(ConfigToken)
-	if err != nil {
+	cfg := &Config{}
+	if err := config.Load(cfg); err != nil {
 		return err
 	}
-	cfg := rawConfig.(*Config)
 
 	fs, err := storage.NewFileLocal(cfg.StorageRoot)
 	if err != nil {

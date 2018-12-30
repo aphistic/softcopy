@@ -9,7 +9,7 @@ import (
 	"github.com/aphistic/softcopy/cmd/softcopy-admin/backup"
 	"github.com/aphistic/softcopy/cmd/softcopy-admin/config"
 	"github.com/aphistic/softcopy/cmd/softcopy-admin/runner"
-	"github.com/aphistic/softcopy/internal/consts"
+	"github.com/aphistic/softcopy/internal/pkg/consts"
 )
 
 func main() {

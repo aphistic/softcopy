@@ -8,8 +8,8 @@ import (
 
 	"github.com/efritz/nacelle"
 
-	"github.com/aphistic/softcopy/api"
-	scproto "github.com/aphistic/softcopy/proto"
+	"github.com/aphistic/softcopy/internal/pkg/api"
+	scproto "github.com/aphistic/softcopy/pkg/proto"
 )
 
 type adminServer struct {

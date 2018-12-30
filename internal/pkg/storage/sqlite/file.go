@@ -8,8 +8,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/aphistic/softcopy/storage"
-	"github.com/aphistic/softcopy/storage/records"
+	"github.com/aphistic/softcopy/internal/pkg/storage"
+	"github.com/aphistic/softcopy/internal/pkg/storage/records"
 )
 
 type sqliteFileIterator struct {

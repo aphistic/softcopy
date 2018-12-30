@@ -3,8 +3,8 @@ package apiserver
 import (
 	"github.com/golang/protobuf/ptypes"
 
-	"github.com/aphistic/softcopy/proto"
-	"github.com/aphistic/softcopy/storage/records"
+	"github.com/aphistic/softcopy/internal/pkg/storage/records"
+	"github.com/aphistic/softcopy/pkg/proto"
 )
 
 func fileToGrpc(file *records.File) (*scproto.File, error) {

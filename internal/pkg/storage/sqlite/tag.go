@@ -6,8 +6,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/aphistic/softcopy/storage/records"
 	"github.com/google/uuid"
+
+	"github.com/aphistic/softcopy/internal/pkg/storage/records"
 )
 
 type sqliteTagIterator struct {

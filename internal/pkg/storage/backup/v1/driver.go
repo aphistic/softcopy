@@ -10,7 +10,7 @@ import (
 
 	"github.com/golang/protobuf/ptypes"
 
-	scproto "github.com/aphistic/softcopy/proto"
+	scproto "github.com/aphistic/softcopy/pkg/proto"
 )
 
 func writeAll(w io.Writer, data []byte) error {

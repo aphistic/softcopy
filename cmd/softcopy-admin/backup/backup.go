@@ -12,9 +12,9 @@ import (
 
 	"github.com/aphistic/softcopy/cmd/softcopy-admin/config"
 	"github.com/aphistic/softcopy/cmd/softcopy-admin/runner"
-	"github.com/aphistic/softcopy/internal/consts"
-	scproto "github.com/aphistic/softcopy/proto"
-	"github.com/aphistic/softcopy/storage/backup"
+	"github.com/aphistic/softcopy/internal/pkg/consts"
+	"github.com/aphistic/softcopy/internal/pkg/storage/backup"
+	scproto "github.com/aphistic/softcopy/pkg/proto"
 )
 
 type Runner struct{}

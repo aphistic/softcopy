@@ -2,11 +2,11 @@ package apiserver
 
 import (
 	"github.com/efritz/nacelle"
-	"github.com/efritz/nacelle/process"
+	basegrpc "github.com/efritz/nacelle/base/grpc"
 	"google.golang.org/grpc"
 
-	"github.com/aphistic/softcopy/api"
-	scproto "github.com/aphistic/softcopy/proto"
+	"github.com/aphistic/softcopy/internal/pkg/api"
+	scproto "github.com/aphistic/softcopy/pkg/proto"
 )
 
 type apiProcess struct {
@@ -15,9 +15,7 @@ type apiProcess struct {
 }
 
 func NewProcess() nacelle.Process {
-	return process.NewGRPCServer(
-		&apiProcess{},
-	)
+	return basegrpc.NewServer(&apiProcess{})
 }
 
 func (ap *apiProcess) Init(config nacelle.Config, server *grpc.Server) error {

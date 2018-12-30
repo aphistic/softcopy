@@ -6,10 +6,10 @@ import (
 	"time"
 
 	"github.com/c-bata/go-prompt"
-
-	"github.com/aphistic/softcopy/proto"
 	"github.com/dustin/go-humanize"
 	"github.com/golang/protobuf/ptypes"
+
+	"github.com/aphistic/softcopy/pkg/proto"
 )
 
 type cmdShow struct {

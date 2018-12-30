@@ -7,9 +7,9 @@ import (
 	"os"
 	"path"
 
-	scproto "github.com/aphistic/softcopy/proto"
+	scproto "github.com/aphistic/softcopy/pkg/proto"
 
-	v1 "github.com/aphistic/softcopy/storage/backup/v1"
+	v1 "github.com/aphistic/softcopy/internal/pkg/storage/backup/v1"
 )
 
 type manifest struct {

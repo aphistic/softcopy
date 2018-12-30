@@ -4,21 +4,16 @@ import (
 	"os"
 
 	"github.com/efritz/nacelle"
-	"github.com/efritz/nacelle/process"
 
-	"github.com/aphistic/softcopy/api"
-	"github.com/aphistic/softcopy/apiserver"
-	"github.com/aphistic/softcopy/ftpserver"
+	"github.com/aphistic/softcopy/internal/pkg/api"
+	"github.com/aphistic/softcopy/internal/pkg/apiserver"
+	"github.com/aphistic/softcopy/internal/pkg/ftpserver"
 )
 
 func main() {
 	res := nacelle.NewBootstrapper(
 		"softcopy",
-		map[interface{}]interface{}{
-			process.GRPCConfigToken: &process.GRPCConfig{},
-			api.ConfigToken:         &api.Config{},
-		},
-		func(runner *nacelle.ProcessRunner, container *nacelle.ServiceContainer) error {
+		func(runner nacelle.ProcessContainer, container nacelle.ServiceContainer) error {
 			runner.RegisterInitializer(
 				api.NewInitializer(),
 				nacelle.WithInitializerName("api"),

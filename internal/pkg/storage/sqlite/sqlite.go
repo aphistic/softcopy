@@ -7,10 +7,10 @@ import (
 	_ "github.com/mattn/go-sqlite3" // import sqlite driver
 	migrate "github.com/rubenv/sql-migrate"
 
-	"github.com/aphistic/softcopy/storage"
+	"github.com/aphistic/softcopy/internal/pkg/storage"
 )
 
-const migrationPath = "../../storage/sqlite/migrations"
+const migrationPath = "../../internal/pkg/storage/sqlite/migrations"
 
 type Client struct {
 	dbPath string

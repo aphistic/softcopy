@@ -1,8 +1,9 @@
 package api
 
 import (
-	"github.com/aphistic/softcopy/storage/records"
 	"github.com/google/uuid"
+
+	"github.com/aphistic/softcopy/internal/pkg/storage/records"
 )
 
 func (c *Client) GetTags(names []string) ([]*records.Tag, error) {

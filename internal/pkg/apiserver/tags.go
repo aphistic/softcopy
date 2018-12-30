@@ -1,8 +1,8 @@
 package apiserver
 
 import (
-	scproto "github.com/aphistic/softcopy/proto"
-	"github.com/aphistic/softcopy/storage/records"
+	"github.com/aphistic/softcopy/internal/pkg/storage/records"
+	scproto "github.com/aphistic/softcopy/pkg/proto"
 )
 
 func tagToGrpc(tag *records.Tag) (*scproto.Tag, error) {
