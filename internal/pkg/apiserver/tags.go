@@ -3,9 +3,12 @@ package apiserver
 import (
 	"context"
 
+	"google.golang.org/grpc/status"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
+	scerrors "github.com/aphistic/softcopy/internal/pkg/errors"
 	"github.com/aphistic/softcopy/internal/pkg/storage/records"
 	scproto "github.com/aphistic/softcopy/pkg/proto"
 )
@@ -50,5 +53,45 @@ tagLoop:
 
 	return &scproto.GetAllTagsResponse{
 		Tags: tags,
+	}, nil
+}
+
+func (as *apiServer) FindTagByName(
+	ctx context.Context,
+	req *scproto.FindTagByNameRequest,
+) (*scproto.FindTagByNameResponse, error) {
+	tag, err := as.api.FindTagByName(req.GetName())
+	if err == scerrors.ErrNotFound {
+		return nil, status.Error(codes.NotFound, "tag not found")
+	} else if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &scproto.FindTagByNameResponse{
+		Tag: &scproto.Tag{
+			Id:     int64(tag.ID),
+			Name:   tag.Name,
+			System: tag.System,
+		},
+	}, nil
+}
+
+func (as *apiServer) CreateTag(
+	ctx context.Context,
+	req *scproto.CreateTagRequest,
+) (*scproto.CreateTagResponse, error) {
+	tag, err := as.api.CreateTag(req.GetName())
+	if err == scerrors.ErrExists {
+		return nil, status.Error(codes.AlreadyExists, "tag exists")
+	} else if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &scproto.CreateTagResponse{
+		Tag: &scproto.Tag{
+			Id:     int64(tag.ID),
+			Name:   tag.Name,
+			System: tag.System,
+		},
 	}, nil
 }

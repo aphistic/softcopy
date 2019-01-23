@@ -18,7 +18,7 @@ CREATE UNIQUE INDEX ix_file_metadata_hash ON file_metadata(hash);
 CREATE TABLE tags (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
-    system INTEGER
+    system INTEGER NOT NULL DEFAULT 0
 );
 CREATE UNIQUE INDEX ix_tags_name ON tags(name);
 INSERT INTO tags (name, system) VALUES ('unfiled', 1);

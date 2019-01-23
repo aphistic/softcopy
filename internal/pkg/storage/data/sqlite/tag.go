@@ -8,6 +8,7 @@ import (
 
 	"github.com/google/uuid"
 
+	scerrors "github.com/aphistic/softcopy/internal/pkg/errors"
 	"github.com/aphistic/softcopy/internal/pkg/storage/records"
 )
 
@@ -140,4 +141,68 @@ func (c *Client) GetTagsForFile(id uuid.UUID) (records.TagIterator, error) {
 	}
 
 	return newSqliteTagIterator(rows), nil
+}
+
+func (c *Client) FindTagByName(name string) (*records.Tag, error) {
+	query := `
+		SELECT id, name, system FROM tags t
+		WHERE name = ?;
+	`
+
+	rows, err := c.db.Query(query, name)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	if !rows.Next() {
+		return nil, scerrors.ErrNotFound
+	}
+
+	foundTag := &records.Tag{}
+	err = rows.Scan(&foundTag.ID, &foundTag.Name, &foundTag.System)
+	if err != nil {
+		return nil, err
+	}
+
+	return foundTag, nil
+}
+
+func (c *Client) CreateTag(name string) (int64, error) {
+	tx, err := c.db.Begin()
+	if err != nil {
+		return 0, err
+	}
+
+	rows, err := tx.Query("SELECT id FROM tags WHERE name = ?", name)
+	if err != nil {
+		tx.Rollback()
+		return 0, err
+	}
+
+	if rows.Next() {
+		rows.Close()
+		tx.Rollback()
+		return 0, scerrors.ErrExists
+	}
+	rows.Close()
+
+	res, err := tx.Exec("INSERT INTO tags(name) VALUES (?);", name)
+	if err != nil {
+		tx.Rollback()
+		return 0, err
+	}
+
+	id, err := res.LastInsertId()
+	if err != nil {
+		tx.Rollback()
+		return 0, err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
 }

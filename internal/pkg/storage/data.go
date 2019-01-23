@@ -34,8 +34,10 @@ type Data interface {
 	UpdateFileHash(uuid.UUID, string) error
 
 	AllTags() (records.TagIterator, error)
-	GetTags(names []string) ([]*records.Tag, error)
-	GetTagsForFile(id uuid.UUID) (records.TagIterator, error)
+	GetTags([]string) ([]*records.Tag, error)
+	GetTagsForFile(uuid.UUID) (records.TagIterator, error)
+	FindTagByName(string) (*records.Tag, error)
+	CreateTag(string) (int64, error)
 
 	FindMetadataByHash(hash string) (*records.FileMetadata, error)
 	CreateMetadataWithID(string, uint64, uuid.UUID) error

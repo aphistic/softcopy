@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"os"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	"bazil.org/fuse"
 	fusefs "bazil.org/fuse/fs"
 	"github.com/golang/protobuf/ptypes"
@@ -18,6 +21,8 @@ type fsByTagDir struct {
 	fs *FileSystem
 }
 
+var _ fusefs.NodeMkdirer = &fsByTagDir{}
+
 func newFSByTagDir(fs *FileSystem) *fsByTagDir {
 	return &fsByTagDir{
 		fs: fs,
@@ -30,8 +35,34 @@ func (btd *fsByTagDir) Attr(ctx context.Context, attr *fuse.Attr) error {
 }
 
 func (btd *fsByTagDir) Lookup(ctx context.Context, name string) (fusefs.Node, error) {
+	_, err := btd.fs.client.FindTagByName(ctx, &scproto.FindTagByNameRequest{
+		Name: name,
+	})
+	if status.Code(err) == codes.NotFound {
+		return nil, fuse.ENOENT
+	} else if err != nil {
+		btd.fs.logger.Error("error finding tag by name: %s", err)
+		return nil, err
+	}
+
 	return &TagDir{
 		tag: name,
+		fs:  btd.fs,
+	}, nil
+}
+
+func (btd *fsByTagDir) Mkdir(ctx context.Context, req *fuse.MkdirRequest) (fusefs.Node, error) {
+	_, err := btd.fs.client.CreateTag(ctx, &scproto.CreateTagRequest{
+		Name: req.Name,
+	})
+	if status.Code(err) == codes.AlreadyExists {
+		return nil, fuse.EEXIST
+	} else if err != nil {
+		return nil, err
+	}
+
+	return &TagDir{
+		tag: req.Name,
 		fs:  btd.fs,
 	}, nil
 }

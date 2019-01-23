@@ -27,3 +27,19 @@ func (c *Client) GetTagsForFile(id string) (records.TagIterator, error) {
 
 	return c.dataStorage.GetTagsForFile(fileID)
 }
+
+func (c *Client) FindTagByName(name string) (*records.Tag, error) {
+	return c.dataStorage.FindTagByName(name)
+}
+
+func (c *Client) CreateTag(name string) (*records.Tag, error) {
+	id, err := c.dataStorage.CreateTag(name)
+	if err != nil {
+		return nil, err
+	}
+
+	return &records.Tag{
+		ID:   int(id),
+		Name: name,
+	}, nil
+}

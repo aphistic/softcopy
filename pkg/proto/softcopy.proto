@@ -113,6 +113,20 @@ message GetAllTagsResponse {
     repeated Tag tags = 1;
 }
 
+message FindTagByNameRequest {
+    string name = 1;
+}
+message FindTagByNameResponse {
+    Tag tag = 1;
+}
+
+message CreateTagRequest {
+    string name = 1;
+}
+message CreateTagResponse {
+    Tag tag = 1;
+}
+
 message GetFileWithDateRequest {
     string filename                         = 1;
     google.protobuf.Timestamp document_date = 2;
@@ -160,6 +174,8 @@ service Softcopy {
     rpc CloseFile(CloseFileRequest) returns (CloseFileResponse) {}
 
     rpc GetAllTags(GetAllTagsRequest) returns (GetAllTagsResponse) {}
+    rpc CreateTag(CreateTagRequest) returns (CreateTagResponse) {}
+    rpc FindTagByName(FindTagByNameRequest) returns (FindTagByNameResponse) {}
 
     rpc FindFilesWithDate(FindFilesWithDateRequest) returns (FindFilesWithDateResponse) {}
     rpc FindFilesWithIdPrefix(FindFilesWithIdPrefixRequest) returns (FindFilesWithIdPrefixResponse) {}
