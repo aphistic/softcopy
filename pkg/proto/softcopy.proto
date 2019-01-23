@@ -4,65 +4,178 @@ package scproto;
 
 import "google/protobuf/timestamp.proto";
 
+enum FileMode {
+    UNKNOWN     = 0;
+    READ        = 1;
+    WRITE       = 2;
+}
+
 message File {
-        string id                               = 1;
-        string hash                             = 2;
-        string filename                         = 3;
-        google.protobuf.Timestamp document_date = 4;
-        int64 size                              = 5;
+    string id                               = 1;
+    string hash                             = 2;
+    string filename                         = 3;
+    google.protobuf.Timestamp document_date = 4;
+    uint64 size                             = 5;
 }
 
 message TaggedFile {
-        File file         = 1;
-        repeated Tag tags = 2;
+    File file         = 1;
+    repeated Tag tags = 2;
 }
 
-
 message Tag {
-        int64 id        = 1;
-        string name     = 2;
-        string category = 3;
-        bool system     = 4;
+    int64 id        = 1;
+    string name     = 2;
+    string category = 3;
+    bool system     = 4;
+}
+
+message GetFileYearsRequest {}
+message GetFileYearsResponse {
+    repeated int32 years = 1;
+}
+
+message GetFileMonthsRequest {
+    int32 year = 1;
+}
+message GetFileMonthsResponse {
+    repeated int32 months = 1;
+}
+
+message GetFileDaysRequest {
+    int32 year = 1;
+    int32 month = 2;
+}
+message GetFileDaysResponse {
+    repeated int32 days = 1;
+}
+
+message CreateFileRequest {
+    string filename                         = 1;
+    google.protobuf.Timestamp document_date = 2;
+}
+
+message CreateFileResponse {
+    string id = 1;
 }
 
 message GetFileRequest {
-        string id = 1;
+    string id = 1;
 }
 message GetFileResponse {
-        TaggedFile file = 1;
+    TaggedFile file = 1;
+}
+
+message ReadFileRequest {
+    string handle_id    = 1;
+    uint64 offset       = 2;
+    uint64 size         = 3;
+}
+message ReadFileResponse {
+    bytes data = 1;
+}
+
+message RemoveFileRequest {
+    string id = 1;
+}
+message RemoveFileResponse { }
+
+message OpenFileRequest {
+    string id       = 1;
+    FileMode mode   = 2;
+}
+message OpenFileResponse {
+    string handle_id = 1;
+}
+
+message WriteFileRequest {
+    string handle_id    = 1;
+    bytes data          = 2;
+}
+message WriteFileResponse {
+    uint64 amount_written = 1;
+}
+
+message FlushFileRequest {
+    string handle_id = 1;
+}
+message FlushFileResponse { }
+
+message CloseFileRequest {
+    string handle_id = 1;
+}
+message CloseFileResponse {
+    string hash     = 2;
+}
+
+message GetAllTagsRequest { }
+message GetAllTagsResponse {
+    repeated Tag tags = 1;
+}
+
+message GetFileWithDateRequest {
+    string filename                         = 1;
+    google.protobuf.Timestamp document_date = 2;
+}
+
+message GetFileWithDateResponse {
+    File file = 1;
+}
+
+message FindFilesWithDateRequest {
+    google.protobuf.Timestamp document_date = 1;
+}
+message FindFilesWithDateResponse {
+    repeated File files = 1;
 }
 
 message FindFilesWithTagsRequest {
-        repeated string tag_names = 1;
+    repeated string tag_names = 1;
 }
 message FindFilesWithTagsResponse {
-        repeated File files = 1;
+    repeated File files = 1;
 }
 
 message FindFilesWithIdPrefixRequest {
-        string id_prefix = 1;
+    string id_prefix = 1;
 }
 message FindFilesWithIdPrefixResponse {
-        repeated File files = 1;
+    repeated File files = 1;
 }
 
 service Softcopy {
-        rpc GetFile(GetFileRequest) returns (GetFileResponse) {}
+    rpc GetFileYears(GetFileYearsRequest) returns (GetFileYearsResponse) {}
+    rpc GetFileMonths(GetFileMonthsRequest) returns (GetFileMonthsResponse) {}
+    rpc GetFileDays(GetFileDaysRequest) returns (GetFileDaysResponse) {}
 
-        rpc FindFilesWithIdPrefix(FindFilesWithIdPrefixRequest) returns (FindFilesWithIdPrefixResponse) {}
-        rpc FindFilesWithTags(FindFilesWithTagsRequest) returns (FindFilesWithTagsResponse) {}
+    rpc GetFileWithDate(GetFileWithDateRequest) returns (GetFileWithDateResponse) {}
+    rpc CreateFile(CreateFileRequest) returns (CreateFileResponse) {}
+    rpc GetFile(GetFileRequest) returns (GetFileResponse) {}
+    rpc ReadFile(ReadFileRequest) returns (ReadFileResponse) {}
+    rpc RemoveFile(RemoveFileRequest) returns (RemoveFileResponse) {}
+
+    rpc OpenFile(OpenFileRequest) returns (OpenFileResponse) {}
+    rpc WriteFile(WriteFileRequest) returns (WriteFileResponse) {}
+    rpc FlushFile(FlushFileRequest) returns (FlushFileResponse) {}
+    rpc CloseFile(CloseFileRequest) returns (CloseFileResponse) {}
+
+    rpc GetAllTags(GetAllTagsRequest) returns (GetAllTagsResponse) {}
+
+    rpc FindFilesWithDate(FindFilesWithDateRequest) returns (FindFilesWithDateResponse) {}
+    rpc FindFilesWithIdPrefix(FindFilesWithIdPrefixRequest) returns (FindFilesWithIdPrefixResponse) {}
+    rpc FindFilesWithTags(FindFilesWithTagsRequest) returns (FindFilesWithTagsResponse) {}
 }
 
 message AllFileRequest {}
 
 message DownloadFileRequest {
-        string id = 1;
+    string id = 1;
 }
 message DownloadFileResponse {
-        bytes data = 1;
+    bytes data = 1;
 }
 
 service SoftcopyAdmin {
-        rpc AllFiles(AllFileRequest) returns (stream TaggedFile) {}
-        rpc DownloadFile(DownloadFileRequest) returns (stream DownloadFileResponse) {}
+    rpc AllFiles(AllFileRequest) returns (stream TaggedFile) {}
+    rpc DownloadFile(DownloadFileRequest) returns (stream DownloadFileResponse) {}
 }

@@ -3,12 +3,12 @@ package apiserver
 import (
 	"io"
 
+	"github.com/efritz/nacelle"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
-	"github.com/efritz/nacelle"
-
 	"github.com/aphistic/softcopy/internal/pkg/api"
+	"github.com/aphistic/softcopy/internal/pkg/protoutil"
 	scproto "github.com/aphistic/softcopy/pkg/proto"
 )
 
@@ -41,7 +41,7 @@ func (as *adminServer) AllFiles(
 				continue
 			}
 
-			resFile, err := fileToGrpc(item.File)
+			resFile, err := protoutil.FileToProto(item.File)
 			if err != nil {
 				as.logger.Error("Error getting grpc version of file: %s", err)
 				continue

@@ -6,7 +6,8 @@ import (
 	"github.com/efritz/nacelle"
 
 	"github.com/aphistic/softcopy/internal/pkg/storage"
-	"github.com/aphistic/softcopy/internal/pkg/storage/sqlite"
+	dataSqlite "github.com/aphistic/softcopy/internal/pkg/storage/data/sqlite"
+	fileLocal "github.com/aphistic/softcopy/internal/pkg/storage/file/local"
 )
 
 type Initializer struct {
@@ -24,12 +25,15 @@ func (i *Initializer) Init(config nacelle.Config) error {
 		return err
 	}
 
-	fs, err := storage.NewFileLocal(cfg.StorageRoot)
+	fs, err := fileLocal.NewFileLocal(
+		cfg.StorageRoot,
+		fileLocal.WithLogger(i.Logger),
+	)
 	if err != nil {
 		return err
 	}
 
-	ds, err := sqlite.NewClient(path.Join(cfg.StorageRoot, "softcopy.db"))
+	ds, err := dataSqlite.NewClient(path.Join(cfg.StorageRoot, "softcopy.db"))
 	if err != nil {
 		return err
 	}
@@ -41,6 +45,11 @@ func (i *Initializer) Init(config nacelle.Config) error {
 	err = i.Container.Set("api", &Client{
 		cfg:    cfg,
 		logger: i.Logger,
+
+		openManager: newOpenFileManager(
+			fs, ds,
+			withLogger(i.Logger),
+		),
 
 		fileStorage: fs,
 		dataStorage: ds,
@@ -55,6 +64,8 @@ func (i *Initializer) Init(config nacelle.Config) error {
 type Client struct {
 	cfg    *Config
 	logger nacelle.Logger
+
+	openManager *openFileManager
 
 	fileStorage storage.File
 	dataStorage storage.Data

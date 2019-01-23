@@ -8,7 +8,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/aphistic/softcopy/internal/pkg/consts"
+	scerrors "github.com/aphistic/softcopy/internal/pkg/errors"
 	"github.com/aphistic/softcopy/internal/pkg/storage/records"
 )
 
@@ -33,21 +33,20 @@ func (c *Client) AddFile(name string, data io.Reader) error {
 		return ErrHashCollision
 	}
 
-	err = c.dataStorage.CreateFileWithTags(
-		&records.File{
-			ID:           fileID,
-			Hash:         sha,
-			Filename:     name,
-			DocumentDate: time.Now(),
-			Size:         size,
-		},
-		[]string{consts.TagUnfiled},
-	)
+	err = c.dataStorage.CreateFileWithID(name, time.Now(), fileID)
 	if err != nil {
 		return err
 	}
 
-	return nil
+	file, err := c.dataStorage.GetFile(fileID)
+	if err != nil {
+		return err
+	}
+
+	file.Hash = sha
+	file.Size = size
+
+	return c.dataStorage.UpdateFile(file)
 }
 
 func (c *Client) AllFiles() (records.FileIterator, error) {
@@ -57,6 +56,29 @@ func (c *Client) AllFiles() (records.FileIterator, error) {
 	}
 
 	return files, nil
+}
+
+func (c *Client) GetFileYears() ([]int, error) {
+	return c.dataStorage.GetFileYears()
+}
+
+func (c *Client) GetFileMonths(year int) ([]int, error) {
+	return c.dataStorage.GetFileMonths(year)
+}
+
+func (c *Client) GetFileDays(year int, month int) ([]int, error) {
+	return c.dataStorage.GetFileDays(year, month)
+}
+
+func (c *Client) CreateFile(filename string, documentDate time.Time) (uuid.UUID, error) {
+	file, err := c.dataStorage.GetFileWithDate(filename, documentDate)
+	if err != nil && err != scerrors.ErrNotFound {
+		return uuid.Nil, err
+	} else if file != nil {
+		return uuid.Nil, scerrors.ErrExists
+	}
+
+	return c.dataStorage.CreateFile(filename, documentDate)
 }
 
 func (c *Client) GetFile(id string) (*records.File, error) {
@@ -74,15 +96,49 @@ func (c *Client) GetFile(id string) (*records.File, error) {
 }
 
 func (c *Client) ReadFile(id string) (io.ReadCloser, error) {
+	return c.ReadFileFromOffset(id, 0)
+}
+
+func (c *Client) ReadFileFromOffset(id string, offset uint64) (io.ReadCloser, error) {
 	fileID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, fmt.Errorf("invalid file id")
 	}
 
-	fileDir := fileID.String()[0:4]
-	filePath := path.Join(fileDir, fileID.String()+".dat")
+	f, err := c.dataStorage.GetFile(fileID)
+	if err != nil {
+		return nil, err
+	}
 
-	return c.fileStorage.ReadFile(filePath)
+	md, err := c.dataStorage.FindMetadataByHash(f.Hash)
+	if err != nil {
+		return nil, err
+	}
+
+	filePath := path.Join(
+		md.ID.String()[0:1],
+		md.ID.String()[1:2],
+		md.ID.String()+".dat",
+	)
+
+	return c.fileStorage.ReadFileFromOffset(filePath, offset)
+}
+
+func (c *Client) RemoveFile(id string) error {
+	fileID, err := uuid.Parse(id)
+	if err != nil {
+		return fmt.Errorf("invalid file id")
+	}
+
+	return c.dataStorage.RemoveFile(fileID)
+}
+
+func (c *Client) GetFileWithDate(filename string, date time.Time) (*records.File, error) {
+	return c.dataStorage.GetFileWithDate(filename, date)
+}
+
+func (c *Client) FindFilesWithDate(documentDate time.Time) ([]*records.File, error) {
+	return c.dataStorage.FindFilesWithDate(documentDate)
 }
 
 func (c *Client) FindFilesWithTags(tagNames []string) ([]*records.File, error) {

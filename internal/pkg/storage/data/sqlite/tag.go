@@ -80,6 +80,17 @@ func (sti *sqliteTagIterator) Close() error {
 	return nil
 }
 
+func (c *Client) AllTags() (records.TagIterator, error) {
+	query := "SELECT id, name, system FROM tags t"
+
+	rows, err := c.db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+
+	return newSqliteTagIterator(rows), nil
+}
+
 func (c *Client) GetTags(names []string) ([]*records.Tag, error) {
 	if len(names) == 0 {
 		return []*records.Tag{}, nil

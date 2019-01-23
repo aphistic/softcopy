@@ -24,12 +24,38 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
+type FileMode int32
+
+const (
+	FileMode_UNKNOWN FileMode = 0
+	FileMode_READ    FileMode = 1
+	FileMode_WRITE   FileMode = 2
+)
+
+var FileMode_name = map[int32]string{
+	0: "UNKNOWN",
+	1: "READ",
+	2: "WRITE",
+}
+var FileMode_value = map[string]int32{
+	"UNKNOWN": 0,
+	"READ":    1,
+	"WRITE":   2,
+}
+
+func (x FileMode) String() string {
+	return proto.EnumName(FileMode_name, int32(x))
+}
+func (FileMode) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{0}
+}
+
 type File struct {
 	Id                   string               `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Hash                 string               `protobuf:"bytes,2,opt,name=hash,proto3" json:"hash,omitempty"`
 	Filename             string               `protobuf:"bytes,3,opt,name=filename,proto3" json:"filename,omitempty"`
 	DocumentDate         *timestamp.Timestamp `protobuf:"bytes,4,opt,name=document_date,json=documentDate,proto3" json:"document_date,omitempty"`
-	Size                 int64                `protobuf:"varint,5,opt,name=size,proto3" json:"size,omitempty"`
+	Size                 uint64               `protobuf:"varint,5,opt,name=size,proto3" json:"size,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -39,7 +65,7 @@ func (m *File) Reset()         { *m = File{} }
 func (m *File) String() string { return proto.CompactTextString(m) }
 func (*File) ProtoMessage()    {}
 func (*File) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_e007884a9e150063, []int{0}
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{0}
 }
 func (m *File) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_File.Unmarshal(m, b)
@@ -87,7 +113,7 @@ func (m *File) GetDocumentDate() *timestamp.Timestamp {
 	return nil
 }
 
-func (m *File) GetSize() int64 {
+func (m *File) GetSize() uint64 {
 	if m != nil {
 		return m.Size
 	}
@@ -106,7 +132,7 @@ func (m *TaggedFile) Reset()         { *m = TaggedFile{} }
 func (m *TaggedFile) String() string { return proto.CompactTextString(m) }
 func (*TaggedFile) ProtoMessage()    {}
 func (*TaggedFile) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_e007884a9e150063, []int{1}
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{1}
 }
 func (m *TaggedFile) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TaggedFile.Unmarshal(m, b)
@@ -154,7 +180,7 @@ func (m *Tag) Reset()         { *m = Tag{} }
 func (m *Tag) String() string { return proto.CompactTextString(m) }
 func (*Tag) ProtoMessage()    {}
 func (*Tag) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_e007884a9e150063, []int{2}
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{2}
 }
 func (m *Tag) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Tag.Unmarshal(m, b)
@@ -202,6 +228,318 @@ func (m *Tag) GetSystem() bool {
 	return false
 }
 
+type GetFileYearsRequest struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetFileYearsRequest) Reset()         { *m = GetFileYearsRequest{} }
+func (m *GetFileYearsRequest) String() string { return proto.CompactTextString(m) }
+func (*GetFileYearsRequest) ProtoMessage()    {}
+func (*GetFileYearsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{3}
+}
+func (m *GetFileYearsRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetFileYearsRequest.Unmarshal(m, b)
+}
+func (m *GetFileYearsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetFileYearsRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetFileYearsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetFileYearsRequest.Merge(dst, src)
+}
+func (m *GetFileYearsRequest) XXX_Size() int {
+	return xxx_messageInfo_GetFileYearsRequest.Size(m)
+}
+func (m *GetFileYearsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetFileYearsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetFileYearsRequest proto.InternalMessageInfo
+
+type GetFileYearsResponse struct {
+	Years                []int32  `protobuf:"varint,1,rep,packed,name=years,proto3" json:"years,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetFileYearsResponse) Reset()         { *m = GetFileYearsResponse{} }
+func (m *GetFileYearsResponse) String() string { return proto.CompactTextString(m) }
+func (*GetFileYearsResponse) ProtoMessage()    {}
+func (*GetFileYearsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{4}
+}
+func (m *GetFileYearsResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetFileYearsResponse.Unmarshal(m, b)
+}
+func (m *GetFileYearsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetFileYearsResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetFileYearsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetFileYearsResponse.Merge(dst, src)
+}
+func (m *GetFileYearsResponse) XXX_Size() int {
+	return xxx_messageInfo_GetFileYearsResponse.Size(m)
+}
+func (m *GetFileYearsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetFileYearsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetFileYearsResponse proto.InternalMessageInfo
+
+func (m *GetFileYearsResponse) GetYears() []int32 {
+	if m != nil {
+		return m.Years
+	}
+	return nil
+}
+
+type GetFileMonthsRequest struct {
+	Year                 int32    `protobuf:"varint,1,opt,name=year,proto3" json:"year,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetFileMonthsRequest) Reset()         { *m = GetFileMonthsRequest{} }
+func (m *GetFileMonthsRequest) String() string { return proto.CompactTextString(m) }
+func (*GetFileMonthsRequest) ProtoMessage()    {}
+func (*GetFileMonthsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{5}
+}
+func (m *GetFileMonthsRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetFileMonthsRequest.Unmarshal(m, b)
+}
+func (m *GetFileMonthsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetFileMonthsRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetFileMonthsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetFileMonthsRequest.Merge(dst, src)
+}
+func (m *GetFileMonthsRequest) XXX_Size() int {
+	return xxx_messageInfo_GetFileMonthsRequest.Size(m)
+}
+func (m *GetFileMonthsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetFileMonthsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetFileMonthsRequest proto.InternalMessageInfo
+
+func (m *GetFileMonthsRequest) GetYear() int32 {
+	if m != nil {
+		return m.Year
+	}
+	return 0
+}
+
+type GetFileMonthsResponse struct {
+	Months               []int32  `protobuf:"varint,1,rep,packed,name=months,proto3" json:"months,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetFileMonthsResponse) Reset()         { *m = GetFileMonthsResponse{} }
+func (m *GetFileMonthsResponse) String() string { return proto.CompactTextString(m) }
+func (*GetFileMonthsResponse) ProtoMessage()    {}
+func (*GetFileMonthsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{6}
+}
+func (m *GetFileMonthsResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetFileMonthsResponse.Unmarshal(m, b)
+}
+func (m *GetFileMonthsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetFileMonthsResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetFileMonthsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetFileMonthsResponse.Merge(dst, src)
+}
+func (m *GetFileMonthsResponse) XXX_Size() int {
+	return xxx_messageInfo_GetFileMonthsResponse.Size(m)
+}
+func (m *GetFileMonthsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetFileMonthsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetFileMonthsResponse proto.InternalMessageInfo
+
+func (m *GetFileMonthsResponse) GetMonths() []int32 {
+	if m != nil {
+		return m.Months
+	}
+	return nil
+}
+
+type GetFileDaysRequest struct {
+	Year                 int32    `protobuf:"varint,1,opt,name=year,proto3" json:"year,omitempty"`
+	Month                int32    `protobuf:"varint,2,opt,name=month,proto3" json:"month,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetFileDaysRequest) Reset()         { *m = GetFileDaysRequest{} }
+func (m *GetFileDaysRequest) String() string { return proto.CompactTextString(m) }
+func (*GetFileDaysRequest) ProtoMessage()    {}
+func (*GetFileDaysRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{7}
+}
+func (m *GetFileDaysRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetFileDaysRequest.Unmarshal(m, b)
+}
+func (m *GetFileDaysRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetFileDaysRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetFileDaysRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetFileDaysRequest.Merge(dst, src)
+}
+func (m *GetFileDaysRequest) XXX_Size() int {
+	return xxx_messageInfo_GetFileDaysRequest.Size(m)
+}
+func (m *GetFileDaysRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetFileDaysRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetFileDaysRequest proto.InternalMessageInfo
+
+func (m *GetFileDaysRequest) GetYear() int32 {
+	if m != nil {
+		return m.Year
+	}
+	return 0
+}
+
+func (m *GetFileDaysRequest) GetMonth() int32 {
+	if m != nil {
+		return m.Month
+	}
+	return 0
+}
+
+type GetFileDaysResponse struct {
+	Days                 []int32  `protobuf:"varint,1,rep,packed,name=days,proto3" json:"days,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetFileDaysResponse) Reset()         { *m = GetFileDaysResponse{} }
+func (m *GetFileDaysResponse) String() string { return proto.CompactTextString(m) }
+func (*GetFileDaysResponse) ProtoMessage()    {}
+func (*GetFileDaysResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{8}
+}
+func (m *GetFileDaysResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetFileDaysResponse.Unmarshal(m, b)
+}
+func (m *GetFileDaysResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetFileDaysResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetFileDaysResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetFileDaysResponse.Merge(dst, src)
+}
+func (m *GetFileDaysResponse) XXX_Size() int {
+	return xxx_messageInfo_GetFileDaysResponse.Size(m)
+}
+func (m *GetFileDaysResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetFileDaysResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetFileDaysResponse proto.InternalMessageInfo
+
+func (m *GetFileDaysResponse) GetDays() []int32 {
+	if m != nil {
+		return m.Days
+	}
+	return nil
+}
+
+type CreateFileRequest struct {
+	Filename             string               `protobuf:"bytes,1,opt,name=filename,proto3" json:"filename,omitempty"`
+	DocumentDate         *timestamp.Timestamp `protobuf:"bytes,2,opt,name=document_date,json=documentDate,proto3" json:"document_date,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
+}
+
+func (m *CreateFileRequest) Reset()         { *m = CreateFileRequest{} }
+func (m *CreateFileRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateFileRequest) ProtoMessage()    {}
+func (*CreateFileRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{9}
+}
+func (m *CreateFileRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateFileRequest.Unmarshal(m, b)
+}
+func (m *CreateFileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateFileRequest.Marshal(b, m, deterministic)
+}
+func (dst *CreateFileRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateFileRequest.Merge(dst, src)
+}
+func (m *CreateFileRequest) XXX_Size() int {
+	return xxx_messageInfo_CreateFileRequest.Size(m)
+}
+func (m *CreateFileRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateFileRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateFileRequest proto.InternalMessageInfo
+
+func (m *CreateFileRequest) GetFilename() string {
+	if m != nil {
+		return m.Filename
+	}
+	return ""
+}
+
+func (m *CreateFileRequest) GetDocumentDate() *timestamp.Timestamp {
+	if m != nil {
+		return m.DocumentDate
+	}
+	return nil
+}
+
+type CreateFileResponse struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CreateFileResponse) Reset()         { *m = CreateFileResponse{} }
+func (m *CreateFileResponse) String() string { return proto.CompactTextString(m) }
+func (*CreateFileResponse) ProtoMessage()    {}
+func (*CreateFileResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{10}
+}
+func (m *CreateFileResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateFileResponse.Unmarshal(m, b)
+}
+func (m *CreateFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateFileResponse.Marshal(b, m, deterministic)
+}
+func (dst *CreateFileResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateFileResponse.Merge(dst, src)
+}
+func (m *CreateFileResponse) XXX_Size() int {
+	return xxx_messageInfo_CreateFileResponse.Size(m)
+}
+func (m *CreateFileResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateFileResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateFileResponse proto.InternalMessageInfo
+
+func (m *CreateFileResponse) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
 type GetFileRequest struct {
 	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -213,7 +551,7 @@ func (m *GetFileRequest) Reset()         { *m = GetFileRequest{} }
 func (m *GetFileRequest) String() string { return proto.CompactTextString(m) }
 func (*GetFileRequest) ProtoMessage()    {}
 func (*GetFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_e007884a9e150063, []int{3}
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{11}
 }
 func (m *GetFileRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetFileRequest.Unmarshal(m, b)
@@ -251,7 +589,7 @@ func (m *GetFileResponse) Reset()         { *m = GetFileResponse{} }
 func (m *GetFileResponse) String() string { return proto.CompactTextString(m) }
 func (*GetFileResponse) ProtoMessage()    {}
 func (*GetFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_e007884a9e150063, []int{4}
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{12}
 }
 func (m *GetFileResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetFileResponse.Unmarshal(m, b)
@@ -278,6 +616,706 @@ func (m *GetFileResponse) GetFile() *TaggedFile {
 	return nil
 }
 
+type ReadFileRequest struct {
+	HandleId             string   `protobuf:"bytes,1,opt,name=handle_id,json=handleId,proto3" json:"handle_id,omitempty"`
+	Offset               uint64   `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
+	Size                 uint64   `protobuf:"varint,3,opt,name=size,proto3" json:"size,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ReadFileRequest) Reset()         { *m = ReadFileRequest{} }
+func (m *ReadFileRequest) String() string { return proto.CompactTextString(m) }
+func (*ReadFileRequest) ProtoMessage()    {}
+func (*ReadFileRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{13}
+}
+func (m *ReadFileRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReadFileRequest.Unmarshal(m, b)
+}
+func (m *ReadFileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReadFileRequest.Marshal(b, m, deterministic)
+}
+func (dst *ReadFileRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReadFileRequest.Merge(dst, src)
+}
+func (m *ReadFileRequest) XXX_Size() int {
+	return xxx_messageInfo_ReadFileRequest.Size(m)
+}
+func (m *ReadFileRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReadFileRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ReadFileRequest proto.InternalMessageInfo
+
+func (m *ReadFileRequest) GetHandleId() string {
+	if m != nil {
+		return m.HandleId
+	}
+	return ""
+}
+
+func (m *ReadFileRequest) GetOffset() uint64 {
+	if m != nil {
+		return m.Offset
+	}
+	return 0
+}
+
+func (m *ReadFileRequest) GetSize() uint64 {
+	if m != nil {
+		return m.Size
+	}
+	return 0
+}
+
+type ReadFileResponse struct {
+	Data                 []byte   `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ReadFileResponse) Reset()         { *m = ReadFileResponse{} }
+func (m *ReadFileResponse) String() string { return proto.CompactTextString(m) }
+func (*ReadFileResponse) ProtoMessage()    {}
+func (*ReadFileResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{14}
+}
+func (m *ReadFileResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReadFileResponse.Unmarshal(m, b)
+}
+func (m *ReadFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReadFileResponse.Marshal(b, m, deterministic)
+}
+func (dst *ReadFileResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReadFileResponse.Merge(dst, src)
+}
+func (m *ReadFileResponse) XXX_Size() int {
+	return xxx_messageInfo_ReadFileResponse.Size(m)
+}
+func (m *ReadFileResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReadFileResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ReadFileResponse proto.InternalMessageInfo
+
+func (m *ReadFileResponse) GetData() []byte {
+	if m != nil {
+		return m.Data
+	}
+	return nil
+}
+
+type RemoveFileRequest struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *RemoveFileRequest) Reset()         { *m = RemoveFileRequest{} }
+func (m *RemoveFileRequest) String() string { return proto.CompactTextString(m) }
+func (*RemoveFileRequest) ProtoMessage()    {}
+func (*RemoveFileRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{15}
+}
+func (m *RemoveFileRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RemoveFileRequest.Unmarshal(m, b)
+}
+func (m *RemoveFileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RemoveFileRequest.Marshal(b, m, deterministic)
+}
+func (dst *RemoveFileRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RemoveFileRequest.Merge(dst, src)
+}
+func (m *RemoveFileRequest) XXX_Size() int {
+	return xxx_messageInfo_RemoveFileRequest.Size(m)
+}
+func (m *RemoveFileRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_RemoveFileRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RemoveFileRequest proto.InternalMessageInfo
+
+func (m *RemoveFileRequest) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+type RemoveFileResponse struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *RemoveFileResponse) Reset()         { *m = RemoveFileResponse{} }
+func (m *RemoveFileResponse) String() string { return proto.CompactTextString(m) }
+func (*RemoveFileResponse) ProtoMessage()    {}
+func (*RemoveFileResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{16}
+}
+func (m *RemoveFileResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RemoveFileResponse.Unmarshal(m, b)
+}
+func (m *RemoveFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RemoveFileResponse.Marshal(b, m, deterministic)
+}
+func (dst *RemoveFileResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RemoveFileResponse.Merge(dst, src)
+}
+func (m *RemoveFileResponse) XXX_Size() int {
+	return xxx_messageInfo_RemoveFileResponse.Size(m)
+}
+func (m *RemoveFileResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_RemoveFileResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RemoveFileResponse proto.InternalMessageInfo
+
+type OpenFileRequest struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Mode                 FileMode `protobuf:"varint,2,opt,name=mode,proto3,enum=scproto.FileMode" json:"mode,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *OpenFileRequest) Reset()         { *m = OpenFileRequest{} }
+func (m *OpenFileRequest) String() string { return proto.CompactTextString(m) }
+func (*OpenFileRequest) ProtoMessage()    {}
+func (*OpenFileRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{17}
+}
+func (m *OpenFileRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_OpenFileRequest.Unmarshal(m, b)
+}
+func (m *OpenFileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_OpenFileRequest.Marshal(b, m, deterministic)
+}
+func (dst *OpenFileRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_OpenFileRequest.Merge(dst, src)
+}
+func (m *OpenFileRequest) XXX_Size() int {
+	return xxx_messageInfo_OpenFileRequest.Size(m)
+}
+func (m *OpenFileRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_OpenFileRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_OpenFileRequest proto.InternalMessageInfo
+
+func (m *OpenFileRequest) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *OpenFileRequest) GetMode() FileMode {
+	if m != nil {
+		return m.Mode
+	}
+	return FileMode_UNKNOWN
+}
+
+type OpenFileResponse struct {
+	HandleId             string   `protobuf:"bytes,1,opt,name=handle_id,json=handleId,proto3" json:"handle_id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *OpenFileResponse) Reset()         { *m = OpenFileResponse{} }
+func (m *OpenFileResponse) String() string { return proto.CompactTextString(m) }
+func (*OpenFileResponse) ProtoMessage()    {}
+func (*OpenFileResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{18}
+}
+func (m *OpenFileResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_OpenFileResponse.Unmarshal(m, b)
+}
+func (m *OpenFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_OpenFileResponse.Marshal(b, m, deterministic)
+}
+func (dst *OpenFileResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_OpenFileResponse.Merge(dst, src)
+}
+func (m *OpenFileResponse) XXX_Size() int {
+	return xxx_messageInfo_OpenFileResponse.Size(m)
+}
+func (m *OpenFileResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_OpenFileResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_OpenFileResponse proto.InternalMessageInfo
+
+func (m *OpenFileResponse) GetHandleId() string {
+	if m != nil {
+		return m.HandleId
+	}
+	return ""
+}
+
+type WriteFileRequest struct {
+	HandleId             string   `protobuf:"bytes,1,opt,name=handle_id,json=handleId,proto3" json:"handle_id,omitempty"`
+	Data                 []byte   `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *WriteFileRequest) Reset()         { *m = WriteFileRequest{} }
+func (m *WriteFileRequest) String() string { return proto.CompactTextString(m) }
+func (*WriteFileRequest) ProtoMessage()    {}
+func (*WriteFileRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{19}
+}
+func (m *WriteFileRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_WriteFileRequest.Unmarshal(m, b)
+}
+func (m *WriteFileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_WriteFileRequest.Marshal(b, m, deterministic)
+}
+func (dst *WriteFileRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_WriteFileRequest.Merge(dst, src)
+}
+func (m *WriteFileRequest) XXX_Size() int {
+	return xxx_messageInfo_WriteFileRequest.Size(m)
+}
+func (m *WriteFileRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_WriteFileRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_WriteFileRequest proto.InternalMessageInfo
+
+func (m *WriteFileRequest) GetHandleId() string {
+	if m != nil {
+		return m.HandleId
+	}
+	return ""
+}
+
+func (m *WriteFileRequest) GetData() []byte {
+	if m != nil {
+		return m.Data
+	}
+	return nil
+}
+
+type WriteFileResponse struct {
+	AmountWritten        uint64   `protobuf:"varint,1,opt,name=amount_written,json=amountWritten,proto3" json:"amount_written,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *WriteFileResponse) Reset()         { *m = WriteFileResponse{} }
+func (m *WriteFileResponse) String() string { return proto.CompactTextString(m) }
+func (*WriteFileResponse) ProtoMessage()    {}
+func (*WriteFileResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{20}
+}
+func (m *WriteFileResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_WriteFileResponse.Unmarshal(m, b)
+}
+func (m *WriteFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_WriteFileResponse.Marshal(b, m, deterministic)
+}
+func (dst *WriteFileResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_WriteFileResponse.Merge(dst, src)
+}
+func (m *WriteFileResponse) XXX_Size() int {
+	return xxx_messageInfo_WriteFileResponse.Size(m)
+}
+func (m *WriteFileResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_WriteFileResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_WriteFileResponse proto.InternalMessageInfo
+
+func (m *WriteFileResponse) GetAmountWritten() uint64 {
+	if m != nil {
+		return m.AmountWritten
+	}
+	return 0
+}
+
+type FlushFileRequest struct {
+	HandleId             string   `protobuf:"bytes,1,opt,name=handle_id,json=handleId,proto3" json:"handle_id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *FlushFileRequest) Reset()         { *m = FlushFileRequest{} }
+func (m *FlushFileRequest) String() string { return proto.CompactTextString(m) }
+func (*FlushFileRequest) ProtoMessage()    {}
+func (*FlushFileRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{21}
+}
+func (m *FlushFileRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_FlushFileRequest.Unmarshal(m, b)
+}
+func (m *FlushFileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_FlushFileRequest.Marshal(b, m, deterministic)
+}
+func (dst *FlushFileRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FlushFileRequest.Merge(dst, src)
+}
+func (m *FlushFileRequest) XXX_Size() int {
+	return xxx_messageInfo_FlushFileRequest.Size(m)
+}
+func (m *FlushFileRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_FlushFileRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FlushFileRequest proto.InternalMessageInfo
+
+func (m *FlushFileRequest) GetHandleId() string {
+	if m != nil {
+		return m.HandleId
+	}
+	return ""
+}
+
+type FlushFileResponse struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *FlushFileResponse) Reset()         { *m = FlushFileResponse{} }
+func (m *FlushFileResponse) String() string { return proto.CompactTextString(m) }
+func (*FlushFileResponse) ProtoMessage()    {}
+func (*FlushFileResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{22}
+}
+func (m *FlushFileResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_FlushFileResponse.Unmarshal(m, b)
+}
+func (m *FlushFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_FlushFileResponse.Marshal(b, m, deterministic)
+}
+func (dst *FlushFileResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FlushFileResponse.Merge(dst, src)
+}
+func (m *FlushFileResponse) XXX_Size() int {
+	return xxx_messageInfo_FlushFileResponse.Size(m)
+}
+func (m *FlushFileResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_FlushFileResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FlushFileResponse proto.InternalMessageInfo
+
+type CloseFileRequest struct {
+	HandleId             string   `protobuf:"bytes,1,opt,name=handle_id,json=handleId,proto3" json:"handle_id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CloseFileRequest) Reset()         { *m = CloseFileRequest{} }
+func (m *CloseFileRequest) String() string { return proto.CompactTextString(m) }
+func (*CloseFileRequest) ProtoMessage()    {}
+func (*CloseFileRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{23}
+}
+func (m *CloseFileRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CloseFileRequest.Unmarshal(m, b)
+}
+func (m *CloseFileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CloseFileRequest.Marshal(b, m, deterministic)
+}
+func (dst *CloseFileRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CloseFileRequest.Merge(dst, src)
+}
+func (m *CloseFileRequest) XXX_Size() int {
+	return xxx_messageInfo_CloseFileRequest.Size(m)
+}
+func (m *CloseFileRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CloseFileRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CloseFileRequest proto.InternalMessageInfo
+
+func (m *CloseFileRequest) GetHandleId() string {
+	if m != nil {
+		return m.HandleId
+	}
+	return ""
+}
+
+type CloseFileResponse struct {
+	Hash                 string   `protobuf:"bytes,2,opt,name=hash,proto3" json:"hash,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CloseFileResponse) Reset()         { *m = CloseFileResponse{} }
+func (m *CloseFileResponse) String() string { return proto.CompactTextString(m) }
+func (*CloseFileResponse) ProtoMessage()    {}
+func (*CloseFileResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{24}
+}
+func (m *CloseFileResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CloseFileResponse.Unmarshal(m, b)
+}
+func (m *CloseFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CloseFileResponse.Marshal(b, m, deterministic)
+}
+func (dst *CloseFileResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CloseFileResponse.Merge(dst, src)
+}
+func (m *CloseFileResponse) XXX_Size() int {
+	return xxx_messageInfo_CloseFileResponse.Size(m)
+}
+func (m *CloseFileResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CloseFileResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CloseFileResponse proto.InternalMessageInfo
+
+func (m *CloseFileResponse) GetHash() string {
+	if m != nil {
+		return m.Hash
+	}
+	return ""
+}
+
+type GetAllTagsRequest struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetAllTagsRequest) Reset()         { *m = GetAllTagsRequest{} }
+func (m *GetAllTagsRequest) String() string { return proto.CompactTextString(m) }
+func (*GetAllTagsRequest) ProtoMessage()    {}
+func (*GetAllTagsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{25}
+}
+func (m *GetAllTagsRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetAllTagsRequest.Unmarshal(m, b)
+}
+func (m *GetAllTagsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetAllTagsRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetAllTagsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetAllTagsRequest.Merge(dst, src)
+}
+func (m *GetAllTagsRequest) XXX_Size() int {
+	return xxx_messageInfo_GetAllTagsRequest.Size(m)
+}
+func (m *GetAllTagsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetAllTagsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetAllTagsRequest proto.InternalMessageInfo
+
+type GetAllTagsResponse struct {
+	Tags                 []*Tag   `protobuf:"bytes,1,rep,name=tags,proto3" json:"tags,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetAllTagsResponse) Reset()         { *m = GetAllTagsResponse{} }
+func (m *GetAllTagsResponse) String() string { return proto.CompactTextString(m) }
+func (*GetAllTagsResponse) ProtoMessage()    {}
+func (*GetAllTagsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{26}
+}
+func (m *GetAllTagsResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetAllTagsResponse.Unmarshal(m, b)
+}
+func (m *GetAllTagsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetAllTagsResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetAllTagsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetAllTagsResponse.Merge(dst, src)
+}
+func (m *GetAllTagsResponse) XXX_Size() int {
+	return xxx_messageInfo_GetAllTagsResponse.Size(m)
+}
+func (m *GetAllTagsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetAllTagsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetAllTagsResponse proto.InternalMessageInfo
+
+func (m *GetAllTagsResponse) GetTags() []*Tag {
+	if m != nil {
+		return m.Tags
+	}
+	return nil
+}
+
+type GetFileWithDateRequest struct {
+	Filename             string               `protobuf:"bytes,1,opt,name=filename,proto3" json:"filename,omitempty"`
+	DocumentDate         *timestamp.Timestamp `protobuf:"bytes,2,opt,name=document_date,json=documentDate,proto3" json:"document_date,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
+}
+
+func (m *GetFileWithDateRequest) Reset()         { *m = GetFileWithDateRequest{} }
+func (m *GetFileWithDateRequest) String() string { return proto.CompactTextString(m) }
+func (*GetFileWithDateRequest) ProtoMessage()    {}
+func (*GetFileWithDateRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{27}
+}
+func (m *GetFileWithDateRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetFileWithDateRequest.Unmarshal(m, b)
+}
+func (m *GetFileWithDateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetFileWithDateRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetFileWithDateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetFileWithDateRequest.Merge(dst, src)
+}
+func (m *GetFileWithDateRequest) XXX_Size() int {
+	return xxx_messageInfo_GetFileWithDateRequest.Size(m)
+}
+func (m *GetFileWithDateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetFileWithDateRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetFileWithDateRequest proto.InternalMessageInfo
+
+func (m *GetFileWithDateRequest) GetFilename() string {
+	if m != nil {
+		return m.Filename
+	}
+	return ""
+}
+
+func (m *GetFileWithDateRequest) GetDocumentDate() *timestamp.Timestamp {
+	if m != nil {
+		return m.DocumentDate
+	}
+	return nil
+}
+
+type GetFileWithDateResponse struct {
+	File                 *File    `protobuf:"bytes,1,opt,name=file,proto3" json:"file,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetFileWithDateResponse) Reset()         { *m = GetFileWithDateResponse{} }
+func (m *GetFileWithDateResponse) String() string { return proto.CompactTextString(m) }
+func (*GetFileWithDateResponse) ProtoMessage()    {}
+func (*GetFileWithDateResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{28}
+}
+func (m *GetFileWithDateResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetFileWithDateResponse.Unmarshal(m, b)
+}
+func (m *GetFileWithDateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetFileWithDateResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetFileWithDateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetFileWithDateResponse.Merge(dst, src)
+}
+func (m *GetFileWithDateResponse) XXX_Size() int {
+	return xxx_messageInfo_GetFileWithDateResponse.Size(m)
+}
+func (m *GetFileWithDateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetFileWithDateResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetFileWithDateResponse proto.InternalMessageInfo
+
+func (m *GetFileWithDateResponse) GetFile() *File {
+	if m != nil {
+		return m.File
+	}
+	return nil
+}
+
+type FindFilesWithDateRequest struct {
+	DocumentDate         *timestamp.Timestamp `protobuf:"bytes,1,opt,name=document_date,json=documentDate,proto3" json:"document_date,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
+}
+
+func (m *FindFilesWithDateRequest) Reset()         { *m = FindFilesWithDateRequest{} }
+func (m *FindFilesWithDateRequest) String() string { return proto.CompactTextString(m) }
+func (*FindFilesWithDateRequest) ProtoMessage()    {}
+func (*FindFilesWithDateRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{29}
+}
+func (m *FindFilesWithDateRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_FindFilesWithDateRequest.Unmarshal(m, b)
+}
+func (m *FindFilesWithDateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_FindFilesWithDateRequest.Marshal(b, m, deterministic)
+}
+func (dst *FindFilesWithDateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FindFilesWithDateRequest.Merge(dst, src)
+}
+func (m *FindFilesWithDateRequest) XXX_Size() int {
+	return xxx_messageInfo_FindFilesWithDateRequest.Size(m)
+}
+func (m *FindFilesWithDateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_FindFilesWithDateRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FindFilesWithDateRequest proto.InternalMessageInfo
+
+func (m *FindFilesWithDateRequest) GetDocumentDate() *timestamp.Timestamp {
+	if m != nil {
+		return m.DocumentDate
+	}
+	return nil
+}
+
+type FindFilesWithDateResponse struct {
+	Files                []*File  `protobuf:"bytes,1,rep,name=files,proto3" json:"files,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *FindFilesWithDateResponse) Reset()         { *m = FindFilesWithDateResponse{} }
+func (m *FindFilesWithDateResponse) String() string { return proto.CompactTextString(m) }
+func (*FindFilesWithDateResponse) ProtoMessage()    {}
+func (*FindFilesWithDateResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{30}
+}
+func (m *FindFilesWithDateResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_FindFilesWithDateResponse.Unmarshal(m, b)
+}
+func (m *FindFilesWithDateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_FindFilesWithDateResponse.Marshal(b, m, deterministic)
+}
+func (dst *FindFilesWithDateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FindFilesWithDateResponse.Merge(dst, src)
+}
+func (m *FindFilesWithDateResponse) XXX_Size() int {
+	return xxx_messageInfo_FindFilesWithDateResponse.Size(m)
+}
+func (m *FindFilesWithDateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_FindFilesWithDateResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FindFilesWithDateResponse proto.InternalMessageInfo
+
+func (m *FindFilesWithDateResponse) GetFiles() []*File {
+	if m != nil {
+		return m.Files
+	}
+	return nil
+}
+
 type FindFilesWithTagsRequest struct {
 	TagNames             []string `protobuf:"bytes,1,rep,name=tag_names,json=tagNames,proto3" json:"tag_names,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -289,7 +1327,7 @@ func (m *FindFilesWithTagsRequest) Reset()         { *m = FindFilesWithTagsReque
 func (m *FindFilesWithTagsRequest) String() string { return proto.CompactTextString(m) }
 func (*FindFilesWithTagsRequest) ProtoMessage()    {}
 func (*FindFilesWithTagsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_e007884a9e150063, []int{5}
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{31}
 }
 func (m *FindFilesWithTagsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_FindFilesWithTagsRequest.Unmarshal(m, b)
@@ -327,7 +1365,7 @@ func (m *FindFilesWithTagsResponse) Reset()         { *m = FindFilesWithTagsResp
 func (m *FindFilesWithTagsResponse) String() string { return proto.CompactTextString(m) }
 func (*FindFilesWithTagsResponse) ProtoMessage()    {}
 func (*FindFilesWithTagsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_e007884a9e150063, []int{6}
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{32}
 }
 func (m *FindFilesWithTagsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_FindFilesWithTagsResponse.Unmarshal(m, b)
@@ -365,7 +1403,7 @@ func (m *FindFilesWithIdPrefixRequest) Reset()         { *m = FindFilesWithIdPre
 func (m *FindFilesWithIdPrefixRequest) String() string { return proto.CompactTextString(m) }
 func (*FindFilesWithIdPrefixRequest) ProtoMessage()    {}
 func (*FindFilesWithIdPrefixRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_e007884a9e150063, []int{7}
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{33}
 }
 func (m *FindFilesWithIdPrefixRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_FindFilesWithIdPrefixRequest.Unmarshal(m, b)
@@ -403,7 +1441,7 @@ func (m *FindFilesWithIdPrefixResponse) Reset()         { *m = FindFilesWithIdPr
 func (m *FindFilesWithIdPrefixResponse) String() string { return proto.CompactTextString(m) }
 func (*FindFilesWithIdPrefixResponse) ProtoMessage()    {}
 func (*FindFilesWithIdPrefixResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_e007884a9e150063, []int{8}
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{34}
 }
 func (m *FindFilesWithIdPrefixResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_FindFilesWithIdPrefixResponse.Unmarshal(m, b)
@@ -440,7 +1478,7 @@ func (m *AllFileRequest) Reset()         { *m = AllFileRequest{} }
 func (m *AllFileRequest) String() string { return proto.CompactTextString(m) }
 func (*AllFileRequest) ProtoMessage()    {}
 func (*AllFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_e007884a9e150063, []int{9}
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{35}
 }
 func (m *AllFileRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AllFileRequest.Unmarshal(m, b)
@@ -471,7 +1509,7 @@ func (m *DownloadFileRequest) Reset()         { *m = DownloadFileRequest{} }
 func (m *DownloadFileRequest) String() string { return proto.CompactTextString(m) }
 func (*DownloadFileRequest) ProtoMessage()    {}
 func (*DownloadFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_e007884a9e150063, []int{10}
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{36}
 }
 func (m *DownloadFileRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DownloadFileRequest.Unmarshal(m, b)
@@ -509,7 +1547,7 @@ func (m *DownloadFileResponse) Reset()         { *m = DownloadFileResponse{} }
 func (m *DownloadFileResponse) String() string { return proto.CompactTextString(m) }
 func (*DownloadFileResponse) ProtoMessage()    {}
 func (*DownloadFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_softcopy_e007884a9e150063, []int{11}
+	return fileDescriptor_softcopy_733bdba8e8966819, []int{37}
 }
 func (m *DownloadFileResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DownloadFileResponse.Unmarshal(m, b)
@@ -540,8 +1578,34 @@ func init() {
 	proto.RegisterType((*File)(nil), "scproto.File")
 	proto.RegisterType((*TaggedFile)(nil), "scproto.TaggedFile")
 	proto.RegisterType((*Tag)(nil), "scproto.Tag")
+	proto.RegisterType((*GetFileYearsRequest)(nil), "scproto.GetFileYearsRequest")
+	proto.RegisterType((*GetFileYearsResponse)(nil), "scproto.GetFileYearsResponse")
+	proto.RegisterType((*GetFileMonthsRequest)(nil), "scproto.GetFileMonthsRequest")
+	proto.RegisterType((*GetFileMonthsResponse)(nil), "scproto.GetFileMonthsResponse")
+	proto.RegisterType((*GetFileDaysRequest)(nil), "scproto.GetFileDaysRequest")
+	proto.RegisterType((*GetFileDaysResponse)(nil), "scproto.GetFileDaysResponse")
+	proto.RegisterType((*CreateFileRequest)(nil), "scproto.CreateFileRequest")
+	proto.RegisterType((*CreateFileResponse)(nil), "scproto.CreateFileResponse")
 	proto.RegisterType((*GetFileRequest)(nil), "scproto.GetFileRequest")
 	proto.RegisterType((*GetFileResponse)(nil), "scproto.GetFileResponse")
+	proto.RegisterType((*ReadFileRequest)(nil), "scproto.ReadFileRequest")
+	proto.RegisterType((*ReadFileResponse)(nil), "scproto.ReadFileResponse")
+	proto.RegisterType((*RemoveFileRequest)(nil), "scproto.RemoveFileRequest")
+	proto.RegisterType((*RemoveFileResponse)(nil), "scproto.RemoveFileResponse")
+	proto.RegisterType((*OpenFileRequest)(nil), "scproto.OpenFileRequest")
+	proto.RegisterType((*OpenFileResponse)(nil), "scproto.OpenFileResponse")
+	proto.RegisterType((*WriteFileRequest)(nil), "scproto.WriteFileRequest")
+	proto.RegisterType((*WriteFileResponse)(nil), "scproto.WriteFileResponse")
+	proto.RegisterType((*FlushFileRequest)(nil), "scproto.FlushFileRequest")
+	proto.RegisterType((*FlushFileResponse)(nil), "scproto.FlushFileResponse")
+	proto.RegisterType((*CloseFileRequest)(nil), "scproto.CloseFileRequest")
+	proto.RegisterType((*CloseFileResponse)(nil), "scproto.CloseFileResponse")
+	proto.RegisterType((*GetAllTagsRequest)(nil), "scproto.GetAllTagsRequest")
+	proto.RegisterType((*GetAllTagsResponse)(nil), "scproto.GetAllTagsResponse")
+	proto.RegisterType((*GetFileWithDateRequest)(nil), "scproto.GetFileWithDateRequest")
+	proto.RegisterType((*GetFileWithDateResponse)(nil), "scproto.GetFileWithDateResponse")
+	proto.RegisterType((*FindFilesWithDateRequest)(nil), "scproto.FindFilesWithDateRequest")
+	proto.RegisterType((*FindFilesWithDateResponse)(nil), "scproto.FindFilesWithDateResponse")
 	proto.RegisterType((*FindFilesWithTagsRequest)(nil), "scproto.FindFilesWithTagsRequest")
 	proto.RegisterType((*FindFilesWithTagsResponse)(nil), "scproto.FindFilesWithTagsResponse")
 	proto.RegisterType((*FindFilesWithIdPrefixRequest)(nil), "scproto.FindFilesWithIdPrefixRequest")
@@ -549,6 +1613,7 @@ func init() {
 	proto.RegisterType((*AllFileRequest)(nil), "scproto.AllFileRequest")
 	proto.RegisterType((*DownloadFileRequest)(nil), "scproto.DownloadFileRequest")
 	proto.RegisterType((*DownloadFileResponse)(nil), "scproto.DownloadFileResponse")
+	proto.RegisterEnum("scproto.FileMode", FileMode_name, FileMode_value)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -563,7 +1628,20 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type SoftcopyClient interface {
+	GetFileYears(ctx context.Context, in *GetFileYearsRequest, opts ...grpc.CallOption) (*GetFileYearsResponse, error)
+	GetFileMonths(ctx context.Context, in *GetFileMonthsRequest, opts ...grpc.CallOption) (*GetFileMonthsResponse, error)
+	GetFileDays(ctx context.Context, in *GetFileDaysRequest, opts ...grpc.CallOption) (*GetFileDaysResponse, error)
+	GetFileWithDate(ctx context.Context, in *GetFileWithDateRequest, opts ...grpc.CallOption) (*GetFileWithDateResponse, error)
+	CreateFile(ctx context.Context, in *CreateFileRequest, opts ...grpc.CallOption) (*CreateFileResponse, error)
 	GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*GetFileResponse, error)
+	ReadFile(ctx context.Context, in *ReadFileRequest, opts ...grpc.CallOption) (*ReadFileResponse, error)
+	RemoveFile(ctx context.Context, in *RemoveFileRequest, opts ...grpc.CallOption) (*RemoveFileResponse, error)
+	OpenFile(ctx context.Context, in *OpenFileRequest, opts ...grpc.CallOption) (*OpenFileResponse, error)
+	WriteFile(ctx context.Context, in *WriteFileRequest, opts ...grpc.CallOption) (*WriteFileResponse, error)
+	FlushFile(ctx context.Context, in *FlushFileRequest, opts ...grpc.CallOption) (*FlushFileResponse, error)
+	CloseFile(ctx context.Context, in *CloseFileRequest, opts ...grpc.CallOption) (*CloseFileResponse, error)
+	GetAllTags(ctx context.Context, in *GetAllTagsRequest, opts ...grpc.CallOption) (*GetAllTagsResponse, error)
+	FindFilesWithDate(ctx context.Context, in *FindFilesWithDateRequest, opts ...grpc.CallOption) (*FindFilesWithDateResponse, error)
 	FindFilesWithIdPrefix(ctx context.Context, in *FindFilesWithIdPrefixRequest, opts ...grpc.CallOption) (*FindFilesWithIdPrefixResponse, error)
 	FindFilesWithTags(ctx context.Context, in *FindFilesWithTagsRequest, opts ...grpc.CallOption) (*FindFilesWithTagsResponse, error)
 }
@@ -576,9 +1654,126 @@ func NewSoftcopyClient(cc *grpc.ClientConn) SoftcopyClient {
 	return &softcopyClient{cc}
 }
 
+func (c *softcopyClient) GetFileYears(ctx context.Context, in *GetFileYearsRequest, opts ...grpc.CallOption) (*GetFileYearsResponse, error) {
+	out := new(GetFileYearsResponse)
+	err := c.cc.Invoke(ctx, "/scproto.Softcopy/GetFileYears", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *softcopyClient) GetFileMonths(ctx context.Context, in *GetFileMonthsRequest, opts ...grpc.CallOption) (*GetFileMonthsResponse, error) {
+	out := new(GetFileMonthsResponse)
+	err := c.cc.Invoke(ctx, "/scproto.Softcopy/GetFileMonths", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *softcopyClient) GetFileDays(ctx context.Context, in *GetFileDaysRequest, opts ...grpc.CallOption) (*GetFileDaysResponse, error) {
+	out := new(GetFileDaysResponse)
+	err := c.cc.Invoke(ctx, "/scproto.Softcopy/GetFileDays", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *softcopyClient) GetFileWithDate(ctx context.Context, in *GetFileWithDateRequest, opts ...grpc.CallOption) (*GetFileWithDateResponse, error) {
+	out := new(GetFileWithDateResponse)
+	err := c.cc.Invoke(ctx, "/scproto.Softcopy/GetFileWithDate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *softcopyClient) CreateFile(ctx context.Context, in *CreateFileRequest, opts ...grpc.CallOption) (*CreateFileResponse, error) {
+	out := new(CreateFileResponse)
+	err := c.cc.Invoke(ctx, "/scproto.Softcopy/CreateFile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *softcopyClient) GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*GetFileResponse, error) {
 	out := new(GetFileResponse)
 	err := c.cc.Invoke(ctx, "/scproto.Softcopy/GetFile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *softcopyClient) ReadFile(ctx context.Context, in *ReadFileRequest, opts ...grpc.CallOption) (*ReadFileResponse, error) {
+	out := new(ReadFileResponse)
+	err := c.cc.Invoke(ctx, "/scproto.Softcopy/ReadFile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *softcopyClient) RemoveFile(ctx context.Context, in *RemoveFileRequest, opts ...grpc.CallOption) (*RemoveFileResponse, error) {
+	out := new(RemoveFileResponse)
+	err := c.cc.Invoke(ctx, "/scproto.Softcopy/RemoveFile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *softcopyClient) OpenFile(ctx context.Context, in *OpenFileRequest, opts ...grpc.CallOption) (*OpenFileResponse, error) {
+	out := new(OpenFileResponse)
+	err := c.cc.Invoke(ctx, "/scproto.Softcopy/OpenFile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *softcopyClient) WriteFile(ctx context.Context, in *WriteFileRequest, opts ...grpc.CallOption) (*WriteFileResponse, error) {
+	out := new(WriteFileResponse)
+	err := c.cc.Invoke(ctx, "/scproto.Softcopy/WriteFile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *softcopyClient) FlushFile(ctx context.Context, in *FlushFileRequest, opts ...grpc.CallOption) (*FlushFileResponse, error) {
+	out := new(FlushFileResponse)
+	err := c.cc.Invoke(ctx, "/scproto.Softcopy/FlushFile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *softcopyClient) CloseFile(ctx context.Context, in *CloseFileRequest, opts ...grpc.CallOption) (*CloseFileResponse, error) {
+	out := new(CloseFileResponse)
+	err := c.cc.Invoke(ctx, "/scproto.Softcopy/CloseFile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *softcopyClient) GetAllTags(ctx context.Context, in *GetAllTagsRequest, opts ...grpc.CallOption) (*GetAllTagsResponse, error) {
+	out := new(GetAllTagsResponse)
+	err := c.cc.Invoke(ctx, "/scproto.Softcopy/GetAllTags", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *softcopyClient) FindFilesWithDate(ctx context.Context, in *FindFilesWithDateRequest, opts ...grpc.CallOption) (*FindFilesWithDateResponse, error) {
+	out := new(FindFilesWithDateResponse)
+	err := c.cc.Invoke(ctx, "/scproto.Softcopy/FindFilesWithDate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -605,13 +1800,116 @@ func (c *softcopyClient) FindFilesWithTags(ctx context.Context, in *FindFilesWit
 
 // SoftcopyServer is the server API for Softcopy service.
 type SoftcopyServer interface {
+	GetFileYears(context.Context, *GetFileYearsRequest) (*GetFileYearsResponse, error)
+	GetFileMonths(context.Context, *GetFileMonthsRequest) (*GetFileMonthsResponse, error)
+	GetFileDays(context.Context, *GetFileDaysRequest) (*GetFileDaysResponse, error)
+	GetFileWithDate(context.Context, *GetFileWithDateRequest) (*GetFileWithDateResponse, error)
+	CreateFile(context.Context, *CreateFileRequest) (*CreateFileResponse, error)
 	GetFile(context.Context, *GetFileRequest) (*GetFileResponse, error)
+	ReadFile(context.Context, *ReadFileRequest) (*ReadFileResponse, error)
+	RemoveFile(context.Context, *RemoveFileRequest) (*RemoveFileResponse, error)
+	OpenFile(context.Context, *OpenFileRequest) (*OpenFileResponse, error)
+	WriteFile(context.Context, *WriteFileRequest) (*WriteFileResponse, error)
+	FlushFile(context.Context, *FlushFileRequest) (*FlushFileResponse, error)
+	CloseFile(context.Context, *CloseFileRequest) (*CloseFileResponse, error)
+	GetAllTags(context.Context, *GetAllTagsRequest) (*GetAllTagsResponse, error)
+	FindFilesWithDate(context.Context, *FindFilesWithDateRequest) (*FindFilesWithDateResponse, error)
 	FindFilesWithIdPrefix(context.Context, *FindFilesWithIdPrefixRequest) (*FindFilesWithIdPrefixResponse, error)
 	FindFilesWithTags(context.Context, *FindFilesWithTagsRequest) (*FindFilesWithTagsResponse, error)
 }
 
 func RegisterSoftcopyServer(s *grpc.Server, srv SoftcopyServer) {
 	s.RegisterService(&_Softcopy_serviceDesc, srv)
+}
+
+func _Softcopy_GetFileYears_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFileYearsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoftcopyServer).GetFileYears(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scproto.Softcopy/GetFileYears",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoftcopyServer).GetFileYears(ctx, req.(*GetFileYearsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Softcopy_GetFileMonths_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFileMonthsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoftcopyServer).GetFileMonths(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scproto.Softcopy/GetFileMonths",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoftcopyServer).GetFileMonths(ctx, req.(*GetFileMonthsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Softcopy_GetFileDays_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFileDaysRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoftcopyServer).GetFileDays(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scproto.Softcopy/GetFileDays",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoftcopyServer).GetFileDays(ctx, req.(*GetFileDaysRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Softcopy_GetFileWithDate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFileWithDateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoftcopyServer).GetFileWithDate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scproto.Softcopy/GetFileWithDate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoftcopyServer).GetFileWithDate(ctx, req.(*GetFileWithDateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Softcopy_CreateFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoftcopyServer).CreateFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scproto.Softcopy/CreateFile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoftcopyServer).CreateFile(ctx, req.(*CreateFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Softcopy_GetFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -628,6 +1926,150 @@ func _Softcopy_GetFile_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SoftcopyServer).GetFile(ctx, req.(*GetFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Softcopy_ReadFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReadFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoftcopyServer).ReadFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scproto.Softcopy/ReadFile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoftcopyServer).ReadFile(ctx, req.(*ReadFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Softcopy_RemoveFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoftcopyServer).RemoveFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scproto.Softcopy/RemoveFile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoftcopyServer).RemoveFile(ctx, req.(*RemoveFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Softcopy_OpenFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OpenFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoftcopyServer).OpenFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scproto.Softcopy/OpenFile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoftcopyServer).OpenFile(ctx, req.(*OpenFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Softcopy_WriteFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WriteFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoftcopyServer).WriteFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scproto.Softcopy/WriteFile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoftcopyServer).WriteFile(ctx, req.(*WriteFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Softcopy_FlushFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FlushFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoftcopyServer).FlushFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scproto.Softcopy/FlushFile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoftcopyServer).FlushFile(ctx, req.(*FlushFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Softcopy_CloseFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CloseFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoftcopyServer).CloseFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scproto.Softcopy/CloseFile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoftcopyServer).CloseFile(ctx, req.(*CloseFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Softcopy_GetAllTags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllTagsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoftcopyServer).GetAllTags(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scproto.Softcopy/GetAllTags",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoftcopyServer).GetAllTags(ctx, req.(*GetAllTagsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Softcopy_FindFilesWithDate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindFilesWithDateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoftcopyServer).FindFilesWithDate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scproto.Softcopy/FindFilesWithDate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoftcopyServer).FindFilesWithDate(ctx, req.(*FindFilesWithDateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -673,8 +2115,60 @@ var _Softcopy_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*SoftcopyServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "GetFileYears",
+			Handler:    _Softcopy_GetFileYears_Handler,
+		},
+		{
+			MethodName: "GetFileMonths",
+			Handler:    _Softcopy_GetFileMonths_Handler,
+		},
+		{
+			MethodName: "GetFileDays",
+			Handler:    _Softcopy_GetFileDays_Handler,
+		},
+		{
+			MethodName: "GetFileWithDate",
+			Handler:    _Softcopy_GetFileWithDate_Handler,
+		},
+		{
+			MethodName: "CreateFile",
+			Handler:    _Softcopy_CreateFile_Handler,
+		},
+		{
 			MethodName: "GetFile",
 			Handler:    _Softcopy_GetFile_Handler,
+		},
+		{
+			MethodName: "ReadFile",
+			Handler:    _Softcopy_ReadFile_Handler,
+		},
+		{
+			MethodName: "RemoveFile",
+			Handler:    _Softcopy_RemoveFile_Handler,
+		},
+		{
+			MethodName: "OpenFile",
+			Handler:    _Softcopy_OpenFile_Handler,
+		},
+		{
+			MethodName: "WriteFile",
+			Handler:    _Softcopy_WriteFile_Handler,
+		},
+		{
+			MethodName: "FlushFile",
+			Handler:    _Softcopy_FlushFile_Handler,
+		},
+		{
+			MethodName: "CloseFile",
+			Handler:    _Softcopy_CloseFile_Handler,
+		},
+		{
+			MethodName: "GetAllTags",
+			Handler:    _Softcopy_GetAllTags_Handler,
+		},
+		{
+			MethodName: "FindFilesWithDate",
+			Handler:    _Softcopy_FindFilesWithDate_Handler,
 		},
 		{
 			MethodName: "FindFilesWithIdPrefix",
@@ -840,43 +2334,81 @@ var _SoftcopyAdmin_serviceDesc = grpc.ServiceDesc{
 	Metadata: "softcopy.proto",
 }
 
-func init() { proto.RegisterFile("softcopy.proto", fileDescriptor_softcopy_e007884a9e150063) }
+func init() { proto.RegisterFile("softcopy.proto", fileDescriptor_softcopy_733bdba8e8966819) }
 
-var fileDescriptor_softcopy_e007884a9e150063 = []byte{
-	// 557 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x53, 0x4d, 0x6f, 0xd3, 0x40,
-	0x10, 0xad, 0x63, 0xb7, 0x75, 0x27, 0x1f, 0xc0, 0x96, 0x0f, 0x63, 0x5a, 0xe1, 0x2e, 0x2a, 0x44,
-	0x1c, 0xdc, 0x2a, 0x1c, 0x90, 0x00, 0x01, 0x95, 0xa2, 0x22, 0x2e, 0x7c, 0x98, 0x48, 0x5c, 0x40,
-	0xd1, 0x36, 0xde, 0x6c, 0x56, 0xb2, 0xbd, 0x21, 0xbb, 0x11, 0x84, 0x9f, 0xc1, 0x15, 0x89, 0xdf,
-	0x8a, 0xbc, 0x5e, 0x5b, 0x0e, 0x49, 0x8a, 0x7a, 0xdb, 0x99, 0x79, 0x33, 0xf3, 0xde, 0x3c, 0x1b,
-	0x3a, 0x52, 0x8c, 0xd5, 0x48, 0x4c, 0x17, 0xe1, 0x74, 0x26, 0x94, 0x40, 0xbb, 0x72, 0xa4, 0x1f,
-	0xfe, 0x7d, 0x26, 0x04, 0x4b, 0xe8, 0x89, 0x8e, 0x2e, 0xe6, 0xe3, 0x13, 0xc5, 0x53, 0x2a, 0x15,
-	0x49, 0xa7, 0x05, 0x12, 0xff, 0xb6, 0xc0, 0x39, 0xe7, 0x09, 0x45, 0x1d, 0x68, 0xf0, 0xd8, 0xb3,
-	0x02, 0xab, 0xbb, 0x17, 0x35, 0x78, 0x8c, 0x10, 0x38, 0x13, 0x22, 0x27, 0x5e, 0x43, 0x67, 0xf4,
-	0x1b, 0xf9, 0xe0, 0x8e, 0x79, 0x42, 0x33, 0x92, 0x52, 0xcf, 0xd6, 0xf9, 0x2a, 0x46, 0xaf, 0xa0,
-	0x1d, 0x8b, 0xd1, 0x3c, 0xa5, 0x99, 0x1a, 0xc6, 0x44, 0x51, 0xcf, 0x09, 0xac, 0x6e, 0xb3, 0xe7,
-	0x87, 0x05, 0x83, 0xb0, 0x64, 0x10, 0x0e, 0x4a, 0x06, 0x51, 0xab, 0x6c, 0xe8, 0x13, 0x45, 0xf3,
-	0x85, 0x92, 0xff, 0xa4, 0xde, 0x76, 0x60, 0x75, 0xed, 0x48, 0xbf, 0xf1, 0x47, 0x80, 0x01, 0x61,
-	0x8c, 0xc6, 0x9a, 0xe2, 0x11, 0x38, 0xf9, 0x3a, 0x4d, 0xb2, 0xd9, 0x6b, 0x87, 0x46, 0x64, 0x98,
-	0x17, 0x23, 0x5d, 0x42, 0x01, 0x38, 0x8a, 0x30, 0xe9, 0x35, 0x02, 0xbb, 0xdb, 0xec, 0xb5, 0x2a,
-	0xc8, 0x80, 0xb0, 0x48, 0x57, 0xf0, 0x57, 0xb0, 0x07, 0x84, 0xd5, 0xe4, 0xda, 0xa5, 0x5c, 0x2d,
-	0xcb, 0xc8, 0xd5, 0x92, 0x7c, 0x70, 0x47, 0x44, 0x51, 0x26, 0x66, 0x8b, 0x52, 0x6e, 0x19, 0xa3,
-	0xdb, 0xb0, 0x23, 0x17, 0x52, 0xd1, 0x54, 0xeb, 0x74, 0x23, 0x13, 0xe1, 0x00, 0x3a, 0x6f, 0xa8,
-	0xd2, 0x8c, 0xe8, 0xb7, 0x39, 0x95, 0xea, 0xdf, 0xc3, 0xe2, 0x67, 0x70, 0xad, 0x42, 0xc8, 0xa9,
-	0xc8, 0x24, 0x45, 0x8f, 0x96, 0x84, 0xed, 0xd7, 0x59, 0x1b, 0xed, 0x85, 0x3c, 0xfc, 0x14, 0xbc,
-	0x73, 0x9e, 0xe9, 0x8c, 0xfc, 0xcc, 0xd5, 0x64, 0x40, 0x98, 0x2c, 0xf7, 0xdc, 0x83, 0x3d, 0x45,
-	0xd8, 0x30, 0x67, 0x2e, 0x3d, 0x2b, 0xb0, 0x73, 0xba, 0x8a, 0xb0, 0x77, 0x79, 0x8c, 0x5f, 0xc3,
-	0xdd, 0x35, 0x8d, 0x66, 0xfd, 0x03, 0xd8, 0xce, 0xa7, 0x17, 0x5d, 0x2b, 0x87, 0x2d, 0x6a, 0xf8,
-	0x39, 0x1c, 0x2c, 0x4d, 0x78, 0x1b, 0x7f, 0x98, 0xd1, 0x31, 0xff, 0x51, 0x5b, 0xcf, 0xe3, 0xe1,
-	0x54, 0xe7, 0x8c, 0x5a, 0x97, 0x1b, 0x0c, 0xee, 0xc3, 0xe1, 0x86, 0xe6, 0xab, 0x50, 0xb8, 0x0e,
-	0x9d, 0xb3, 0x24, 0xa9, 0xdd, 0x16, 0x1f, 0xc3, 0x7e, 0x5f, 0x7c, 0xcf, 0x12, 0x41, 0xe2, 0xcb,
-	0x4e, 0xfe, 0x18, 0x6e, 0x2e, 0xc3, 0xcc, 0x56, 0x04, 0x4e, 0x4c, 0x14, 0xd1, 0xc8, 0x56, 0xa4,
-	0xdf, 0xbd, 0x5f, 0x0d, 0x70, 0x3f, 0x99, 0xbf, 0x09, 0xbd, 0x84, 0x5d, 0xe3, 0x15, 0xba, 0x53,
-	0x51, 0x5a, 0xf6, 0xd7, 0xf7, 0x56, 0x0b, 0xc5, 0x78, 0xbc, 0x85, 0x26, 0x70, 0x6b, 0xad, 0x6e,
-	0x74, 0x5c, 0x13, 0xb8, 0xf9, 0xa8, 0xfe, 0xc3, 0xff, 0xc1, 0xaa, 0x4d, 0x5f, 0xe0, 0xc6, 0x8a,
-	0xc1, 0xe8, 0x68, 0x7d, 0x7b, 0xed, 0xab, 0xf1, 0xf1, 0x65, 0x90, 0x72, 0x7a, 0xef, 0x8f, 0x05,
-	0xed, 0xf2, 0x28, 0x67, 0x71, 0xca, 0x33, 0xf4, 0x02, 0x5c, 0xe3, 0x85, 0xac, 0x9d, 0x66, 0xd9,
-	0x1e, 0x7f, 0xdd, 0x97, 0x8c, 0xb7, 0x4e, 0x2d, 0xf4, 0x1e, 0x5a, 0x75, 0x43, 0xd0, 0x41, 0x05,
-	0x5c, 0x63, 0xa7, 0x7f, 0xb8, 0xa1, 0x5a, 0xd2, 0x3b, 0xb5, 0x2e, 0x76, 0x74, 0xfd, 0xc9, 0xdf,
-	0x00, 0x00, 0x00, 0xff, 0xff, 0x6a, 0xda, 0x61, 0x53, 0x09, 0x05, 0x00, 0x00,
+var fileDescriptor_softcopy_733bdba8e8966819 = []byte{
+	// 1155 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x56, 0x6d, 0x6f, 0xdb, 0x36,
+	0x10, 0x8e, 0x6c, 0x39, 0xb1, 0x2f, 0x89, 0x63, 0x33, 0x2f, 0x75, 0x95, 0x74, 0x75, 0xd9, 0xa5,
+	0xcd, 0x82, 0xc2, 0x19, 0x3c, 0x60, 0x03, 0xba, 0xa2, 0x5b, 0x10, 0x37, 0x59, 0x36, 0x24, 0xe9,
+	0x34, 0x6f, 0xc1, 0xde, 0x60, 0xb0, 0x11, 0x2d, 0x0b, 0x90, 0x25, 0xcf, 0xa2, 0xd7, 0x79, 0x7f,
+	0x65, 0xc0, 0x7e, 0xdf, 0x7e, 0xc6, 0x20, 0x8a, 0xa2, 0xa9, 0x17, 0x3b, 0xc9, 0x97, 0x7e, 0x13,
+	0x79, 0x77, 0xcf, 0x3d, 0x47, 0x1e, 0xef, 0x11, 0x54, 0x03, 0xbf, 0xcf, 0x6e, 0xfc, 0xd1, 0xb4,
+	0x35, 0x1a, 0xfb, 0xcc, 0x47, 0x2b, 0xc1, 0x0d, 0xff, 0x30, 0x1e, 0xdb, 0xbe, 0x6f, 0xbb, 0xf4,
+	0x88, 0xaf, 0xde, 0x4d, 0xfa, 0x47, 0xcc, 0x19, 0xd2, 0x80, 0x91, 0xe1, 0x28, 0xf2, 0xc4, 0xff,
+	0x68, 0xa0, 0x9f, 0x3a, 0x2e, 0x45, 0x55, 0x28, 0x38, 0x56, 0x43, 0x6b, 0x6a, 0x07, 0x15, 0xb3,
+	0xe0, 0x58, 0x08, 0x81, 0x3e, 0x20, 0xc1, 0xa0, 0x51, 0xe0, 0x3b, 0xfc, 0x1b, 0x19, 0x50, 0xee,
+	0x3b, 0x2e, 0xf5, 0xc8, 0x90, 0x36, 0x8a, 0x7c, 0x5f, 0xae, 0xd1, 0x57, 0xb0, 0x6e, 0xf9, 0x37,
+	0x93, 0x21, 0xf5, 0x58, 0xcf, 0x22, 0x8c, 0x36, 0xf4, 0xa6, 0x76, 0xb0, 0xda, 0x36, 0x5a, 0x11,
+	0x83, 0x56, 0xcc, 0xa0, 0xd5, 0x8d, 0x19, 0x98, 0x6b, 0x71, 0x40, 0x87, 0x30, 0x1a, 0x26, 0x0c,
+	0x9c, 0xbf, 0x69, 0xa3, 0xd4, 0xd4, 0x0e, 0x74, 0x93, 0x7f, 0xe3, 0xef, 0x01, 0xba, 0xc4, 0xb6,
+	0xa9, 0xc5, 0x29, 0x3e, 0x01, 0x3d, 0x4c, 0xc7, 0x49, 0xae, 0xb6, 0xd7, 0x5b, 0xa2, 0xc8, 0x56,
+	0x68, 0x34, 0xb9, 0x09, 0x35, 0x41, 0x67, 0xc4, 0x0e, 0x1a, 0x85, 0x66, 0xf1, 0x60, 0xb5, 0xbd,
+	0x26, 0x5d, 0xba, 0xc4, 0x36, 0xb9, 0x05, 0xff, 0x0e, 0xc5, 0x2e, 0xb1, 0x95, 0x72, 0x8b, 0x71,
+	0xb9, 0xbc, 0x2c, 0x51, 0x2e, 0x2f, 0xc9, 0x80, 0xf2, 0x0d, 0x61, 0xd4, 0xf6, 0xc7, 0xd3, 0xb8,
+	0xdc, 0x78, 0x8d, 0x76, 0x60, 0x39, 0x98, 0x06, 0x8c, 0x0e, 0x79, 0x9d, 0x65, 0x53, 0xac, 0xf0,
+	0x36, 0x6c, 0x9e, 0x51, 0x16, 0x32, 0xfa, 0x99, 0x92, 0x71, 0x60, 0xd2, 0x3f, 0x26, 0x34, 0x60,
+	0xf8, 0x05, 0x6c, 0x25, 0xb7, 0x83, 0x91, 0xef, 0x05, 0x14, 0x6d, 0x41, 0x69, 0x1a, 0x6e, 0x34,
+	0xb4, 0x66, 0xf1, 0xa0, 0x64, 0x46, 0x0b, 0x7c, 0x28, 0xbd, 0x2f, 0x7c, 0x8f, 0x0d, 0x62, 0x94,
+	0x90, 0x64, 0xe8, 0xc0, 0x69, 0x97, 0x4c, 0xfe, 0x8d, 0x8f, 0x60, 0x3b, 0xe5, 0x2b, 0xa0, 0x77,
+	0x60, 0x79, 0xc8, 0x77, 0x04, 0xb6, 0x58, 0xe1, 0xd7, 0x80, 0x44, 0x40, 0x87, 0x4c, 0x17, 0x41,
+	0x87, 0xe4, 0x78, 0x0c, 0x3f, 0x94, 0x92, 0x19, 0x2d, 0xf0, 0x27, 0xb2, 0xc2, 0x28, 0x5e, 0xa4,
+	0x43, 0xa0, 0x5b, 0x64, 0x1a, 0x27, 0xe3, 0xdf, 0x78, 0x04, 0xf5, 0x93, 0x31, 0x25, 0x8c, 0xf2,
+	0x1b, 0x12, 0x99, 0xd4, 0x26, 0xd2, 0x6e, 0x6b, 0xa2, 0xc2, 0xfd, 0x9a, 0x08, 0x7f, 0x0c, 0x48,
+	0xcd, 0x28, 0xb8, 0xa5, 0x7a, 0x1b, 0x37, 0xa1, 0x2a, 0x4a, 0x88, 0x49, 0xa5, 0x3d, 0x5e, 0xc2,
+	0x86, 0xf4, 0x10, 0x20, 0xcf, 0x13, 0xdd, 0xb7, 0xa9, 0xb6, 0x96, 0x68, 0xd0, 0xa8, 0x07, 0xf1,
+	0x2f, 0xb0, 0x61, 0x52, 0x62, 0xa9, 0xf0, 0xbb, 0x50, 0x19, 0x10, 0xcf, 0x72, 0x69, 0x4f, 0x66,
+	0x29, 0x47, 0x1b, 0xe7, 0x56, 0x78, 0x51, 0x7e, 0xbf, 0x1f, 0x50, 0xc6, 0xab, 0xd5, 0x4d, 0xb1,
+	0x92, 0x0f, 0xa2, 0xa8, 0x3c, 0x88, 0x67, 0x50, 0x9b, 0x61, 0xab, 0x27, 0xcf, 0x08, 0xc7, 0x5d,
+	0x33, 0xf9, 0x37, 0x7e, 0x0a, 0x75, 0x93, 0x0e, 0xfd, 0x3f, 0xe9, 0xa2, 0x22, 0xb7, 0x00, 0xa9,
+	0x4e, 0x11, 0x1c, 0xfe, 0x06, 0x36, 0xae, 0x46, 0xd4, 0x5b, 0x10, 0x88, 0xf6, 0x41, 0x1f, 0xfa,
+	0x56, 0x74, 0x3b, 0xd5, 0x76, 0x3d, 0xf1, 0x10, 0x2f, 0x7c, 0x8b, 0x9a, 0xdc, 0x8c, 0x8f, 0xa0,
+	0x36, 0x43, 0x12, 0x64, 0x17, 0x9d, 0x04, 0x3e, 0x81, 0xda, 0xf5, 0xd8, 0x49, 0xb6, 0xcb, 0xc2,
+	0xa3, 0x8b, 0x4b, 0x2f, 0x28, 0xa5, 0xbf, 0x84, 0xba, 0x02, 0x22, 0xd2, 0xee, 0x43, 0x95, 0x0c,
+	0xfd, 0x89, 0xc7, 0x7a, 0xef, 0xc7, 0x0e, 0x63, 0xd4, 0xe3, 0x50, 0xba, 0xb9, 0x1e, 0xed, 0x5e,
+	0x47, 0x9b, 0x21, 0xe3, 0x53, 0x77, 0x12, 0x0c, 0xee, 0x4a, 0x00, 0x6f, 0x42, 0x5d, 0x09, 0x10,
+	0x27, 0x78, 0x04, 0xb5, 0x13, 0xd7, 0x0f, 0xee, 0x5c, 0x06, 0x7e, 0x0e, 0x75, 0x25, 0x60, 0x76,
+	0xad, 0xe9, 0x01, 0x1c, 0xa6, 0x3b, 0xa3, 0xec, 0xd8, 0x75, 0xbb, 0xc4, 0x96, 0xb3, 0xe5, 0x73,
+	0xfe, 0xa0, 0xe5, 0xa6, 0x08, 0x8f, 0x27, 0xa1, 0x36, 0x77, 0x12, 0x4e, 0x60, 0x47, 0xf4, 0xf8,
+	0xb5, 0xc3, 0x06, 0xe1, 0xf3, 0xf9, 0x20, 0x4f, 0xf4, 0x15, 0x3c, 0xc8, 0xa4, 0x15, 0x9c, 0x6f,
+	0x1f, 0xf0, 0xf8, 0x57, 0x68, 0x9c, 0x3a, 0x1e, 0x7f, 0x00, 0x41, 0x9a, 0x76, 0x86, 0x9a, 0x76,
+	0x4f, 0x6a, 0x5f, 0xc3, 0xc3, 0x1c, 0x70, 0x41, 0xee, 0x29, 0x94, 0x42, 0x06, 0xf1, 0x89, 0xa6,
+	0xd8, 0x45, 0x36, 0xfc, 0x45, 0x8a, 0x9e, 0x72, 0x4f, 0x61, 0x0b, 0x30, 0x62, 0xf7, 0xc2, 0x53,
+	0x8c, 0x40, 0x2a, 0x66, 0x99, 0x11, 0xfb, 0x32, 0x5c, 0x67, 0x52, 0x27, 0xee, 0xf2, 0x4e, 0xa9,
+	0xbf, 0x84, 0xbd, 0x04, 0xc2, 0xb9, 0xf5, 0x76, 0x4c, 0xfb, 0xce, 0x5f, 0x4a, 0x7a, 0xc7, 0xea,
+	0x8d, 0xf8, 0x5e, 0x7c, 0xab, 0x8e, 0xf0, 0xc1, 0x1d, 0x78, 0x34, 0x27, 0xf8, 0x3e, 0x14, 0x6a,
+	0x50, 0x3d, 0x76, 0x5d, 0xa5, 0xed, 0xf1, 0x3e, 0x6c, 0x76, 0xfc, 0xf7, 0x9e, 0xeb, 0x27, 0xe7,
+	0x61, 0x7a, 0x12, 0x1d, 0xc2, 0x56, 0xd2, 0x6d, 0xfe, 0x68, 0x3b, 0x7c, 0x01, 0xe5, 0x78, 0xce,
+	0xa0, 0x55, 0x58, 0xf9, 0xf1, 0xf2, 0xbb, 0xcb, 0xab, 0xeb, 0xcb, 0xda, 0x12, 0x2a, 0x83, 0x6e,
+	0xbe, 0x39, 0xee, 0xd4, 0x34, 0x54, 0x81, 0xd2, 0xb5, 0x79, 0xde, 0x7d, 0x53, 0x2b, 0xb4, 0xff,
+	0xab, 0x40, 0xf9, 0x07, 0xf1, 0x73, 0x84, 0x2e, 0x60, 0x4d, 0x55, 0x61, 0xb4, 0x27, 0xab, 0xc8,
+	0xd1, 0x6c, 0xe3, 0xd1, 0x1c, 0xab, 0x78, 0xe5, 0x4b, 0xe8, 0x2d, 0xac, 0x27, 0xa4, 0x17, 0x65,
+	0x22, 0x12, 0xf2, 0x6d, 0x7c, 0x34, 0xcf, 0x2c, 0x11, 0xbf, 0x85, 0x55, 0x45, 0x5b, 0xd1, 0x6e,
+	0x3a, 0x40, 0x51, 0x6c, 0x63, 0x2f, 0xdf, 0x28, 0xb1, 0x7e, 0x92, 0x12, 0x16, 0xb7, 0x32, 0x7a,
+	0x9c, 0x0e, 0x49, 0xbd, 0x20, 0xa3, 0x39, 0xdf, 0x41, 0xe2, 0x9e, 0x01, 0xcc, 0x24, 0x16, 0x19,
+	0x32, 0x22, 0xa3, 0xf4, 0xc6, 0x6e, 0xae, 0x4d, 0x02, 0xbd, 0x86, 0x15, 0x91, 0x05, 0x3d, 0x48,
+	0xe7, 0x8d, 0x21, 0x1a, 0x59, 0x83, 0x8c, 0x3f, 0x86, 0x72, 0xac, 0x85, 0x68, 0xe6, 0x97, 0x92,
+	0x5e, 0xe3, 0x61, 0x8e, 0x45, 0xad, 0x65, 0xa6, 0x80, 0x4a, 0x2d, 0x19, 0xed, 0x54, 0x6a, 0xc9,
+	0x91, 0x4c, 0xce, 0x25, 0x96, 0x3a, 0x85, 0x4b, 0x4a, 0x47, 0x15, 0x2e, 0x69, 0x5d, 0xc4, 0x4b,
+	0xa8, 0x03, 0x15, 0xa9, 0x5b, 0x68, 0xe6, 0x99, 0x16, 0x44, 0xc3, 0xc8, 0x33, 0xa9, 0x28, 0x52,
+	0x90, 0x14, 0x94, 0xb4, 0xaa, 0x29, 0x28, 0x59, 0xfd, 0xe2, 0x28, 0x52, 0x90, 0x14, 0x94, 0xb4,
+	0xaa, 0x29, 0x28, 0x19, 0xfd, 0x8a, 0x4e, 0x77, 0x26, 0x4c, 0xca, 0xe9, 0x66, 0x24, 0xcc, 0xd8,
+	0xcd, 0xb5, 0x49, 0xa0, 0xdf, 0xa0, 0x9e, 0x99, 0xcb, 0xe8, 0x89, 0x32, 0x82, 0xf2, 0x05, 0xc1,
+	0xc0, 0x8b, 0x5c, 0x24, 0xfa, 0x00, 0xb6, 0x73, 0x67, 0x1f, 0xda, 0xcf, 0x0f, 0x4f, 0x0d, 0x56,
+	0xe3, 0xd9, 0x6d, 0x6e, 0x73, 0xeb, 0xe0, 0xe7, 0x32, 0xa7, 0x0e, 0xf5, 0x78, 0xf0, 0x22, 0x97,
+	0x18, 0xbd, 0xfd, 0xaf, 0x06, 0xeb, 0xf1, 0xa8, 0x3b, 0xb6, 0x86, 0x8e, 0x87, 0x5e, 0x41, 0x59,
+	0xcc, 0xe3, 0x40, 0x79, 0x62, 0xc9, 0x11, 0x6d, 0xe4, 0xfd, 0xc9, 0xe2, 0xa5, 0x4f, 0x35, 0x74,
+	0x05, 0x6b, 0xea, 0x50, 0x56, 0xa6, 0x65, 0xce, 0x48, 0x57, 0xa6, 0x65, 0xde, 0x24, 0x0f, 0x01,
+	0xdf, 0x2d, 0x73, 0xfb, 0x67, 0xff, 0x07, 0x00, 0x00, 0xff, 0xff, 0x3d, 0x42, 0x07, 0x23, 0xae,
+	0x0e, 0x00, 0x00,
 }

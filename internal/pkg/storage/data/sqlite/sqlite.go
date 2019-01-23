@@ -10,7 +10,7 @@ import (
 	"github.com/aphistic/softcopy/internal/pkg/storage"
 )
 
-const migrationPath = "../../internal/pkg/storage/sqlite/migrations"
+const migrationPath = "../../internal/pkg/storage/data/sqlite/migrations"
 
 type Client struct {
 	dbPath string
@@ -21,6 +21,12 @@ var _ storage.Data = &Client{}
 
 func NewClient(dbPath string) (*Client, error) {
 	db, err := sql.Open("sqlite3", dbPath)
+	if err != nil {
+		return nil, err
+	}
+
+	// Make sure foreign key constraints are checked
+	_, err = db.Exec("PRAGMA foreign_keys = ON;")
 	if err != nil {
 		return nil, err
 	}
