@@ -108,6 +108,13 @@ message CloseFileResponse {
     string hash     = 2;
 }
 
+message UpdateFileDateRequest {
+    string file_id                              = 1;
+    string new_filename                         = 2;
+    google.protobuf.Timestamp new_document_date = 3;
+}
+message UpdateFileDateResponse { }
+
 message GetAllTagsRequest { }
 message GetAllTagsResponse {
     repeated Tag tags = 1;
@@ -165,13 +172,15 @@ service Softcopy {
     rpc GetFileWithDate(GetFileWithDateRequest) returns (GetFileWithDateResponse) {}
     rpc CreateFile(CreateFileRequest) returns (CreateFileResponse) {}
     rpc GetFile(GetFileRequest) returns (GetFileResponse) {}
-    rpc ReadFile(ReadFileRequest) returns (ReadFileResponse) {}
     rpc RemoveFile(RemoveFileRequest) returns (RemoveFileResponse) {}
 
     rpc OpenFile(OpenFileRequest) returns (OpenFileResponse) {}
+    rpc ReadFile(ReadFileRequest) returns (ReadFileResponse) {}
     rpc WriteFile(WriteFileRequest) returns (WriteFileResponse) {}
     rpc FlushFile(FlushFileRequest) returns (FlushFileResponse) {}
     rpc CloseFile(CloseFileRequest) returns (CloseFileResponse) {}
+
+    rpc UpdateFileDate(UpdateFileDateRequest) returns (UpdateFileDateResponse) {}
 
     rpc GetAllTags(GetAllTagsRequest) returns (GetAllTagsResponse) {}
     rpc CreateTag(CreateTagRequest) returns (CreateTagResponse) {}

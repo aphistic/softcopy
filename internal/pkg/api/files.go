@@ -133,6 +133,31 @@ func (c *Client) RemoveFile(id string) error {
 	return c.dataStorage.RemoveFile(fileID)
 }
 
+func (c *Client) UpdateFileDate(
+	id uuid.UUID,
+	newFilename string,
+	newDate time.Time,
+) error {
+	// Make sure the current file exists
+	_, err := c.dataStorage.GetFile(id)
+	if err != nil {
+		return err
+	}
+
+	// Make sure the new date and filename are available
+	_, err = c.dataStorage.GetFileWithDate(newFilename, newDate)
+	if err != scerrors.ErrNotFound {
+		return err
+	}
+
+	err = c.dataStorage.UpdateFileDate(id, newFilename, newDate)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (c *Client) GetFileWithDate(filename string, date time.Time) (*records.File, error) {
 	return c.dataStorage.GetFileWithDate(filename, date)
 }

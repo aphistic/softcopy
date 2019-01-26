@@ -32,6 +32,7 @@ type Data interface {
 	UpdateFile(*records.File) error
 
 	UpdateFileHash(uuid.UUID, string) error
+	UpdateFileDate(uuid.UUID, string, time.Time) error
 
 	AllTags() (records.TagIterator, error)
 	GetTags([]string) ([]*records.Tag, error)

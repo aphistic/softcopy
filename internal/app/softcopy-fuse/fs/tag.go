@@ -125,6 +125,17 @@ func (td *TagDir) Lookup(ctx context.Context, name string) (fusefs.Node, error) 
 	return newFSFile(file, records.FILE_MODE_READ, td.fs), nil
 }
 
+func (td *TagDir) Rename(
+	ctx context.Context,
+	req *fuse.RenameRequest,
+	newDir fusefs.Node,
+) error {
+	// TODO try moving from outside of mount point into a tag directory
+
+	td.fs.logger.Debug("rename:\n%#v\n%#v", req, newDir)
+	return fmt.Errorf("not implemented")
+}
+
 func (td *TagDir) ReadDirAll(ctx context.Context) ([]fuse.Dirent, error) {
 	res, err := td.fs.client.FindFilesWithTags(ctx, &scproto.FindFilesWithTagsRequest{
 		TagNames: []string{td.tag},

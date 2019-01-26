@@ -206,6 +206,52 @@ func (ddd *fsDateDayDir) Lookup(ctx context.Context, name string) (fusefs.Node, 
 	return newFSFile(file, records.FILE_MODE_READ, ddd.fs), nil
 }
 
+func (td *fsDateDayDir) Rename(
+	ctx context.Context,
+	req *fuse.RenameRequest,
+	newDir fusefs.Node,
+) error {
+	docDate, err := ptypes.TimestampProto(
+		time.Date(td.year, time.Month(td.month), td.day, 0, 0, 0, 0, time.UTC),
+	)
+	if err != nil {
+		return err
+	}
+
+	res, err := td.fs.client.GetFileWithDate(ctx, &scproto.GetFileWithDateRequest{
+		Filename:     req.OldName,
+		DocumentDate: docDate,
+	})
+	if status.Code(err) == codes.NotFound {
+		return fuse.ENOENT
+	} else if err != nil {
+		return err
+	}
+
+	newDateDir, ok := newDir.(*fsDateDayDir)
+	if !ok {
+		return fuse.ENOTSUP
+	}
+
+	newDocDate, err := ptypes.TimestampProto(
+		time.Date(
+			newDateDir.year, time.Month(newDateDir.month), newDateDir.day,
+			0, 0, 0, 0, time.UTC,
+		),
+	)
+
+	_, err = td.fs.client.UpdateFileDate(ctx, &scproto.UpdateFileDateRequest{
+		FileId:          res.GetFile().GetId(),
+		NewFilename:     req.NewName,
+		NewDocumentDate: newDocDate,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (ddd *fsDateDayDir) ReadDirAll(ctx context.Context) ([]fuse.Dirent, error) {
 	ts, err := ptypes.TimestampProto(time.Date(
 		ddd.year, time.Month(ddd.month), ddd.day,

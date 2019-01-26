@@ -365,6 +365,61 @@ func (c *Client) UpdateFileHash(id uuid.UUID, hash string) error {
 	return nil
 }
 
+func (c *Client) UpdateFileDate(id uuid.UUID, newFilename string, newDate time.Time) error {
+	fmt.Printf("updating %s to %s - %s\n", id, newFilename, newDate)
+	tx, err := c.db.Begin()
+
+	res, err := tx.Exec(`
+		SELECT id FROM files
+		WHERE filename = ? AND date(document_date) = ?
+	`,
+		newFilename,
+		newDate.Format("2006-01-02"),
+	)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	affected, err := res.RowsAffected()
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	if affected > 0 {
+		tx.Rollback()
+		return scerrors.ErrExists
+	}
+
+	res, err = tx.Exec(`
+		UPDATE files SET filename = ?, document_date = ?
+		WHERE id = ?
+	`,
+		newFilename,
+		newDate.Format(time.RFC3339Nano),
+		id,
+	)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	affected, err = res.RowsAffected()
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	if affected < 1 {
+		tx.Rollback()
+		return scerrors.ErrNotFound
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (c *Client) UpdateFile(file *records.File) error {
 	return fmt.Errorf("not implemented")
 }

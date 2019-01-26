@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/golang/protobuf/ptypes"
+	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -243,4 +244,30 @@ func (as *apiServer) RemoveFile(
 	}
 
 	return &scproto.RemoveFileResponse{}, nil
+}
+
+func (as *apiServer) UpdateFileDate(
+	ctx context.Context,
+	req *scproto.UpdateFileDateRequest,
+) (*scproto.UpdateFileDateResponse, error) {
+	id, err := uuid.Parse(req.GetFileId())
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	newDate, err := ptypes.Timestamp(req.GetNewDocumentDate())
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	err = as.api.UpdateFileDate(id, req.GetNewFilename(), newDate)
+	if err == scerrors.ErrExists {
+		return nil, status.Error(codes.AlreadyExists, "destination exists")
+	} else if err == scerrors.ErrNotFound {
+		return nil, status.Error(codes.NotFound, "file not found")
+	} else if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &scproto.UpdateFileDateResponse{}, nil
 }
