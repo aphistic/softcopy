@@ -3,6 +3,7 @@ package backup
 import (
 	"bytes"
 	"context"
+	"crypto/sha256"
 	"fmt"
 	"io"
 	"os"
@@ -62,16 +63,24 @@ func (r *Runner) Run(cfg runner.Config, runCfg runner.Config) int {
 		return 1
 	}
 
-	client := scproto.NewSoftcopyAdminClient(conn)
+	client := scproto.NewSoftcopyClient(conn)
+	adminClient := scproto.NewSoftcopyAdminClient(conn)
 
 	ctx := context.Background()
-	allFiles, err := client.AllFiles(ctx, &scproto.AllFileRequest{})
+	allFiles, err := adminClient.AllFiles(ctx, &scproto.AllFileRequest{})
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error getting all files: %s\n", err)
 		return 1
 	}
 
+	// TODO This impl is lazy on error handling, make it less so!
+	hasher := sha256.New()
+	fileBuf := bytes.NewBuffer(nil)
+fileLoop:
 	for {
+		hasher.Reset()
+		fileBuf.Reset()
+
 		file, err := allFiles.Recv()
 		if err == io.EOF {
 			return 0
@@ -87,42 +96,92 @@ func (r *Runner) Run(cfg runner.Config, runCfg runner.Config) int {
 			continue
 		}
 
-		data, err := client.DownloadFile(ctx, &scproto.DownloadFileRequest{
-			Id: file.File.Id,
+		ofRes, err := client.OpenFile(ctx, &scproto.OpenFileRequest{
+			Id:   file.GetFile().GetId(),
+			Mode: scproto.FileMode_READ,
 		})
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Could not download file data: %s\n", err)
+			fmt.Fprintf(
+				os.Stderr,
+				"Could not open file '%s' for download: %s\n",
+				file.GetFile().GetId(), err,
+			)
 			continue
 		}
 
-		buf := bytes.NewBuffer(nil)
+		readOffset := uint64(0)
 		for {
-			fileData, err := data.Recv()
-			if err == io.EOF {
-				break
-			} else if err != nil {
-				fmt.Fprintf(os.Stderr, "Error getting file part: %s\n", err)
-				break
+			readRes, err := client.ReadFile(ctx, &scproto.ReadFileRequest{
+				HandleId: ofRes.GetHandleId(),
+				Offset:   readOffset,
+				Size:     4096,
+			})
+			if err != nil {
+				client.CloseFile(ctx, &scproto.CloseFileRequest{
+					HandleId: ofRes.GetHandleId(),
+				})
+				continue fileLoop
 			}
 
 			curRead := 0
 			for {
-				n, err := buf.Write(fileData.Data[curRead:])
-				if err != nil {
+				n, err := fileBuf.Write(readRes.GetData()[curRead:])
+				if err == io.EOF {
+					break
+				} else if err != nil {
 					fmt.Fprintf(os.Stderr, "Error writing file part: %s\n", err)
-					continue
+					break
 				}
+
+				hashN, err := hasher.Write(readRes.GetData()[curRead:n])
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "Error writing hash part: %s\n", err)
+					break
+				}
+
+				if n != hashN {
+					fmt.Fprintf(os.Stderr, "Hash and file write were not equal\n")
+					break
+				}
+
 				curRead += n
 
-				if curRead >= len(fileData.Data) {
+				if curRead >= len(readRes.GetData()) {
 					break
 				}
 			}
+
+			if uint64(fileBuf.Len()) >= file.GetFile().GetSize() {
+				break
+			}
+
+			readOffset = uint64(fileBuf.Len())
 		}
 
-		err = b.WriteData(file.File.Id, buf)
+		err = b.WriteData(file.GetFile().GetId(), fileBuf)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Could not write backup file: %s\n", err)
+			continue
+		}
+
+		_, err = client.CloseFile(ctx, &scproto.CloseFileRequest{
+			HandleId: ofRes.GetHandleId(),
+		})
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Could not close remote file: %s\n", err)
+			continue
+		}
+
+		/*
+			fmt.Printf(
+				"local: %s\nclose: %s\nremote: %s\n",
+				fmt.Sprintf("%x", hasher.Sum(nil)),
+				closeRes.GetHash(),
+				file.GetFile().GetHash(),
+			)
+		*/
+		if fmt.Sprintf("%x", hasher.Sum(nil)) != file.GetFile().GetHash() {
+			fmt.Fprintf(os.Stderr, "Remote and local file hashes did not match\n")
 			continue
 		}
 	}

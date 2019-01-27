@@ -183,8 +183,15 @@ func (c *Client) GetFileDays(year int, month int) ([]int, error) {
 
 func (c *Client) AllFiles() (records.FileIterator, error) {
 	rows, err := c.db.Query(`
-		SELECT id, hash, filename, document_date, file_size FROM files
-		ORDER BY filename;
+		SELECT
+			f.id,
+			f.filename,
+			f.document_date,
+			f.hash,
+			ifnull(fm.file_size, 0) AS file_size
+		FROM files f
+		LEFT JOIN file_metadata fm ON f.hash = fm.hash
+		ORDER BY f.filename;
 	`)
 	if err != nil {
 		return nil, err

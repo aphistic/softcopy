@@ -1,8 +1,6 @@
 package apiserver
 
 import (
-	"io"
-
 	"github.com/efritz/nacelle"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -88,41 +86,6 @@ func (as *adminServer) AllFiles(
 				as.logger.Error("Error sending tagged file: %s", err)
 				continue
 			}
-		}
-	}
-}
-
-func (as *adminServer) DownloadFile(
-	req *scproto.DownloadFileRequest,
-	srv scproto.SoftcopyAdmin_DownloadFileServer,
-) error {
-	f, err := as.api.ReadFile(req.Id)
-	if err != nil {
-		return grpc.Errorf(codes.Internal, err.Error())
-	}
-	defer f.Close()
-
-	as.logger.Debug("Starting file download")
-	buf := make([]byte, 4096)
-	for {
-		n, err := f.Read(buf)
-		if err != nil && err != io.EOF {
-			as.logger.Error("read err: %s", err)
-			return grpc.Errorf(codes.Internal, err.Error())
-		}
-
-		if n > 0 {
-			as.logger.Debug("Sending %d bytes", n)
-			err = srv.Send(&scproto.DownloadFileResponse{
-				Data: buf[0:n],
-			})
-			if err != nil {
-				return grpc.Errorf(codes.Internal, err.Error())
-			}
-		}
-
-		if err == io.EOF {
-			return nil
 		}
 	}
 }

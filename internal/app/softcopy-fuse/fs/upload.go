@@ -3,6 +3,7 @@ package fs
 import (
 	"context"
 	"os"
+	"time"
 
 	"bazil.org/fuse"
 	fusefs "bazil.org/fuse/fs"
@@ -38,9 +39,14 @@ func (ud *fsUploadDir) Create(
 ) (fusefs.Node, fusefs.Handle, error) {
 	ud.fs.logger.Debug("create req: %#v", req)
 
+	docDate, err := ptypes.TimestampProto(time.Now().UTC())
+	if err != nil {
+		return nil, nil, err
+	}
+
 	createRes, err := ud.fs.client.CreateFile(ctx, &scproto.CreateFileRequest{
 		Filename:     req.Name,
-		DocumentDate: ptypes.TimestampNow(),
+		DocumentDate: docDate,
 	})
 	if status.Code(err) == codes.AlreadyExists {
 		return nil, nil, fuse.EEXIST

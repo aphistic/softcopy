@@ -33,7 +33,7 @@ func (c *Client) AddFile(name string, data io.Reader) error {
 		return ErrHashCollision
 	}
 
-	err = c.dataStorage.CreateFileWithID(name, time.Now(), fileID)
+	err = c.dataStorage.CreateFileWithID(name, time.Now().UTC(), fileID)
 	if err != nil {
 		return err
 	}

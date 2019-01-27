@@ -193,14 +193,6 @@ service Softcopy {
 
 message AllFileRequest {}
 
-message DownloadFileRequest {
-    string id = 1;
-}
-message DownloadFileResponse {
-    bytes data = 1;
-}
-
 service SoftcopyAdmin {
     rpc AllFiles(AllFileRequest) returns (stream TaggedFile) {}
-    rpc DownloadFile(DownloadFileRequest) returns (stream DownloadFileResponse) {}
 }
