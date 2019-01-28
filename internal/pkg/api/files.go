@@ -12,43 +12,6 @@ import (
 	"github.com/aphistic/softcopy/internal/pkg/storage/records"
 )
 
-func (c *Client) AddFile(name string, data io.Reader) error {
-	fileID, err := uuid.NewRandom()
-	if err != nil {
-		return err
-	}
-
-	fileDir := fileID.String()[0:4]
-	filePath := path.Join(fileDir, fileID.String()+".dat")
-
-	sha, size, err := c.fileStorage.WriteFile(filePath, data)
-	if err != nil {
-		return err
-	}
-
-	// See if the file already exists in the data
-	_, err = c.dataStorage.GetFileByHash(sha)
-	if err == nil {
-		// It already exists so we can't add the file
-		return ErrHashCollision
-	}
-
-	err = c.dataStorage.CreateFileWithID(name, time.Now().UTC(), fileID)
-	if err != nil {
-		return err
-	}
-
-	file, err := c.dataStorage.GetFile(fileID)
-	if err != nil {
-		return err
-	}
-
-	file.Hash = sha
-	file.Size = size
-
-	return c.dataStorage.UpdateFile(file)
-}
-
 func (c *Client) AllFiles() (records.FileIterator, error) {
 	files, err := c.dataStorage.AllFiles()
 	if err != nil {

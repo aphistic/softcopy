@@ -21,13 +21,14 @@ require (
 	github.com/efritz/glock v0.0.0-20180604185841-7e95e8b27a61 // indirect
 	github.com/efritz/nacelle v0.0.0-20181004160324-69093ecb1c60
 	github.com/efritz/watchdog v0.0.0-20180619210146-de3f33584f48 // indirect
-	github.com/efritz/zubrin v0.0.0-20181008195445-3e590fe24b8c // indirect
+	github.com/efritz/zubrin v0.0.0-20181008195445-3e590fe24b8c
 	github.com/fatih/structtag v1.0.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang/protobuf v1.2.0
 	github.com/google/pprof v0.0.0-20190109223431-e84dfd68c163 // indirect
 	github.com/google/uuid v1.0.0
 	github.com/ianlancetaylor/demangle v0.0.0-20181102032728-5e5cf60278f6 // indirect
+	github.com/kr/fs v0.1.0 // indirect
 	github.com/mattn/go-colorable v0.0.9 // indirect
 	github.com/mattn/go-isatty v0.0.4 // indirect
 	github.com/mattn/go-runewidth v0.0.3 // indirect
@@ -35,13 +36,15 @@ require (
 	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b // indirect
 	github.com/olekukonko/tablewriter v0.0.0-20180912035003-be2c049b30cc
 	github.com/onsi/gomega v1.4.3
+	github.com/pkg/errors v0.8.1 // indirect
+	github.com/pkg/sftp v1.8.3
 	github.com/pkg/term v0.0.0-20180730021639-bffc007b7fd5 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rubenv/sql-migrate v0.0.0-20180704111356-3f452fc0ebeb
 	github.com/spaolacci/murmur3 v0.0.0-20180118202830-f09979ecbc72 // indirect
 	github.com/stretchr/testify v1.2.2 // indirect
 	golang.org/x/arch v0.0.0-20181203225421-5a4828bb7045 // indirect
-	golang.org/x/crypto v0.0.0-20181203042331-505ab145d0a9 // indirect
+	golang.org/x/crypto v0.0.0-20181203042331-505ab145d0a9
 	golang.org/x/net v0.0.0-20181011144130-49bb7cea24b1
 	google.golang.org/grpc v1.15.0
 	gopkg.in/gorp.v1 v1.7.1 // indirect

@@ -1,0 +1,28 @@
+api:
+  port: 6000
+
+metadata:
+  engine: sqlite
+  options:
+    - name: path
+      value: /var/lib/softcopy/softcopy.db
+
+files:
+  engine: local
+  options:
+    - name: path
+      value: /var/lib/softcopy/files
+
+importers:
+  - type: sftp
+    options:
+      - name: host
+        value: docs.example.com
+      - name: port
+        value: 22
+      - name: username
+        value: docs_upload
+      - name: password
+        valueFrom:
+          envRef:
+            key: SFTP_PASSWORD

@@ -118,6 +118,8 @@ func (fh *fsFileHandle) Flush(
 	ctx context.Context,
 	req *fuse.FlushRequest,
 ) error {
+	fh.fs.logger.Debug("Flush request: %#v", req)
+
 	_, err := fh.fs.client.FlushFile(ctx, &scproto.FlushFileRequest{
 		HandleId: fh.handleID.String(),
 	})
@@ -126,7 +128,16 @@ func (fh *fsFileHandle) Flush(
 		return err
 	}
 
-	_, err = fh.fs.client.CloseFile(ctx, &scproto.CloseFileRequest{
+	return nil
+}
+
+func (fh *fsFileHandle) Release(
+	ctx context.Context,
+	req *fuse.ReleaseRequest,
+) error {
+	fh.fs.logger.Debug("Release request: %#v", req)
+
+	_, err := fh.fs.client.CloseFile(ctx, &scproto.CloseFileRequest{
 		HandleId: fh.handleID.String(),
 	})
 	if err != nil {

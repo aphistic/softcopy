@@ -12,7 +12,6 @@ type File interface {
 
 	ReadFile(filePath string) (io.ReadCloser, error)
 	ReadFileFromOffset(filePath string, offset uint64) (io.ReadCloser, error)
-	WriteFile(filePath string, r io.Reader) (string, uint64, error)
 }
 
 type OpenFile interface {
