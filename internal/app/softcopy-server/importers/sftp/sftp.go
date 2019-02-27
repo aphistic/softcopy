@@ -19,20 +19,26 @@ import (
 	scerrors "github.com/aphistic/softcopy/internal/pkg/errors"
 )
 
+const (
+	dupeFolderName = "duplicate"
+)
+
 type SFTPImporter struct {
 	Logger nacelle.Logger `service:"logger"`
 	API    *api.Client    `service:"api"`
 
 	stopChan chan struct{}
 
+	name string
+
 	host     string
 	port     int
 	username string
 	password string
-	path     string
+	importPath     string
 }
 
-func NewSFTPImporter(loader *config.OptionLoader) (*SFTPImporter, error) {
+func NewSFTPImporter(name string, loader *config.OptionLoader) (*SFTPImporter, error) {
 	host, err := loader.GetString("host")
 	if err != nil {
 		return nil, fmt.Errorf("could not get host: %s", err)
@@ -49,27 +55,33 @@ func NewSFTPImporter(loader *config.OptionLoader) (*SFTPImporter, error) {
 	if err != nil {
 		return nil, fmt.Errorf("could not get password: %s", err)
 	}
-	path, err := loader.GetStringOrDefault("path", "")
+	importPath, err := loader.GetStringOrDefault("import_path", "")
 	if err != nil {
-		return nil, fmt.Errorf("could not get path: %s", err)
+		return nil, fmt.Errorf("could not get import path: %s", err)
 	}
 
 	return &SFTPImporter{
 		stopChan: make(chan struct{}),
 
+		name: name,
+
 		host:     host,
 		port:     port,
 		username: username,
 		password: password,
-		path:     path,
+		importPath:     importPath,
 	}, nil
 }
 
 func (si *SFTPImporter) Name() string {
-	return fmt.Sprintf("sftp - %s@%s:%d", si.username, si.host, si.port)
+	return fmt.Sprintf("sftp:%s", si.name)
 }
 
 func (si *SFTPImporter) Start(ctx context.Context) error {
+	si.Logger = si.Logger.WithFields(nacelle.LogFields{
+		"importer": si.Name(),
+	})
+
 	si.Logger.Debug("starting sftp ssh connection to %s:%d", si.host, si.port)
 	conn, err := ssh.Dial(
 		"tcp", fmt.Sprintf("%s:%d", si.host, si.port),
@@ -89,6 +101,7 @@ func (si *SFTPImporter) Start(ctx context.Context) error {
 
 	client, err := sftpclient.NewClient(conn)
 	if err != nil {
+
 		si.Logger.Error("error on sftp client: %s", err)
 		return err
 	}
@@ -101,7 +114,7 @@ func (si *SFTPImporter) Start(ctx context.Context) error {
 		case <-ctx.Done():
 			return nil
 		case <-time.After(1 * time.Second):
-			info, err := client.ReadDir(si.path)
+			info, err := client.ReadDir(si.importPath)
 			if err != nil {
 				si.Logger.Error("error on readdir: %s", err)
 				continue
@@ -113,7 +126,7 @@ func (si *SFTPImporter) Start(ctx context.Context) error {
 				}
 
 				si.Logger.Debug("found file %s", file.Name())
-				filePath := path.Join(si.path, file.Name())
+				filePath := path.Join(si.importPath, file.Name())
 				docDate := time.Now().UTC()
 
 				// Check if the file exists before we try downloading it
@@ -123,7 +136,7 @@ func (si *SFTPImporter) Start(ctx context.Context) error {
 						"file %s already exists for today, moving to duplicates",
 						file.Name(),
 					)
-					dupePath := path.Join(si.path, "duplicate")
+					dupePath := path.Join(si.importPath, dupeFolderName)
 					_, err = client.Stat(dupePath)
 					if os.IsNotExist(err) {
 						// If the path doesn't exist, create it

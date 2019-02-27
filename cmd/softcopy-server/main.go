@@ -1,15 +1,15 @@
 package main
 
 import (
+	"github.com/aphistic/softcopy/internal/app/softcopy-server/uiserver"
 	"os"
 
+	"github.com/efritz/nacelle"
 	"github.com/efritz/zubrin"
 
-	"github.com/efritz/nacelle"
-
-	"github.com/aphistic/softcopy/internal/app/softcopy-server/importer"
+	"github.com/aphistic/softcopy/internal/app/softcopy-server/apiserver"
+	"github.com/aphistic/softcopy/internal/app/softcopy-server/importserver"
 	"github.com/aphistic/softcopy/internal/pkg/api"
-	"github.com/aphistic/softcopy/internal/pkg/apiserver"
 )
 
 func main() {
@@ -28,13 +28,21 @@ func main() {
 				api.NewInitializer(),
 				nacelle.WithInitializerName("api"),
 			)
+			runner.RegisterInitializer(
+				importserver.NewInitializer(),
+				nacelle.WithInitializerName("importers"),
+			)
 
 			runner.RegisterProcess(
 				apiserver.NewProcess(),
 				nacelle.WithProcessName("apiserver"),
 			)
 			runner.RegisterProcess(
-				importer.NewProcess(),
+				uiserver.NewProcess(),
+				nacelle.WithProcessName("uiserver"),
+			)
+			runner.RegisterProcess(
+				importserver.NewProcess(),
 				nacelle.WithProcessName("importers"),
 			)
 
