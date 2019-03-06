@@ -11,11 +11,11 @@ import (
 	"github.com/alecthomas/kingpin"
 	"google.golang.org/grpc"
 
-	"github.com/aphistic/softcopy/cmd/softcopy-admin/config"
-	"github.com/aphistic/softcopy/cmd/softcopy-admin/runner"
+	"github.com/aphistic/softcopy/internal/app/softcopy-admin/config"
+	"github.com/aphistic/softcopy/internal/app/softcopy-admin/runner"
 	"github.com/aphistic/softcopy/internal/pkg/consts"
 	"github.com/aphistic/softcopy/internal/pkg/storage/backup"
-	scproto "github.com/aphistic/softcopy/pkg/proto"
+	"github.com/aphistic/softcopy/pkg/proto"
 )
 
 type Runner struct{}

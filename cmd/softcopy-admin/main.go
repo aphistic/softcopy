@@ -6,9 +6,9 @@ import (
 
 	"github.com/alecthomas/kingpin"
 
-	"github.com/aphistic/softcopy/cmd/softcopy-admin/backup"
-	"github.com/aphistic/softcopy/cmd/softcopy-admin/config"
-	"github.com/aphistic/softcopy/cmd/softcopy-admin/runner"
+	"github.com/aphistic/softcopy/internal/app/softcopy-admin/backup"
+	"github.com/aphistic/softcopy/internal/app/softcopy-admin/config"
+	"github.com/aphistic/softcopy/internal/app/softcopy-admin/runner"
 	"github.com/aphistic/softcopy/internal/pkg/consts"
 )
 
