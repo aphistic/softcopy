@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/aphistic/softcopy/internal/app/softcopy-server/uiserver"
 	"os"
 
 	"github.com/efritz/nacelle"
@@ -9,6 +8,7 @@ import (
 
 	"github.com/aphistic/softcopy/internal/app/softcopy-server/apiserver"
 	"github.com/aphistic/softcopy/internal/app/softcopy-server/importserver"
+	"github.com/aphistic/softcopy/internal/app/softcopy-server/uiserver"
 	"github.com/aphistic/softcopy/internal/pkg/api"
 )
 

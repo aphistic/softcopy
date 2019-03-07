@@ -1,0 +1,14 @@
+api:
+  port: 6000
+
+metadata:
+  engine: sqlite
+  options:
+    - name: path
+      value: /var/lib/softcopy/softcopy.db
+
+files:
+  engine: local
+  options:
+    - name: path
+      value: /var/lib/softcopy/files

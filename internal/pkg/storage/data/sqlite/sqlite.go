@@ -2,15 +2,16 @@ package sqlite
 
 import (
 	"database/sql"
+	"fmt"
 	"os"
+	"path"
 
 	_ "github.com/mattn/go-sqlite3" // import sqlite driver
-	migrate "github.com/rubenv/sql-migrate"
+	"github.com/rubenv/sql-migrate"
 
 	"github.com/aphistic/softcopy/internal/pkg/storage"
+	"github.com/aphistic/softcopy/internal/pkg/storage/data/sqlite/migrations"
 )
-
-const migrationPath = "../../internal/pkg/storage/data/sqlite/migrations"
 
 type Client struct {
 	dbPath string
@@ -20,6 +21,26 @@ type Client struct {
 var _ storage.Data = &Client{}
 
 func NewClient(dbPath string) (*Client, error) {
+	dbRoot := path.Dir(dbPath)
+	_, err := os.Stat(dbRoot)
+	if os.IsNotExist(err) {
+		err = os.MkdirAll(dbRoot, 0755)
+		if err != nil {
+			return nil, err
+		}
+	} else if err != nil {
+		return nil, err
+	}
+
+	fi, err := os.Stat(dbPath)
+	if os.IsNotExist(err) {
+		// This is fine, it'll be created when the DB is opened.
+	} else if err != nil {
+		return nil, err
+	} else if fi.IsDir() {
+		return nil, fmt.Errorf("database path is a directory, not a file")
+	}
+
 	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		return nil, err
@@ -38,25 +59,12 @@ func NewClient(dbPath string) (*Client, error) {
 }
 
 func (c *Client) Migrate() error {
-	var migrations migrate.MigrationSource
-
-	// If we're doing a migration first see if we have files in
-	// the filesystem to load.
-	fi, err := os.Stat(migrationPath)
-	if os.IsNotExist(err) {
-		// Directory doesn't exist, continue on
-	} else if err != nil {
+	ms, err := migrations.NewVaultMigrationSource()
+	if err != nil {
 		return err
-	} else if !fi.IsDir() {
-		// The path isn't a directory, continue on
-	} else {
-		// The directory exists, use it for migrations
-		migrations = &migrate.FileMigrationSource{
-			Dir: migrationPath,
-		}
 	}
 
-	_, err = migrate.Exec(c.db, "sqlite3", migrations, migrate.Up)
+	_, err = migrate.Exec(c.db, "sqlite3", ms, migrate.Up)
 	if err != nil {
 		return err
 	}
