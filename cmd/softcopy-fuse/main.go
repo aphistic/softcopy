@@ -44,6 +44,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Could not initialize logging: %s\n", err)
 		return
 	}
+	defer logger.Shutdown()
 
 	conn, err := fuse.Mount(mountPath)
 	if err != nil {
