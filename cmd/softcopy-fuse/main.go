@@ -12,11 +12,26 @@ import (
 	"github.com/aphistic/softcopy/internal/pkg/logging"
 )
 
-var mountPath string
+var (
+	mountPath string
+	serverHost string
+	serverPort int
+)
 
 func main() {
 	app := kingpin.New("softcopy", "Softcopy")
-	app.Flag("mount", "Mount path").Short('m').Default("scmount").StringVar(&mountPath)
+	app.Flag("mount", "Mount path").
+		Short('m').
+		Default("scmount").
+		StringVar(&mountPath)
+	app.Flag("host", "Server host").
+		Short('h').
+		Default("localhost").
+		StringVar(&serverHost)
+	app.Flag("port", "Server port").
+		Short('p').
+		Default("6000").
+		IntVar(&serverPort)
 
 	_, err := app.Parse(os.Args[1:])
 	if err != nil {
@@ -44,7 +59,7 @@ func main() {
 	defer conn.Close()
 
 	connectedFS, err := scfs.NewFileSystem(
-		"localhost", 6000,
+		serverHost, serverPort,
 		scfs.WithLogger(logger),
 	)
 	if err != nil {
