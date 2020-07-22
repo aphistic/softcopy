@@ -16,6 +16,9 @@
 .idea/
 vendor/
 
+# Generated protobuf files
+*.pb.go
+
 /softcopy
 elm-stuff
 /data

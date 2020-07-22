@@ -45,7 +45,7 @@ func (as *apiServer) ReadFile(
 		"read handle %s at %d of size %d",
 		req.GetHandleId(),
 		req.GetOffset(),
-		req.GetSize(),
+		req.GetReadSize(),
 	)
 
 	handleID, err := uuid.Parse(req.GetHandleId())
@@ -63,10 +63,10 @@ func (as *apiServer) ReadFile(
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	resBuf := make([]byte, req.GetSize())
+	resBuf := make([]byte, req.GetReadSize())
 	curOffset := uint64(0)
 
-	buf := make([]byte, req.GetSize(), req.GetSize())
+	buf := make([]byte, req.GetReadSize(), req.GetReadSize())
 	for {
 		n, err := of.Read(buf)
 		if err != io.EOF && err != nil {
@@ -79,7 +79,7 @@ func (as *apiServer) ReadFile(
 
 		if err == io.EOF {
 			break
-		} else if curOffset >= req.Size {
+		} else if curOffset >= req.GetReadSize() {
 			break
 		}
 	}

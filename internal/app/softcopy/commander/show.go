@@ -7,7 +7,7 @@ import (
 
 	"github.com/c-bata/go-prompt"
 	"github.com/dustin/go-humanize"
-	"github.com/golang/protobuf/ptypes"
+	"github.com/gogo/protobuf/types"
 
 	"github.com/aphistic/softcopy/pkg/proto"
 )
@@ -68,7 +68,7 @@ func (c *cmdShow) Execute(s string) error {
 		return err
 	}
 
-	docDate, err := ptypes.Timestamp(file.File.File.DocumentDate)
+	docDate, err := types.TimestampFromProto(file.File.File.DocumentDate)
 	if err != nil {
 		return err
 	}
@@ -80,7 +80,7 @@ func (c *cmdShow) Execute(s string) error {
 		"Date: %s (%s)\n",
 		humanize.Time(docDate), docDate.Format(time.RFC850),
 	)
-	c.w.Printf("Size: %s\n", humanize.Bytes(uint64(file.File.File.Size)))
+	c.w.Printf("Size: %s\n", humanize.Bytes(file.File.File.GetContentSize()))
 
 	return nil
 }

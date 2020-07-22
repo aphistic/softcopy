@@ -1,7 +1,7 @@
 package protoutil
 
 import (
-	"github.com/golang/protobuf/ptypes"
+	"github.com/gogo/protobuf/types"
 	"github.com/google/uuid"
 
 	"github.com/aphistic/softcopy/internal/pkg/storage/records"
@@ -31,7 +31,7 @@ func ProtoToFileMode(mode scproto.FileMode) records.FileMode {
 }
 
 func FileToProto(file *records.File) (*scproto.File, error) {
-	ts, err := ptypes.TimestampProto(file.DocumentDate)
+	ts, err := types.TimestampProto(file.DocumentDate)
 	if err != nil {
 		return nil, err
 	}
@@ -41,12 +41,12 @@ func FileToProto(file *records.File) (*scproto.File, error) {
 		Hash:         file.Hash,
 		Filename:     file.Filename,
 		DocumentDate: ts,
-		Size:         file.Size,
+		ContentSize:  file.Size,
 	}, nil
 }
 
 func ProtoToFile(file *scproto.File) (*records.File, error) {
-	date, err := ptypes.Timestamp(file.GetDocumentDate())
+	date, err := types.TimestampFromProto(file.GetDocumentDate())
 	if err != nil {
 		return nil, err
 	}
@@ -61,6 +61,6 @@ func ProtoToFile(file *scproto.File) (*records.File, error) {
 		Hash:         file.GetHash(),
 		Filename:     file.GetFilename(),
 		DocumentDate: date,
-		Size:         file.GetSize(),
+		Size:         file.GetContentSize(),
 	}, nil
 }

@@ -15,7 +15,7 @@ message File {
     string hash                             = 2;
     string filename                         = 3;
     google.protobuf.Timestamp document_date = 4;
-    uint64 size                             = 5;
+    uint64 content_size                     = 5;
 }
 
 message TaggedFile {
@@ -69,7 +69,7 @@ message GetFileResponse {
 message ReadFileRequest {
     string handle_id    = 1;
     uint64 offset       = 2;
-    uint64 size         = 3;
+    uint64 read_size    = 3;
 }
 message ReadFileResponse {
     bytes data = 1;

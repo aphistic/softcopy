@@ -8,7 +8,7 @@ import (
 	"path"
 	"time"
 
-	"github.com/golang/protobuf/ptypes"
+	"github.com/gogo/protobuf/types"
 
 	scproto "github.com/aphistic/softcopy/pkg/proto"
 )
@@ -69,7 +69,7 @@ func (d *Driver) WriteFile(file *scproto.TaggedFile) error {
 		tags = append(tags, tag.GetName())
 	}
 
-	docDate, err := ptypes.Timestamp(file.File.GetDocumentDate())
+	docDate, err := types.TimestampFromProto(file.File.GetDocumentDate())
 	if err != nil {
 		return err
 	}
@@ -82,7 +82,7 @@ func (d *Driver) WriteFile(file *scproto.TaggedFile) error {
 		},
 		Filename:     file.File.GetFilename(),
 		DocumentDate: docDate.Format(time.RFC3339Nano),
-		Size:         float64(file.File.GetSize()),
+		Size:         float64(file.File.GetContentSize()),
 
 		Tags: tags,
 	}

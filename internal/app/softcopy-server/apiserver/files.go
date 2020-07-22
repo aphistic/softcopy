@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/golang/protobuf/ptypes"
+	"github.com/gogo/protobuf/types"
 	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -76,7 +76,7 @@ func (as *apiServer) GetFileWithDate(
 	ctx context.Context,
 	req *scproto.GetFileWithDateRequest,
 ) (*scproto.GetFileWithDateResponse, error) {
-	date, err := ptypes.Timestamp(req.DocumentDate)
+	date, err := types.TimestampFromProto(req.DocumentDate)
 	if err != nil {
 		return nil, grpc.Errorf(codes.Internal, err.Error())
 	}
@@ -105,7 +105,7 @@ func (as *apiServer) FindFilesWithDate(
 	ctx context.Context,
 	req *scproto.FindFilesWithDateRequest,
 ) (*scproto.FindFilesWithDateResponse, error) {
-	date, err := ptypes.Timestamp(req.GetDocumentDate())
+	date, err := types.TimestampFromProto(req.GetDocumentDate())
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +185,7 @@ func (as *apiServer) CreateFile(
 	ctx context.Context,
 	req *scproto.CreateFileRequest,
 ) (*scproto.CreateFileResponse, error) {
-	date, err := ptypes.Timestamp(req.GetDocumentDate())
+	date, err := types.TimestampFromProto(req.GetDocumentDate())
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -255,7 +255,7 @@ func (as *apiServer) UpdateFileDate(
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	newDate, err := ptypes.Timestamp(req.GetNewDocumentDate())
+	newDate, err := types.TimestampFromProto(req.GetNewDocumentDate())
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

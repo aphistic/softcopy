@@ -114,7 +114,7 @@ fileLoop:
 			readRes, err := client.ReadFile(ctx, &scproto.ReadFileRequest{
 				HandleId: ofRes.GetHandleId(),
 				Offset:   readOffset,
-				Size:     4096,
+				ReadSize:     4096,
 			})
 			if err != nil {
 				client.CloseFile(ctx, &scproto.CloseFileRequest{
@@ -151,7 +151,7 @@ fileLoop:
 				}
 			}
 
-			if uint64(fileBuf.Len()) >= file.GetFile().GetSize() {
+			if uint64(fileBuf.Len()) >= file.GetFile().GetContentSize() {
 				break
 			}
 

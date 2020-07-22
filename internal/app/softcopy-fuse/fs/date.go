@@ -9,7 +9,7 @@ import (
 
 	"bazil.org/fuse"
 	fusefs "bazil.org/fuse/fs"
-	"github.com/golang/protobuf/ptypes"
+	"github.com/gogo/protobuf/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
@@ -180,7 +180,7 @@ func (ddd *fsDateDayDir) Attr(ctx context.Context, attr *fuse.Attr) error {
 }
 
 func (ddd *fsDateDayDir) Lookup(ctx context.Context, name string) (fusefs.Node, error) {
-	ts, err := ptypes.TimestampProto(time.Date(
+	ts, err := types.TimestampProto(time.Date(
 		ddd.year, time.Month(ddd.month), ddd.day,
 		0, 0, 0, 0, time.Local,
 	))
@@ -211,7 +211,7 @@ func (td *fsDateDayDir) Rename(
 	req *fuse.RenameRequest,
 	newDir fusefs.Node,
 ) error {
-	docDate, err := ptypes.TimestampProto(
+	docDate, err := types.TimestampProto(
 		time.Date(td.year, time.Month(td.month), td.day, 0, 0, 0, 0, time.UTC),
 	)
 	if err != nil {
@@ -233,7 +233,7 @@ func (td *fsDateDayDir) Rename(
 		return fuse.ENOTSUP
 	}
 
-	newDocDate, err := ptypes.TimestampProto(
+	newDocDate, err := types.TimestampProto(
 		time.Date(
 			newDateDir.year, time.Month(newDateDir.month), newDateDir.day,
 			0, 0, 0, 0, time.UTC,
@@ -253,7 +253,7 @@ func (td *fsDateDayDir) Rename(
 }
 
 func (ddd *fsDateDayDir) ReadDirAll(ctx context.Context) ([]fuse.Dirent, error) {
-	ts, err := ptypes.TimestampProto(time.Date(
+	ts, err := types.TimestampProto(time.Date(
 		ddd.year, time.Month(ddd.month), ddd.day,
 		0, 0, 0, 0, time.Local,
 	))
@@ -281,7 +281,7 @@ func (ddd *fsDateDayDir) ReadDirAll(ctx context.Context) ([]fuse.Dirent, error) 
 }
 
 func (ddd *fsDateDayDir) Remove(ctx context.Context, req *fuse.RemoveRequest) error {
-	ts, err := ptypes.TimestampProto(time.Date(
+	ts, err := types.TimestampProto(time.Date(
 		ddd.year, time.Month(ddd.month), ddd.day,
 		0, 0, 0, 0, time.Local,
 	))

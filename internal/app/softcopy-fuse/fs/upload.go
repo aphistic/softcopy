@@ -7,7 +7,7 @@ import (
 
 	"bazil.org/fuse"
 	fusefs "bazil.org/fuse/fs"
-	"github.com/golang/protobuf/ptypes"
+	"github.com/gogo/protobuf/types"
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -39,7 +39,7 @@ func (ud *fsUploadDir) Create(
 ) (fusefs.Node, fusefs.Handle, error) {
 	ud.fs.logger.Debug("create req: %#v", req)
 
-	docDate, err := ptypes.TimestampProto(time.Now().UTC())
+	docDate, err := types.TimestampProto(time.Now().UTC())
 	if err != nil {
 		return nil, nil, err
 	}

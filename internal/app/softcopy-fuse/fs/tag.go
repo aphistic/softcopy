@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/gogo/protobuf/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
 	"bazil.org/fuse"
 	fusefs "bazil.org/fuse/fs"
-	"github.com/golang/protobuf/ptypes"
 
 	"github.com/aphistic/softcopy/internal/pkg/protoutil"
 	"github.com/aphistic/softcopy/internal/pkg/storage/records"
@@ -102,7 +102,7 @@ func (td *TagDir) Lookup(ctx context.Context, name string) (fusefs.Node, error) 
 		return nil, err
 	}
 
-	grpcDate, err := ptypes.TimestampProto(date)
+	grpcDate, err := types.TimestampProto(date)
 	if err != nil {
 		td.fs.logger.Error("could not parse timestamp: %s", err)
 		return nil, err
@@ -150,7 +150,7 @@ func (td *TagDir) ReadDirAll(ctx context.Context) ([]fuse.Dirent, error) {
 
 	entries := []fuse.Dirent{}
 	for idx, file := range res.GetFiles() {
-		date, err := ptypes.Timestamp(file.GetDocumentDate())
+		date, err := types.TimestampFromProto(file.GetDocumentDate())
 		if err != nil {
 			td.fs.logger.Error(
 				"could not get date for %s: %s",

@@ -6,7 +6,7 @@ import (
 
 	"github.com/c-bata/go-prompt"
 	"github.com/dustin/go-humanize"
-	"github.com/golang/protobuf/ptypes"
+	"github.com/gogo/protobuf/types"
 	"github.com/olekukonko/tablewriter"
 
 	"github.com/aphistic/softcopy/internal/pkg/consts"
@@ -56,7 +56,7 @@ func (c *cmdInbox) Execute(s string) error {
 		"Size",
 	})
 	for _, file := range res.Files {
-		docDate, err := ptypes.Timestamp(file.DocumentDate)
+		docDate, err := types.TimestampFromProto(file.DocumentDate)
 		if err != nil {
 			continue
 		}
@@ -66,7 +66,7 @@ func (c *cmdInbox) Execute(s string) error {
 			file.Id,
 			file.Filename,
 			docDate.Format(time.RFC1123),
-			humanize.Bytes(uint64(file.Size)),
+			humanize.Bytes(file.GetContentSize()),
 		})
 	}
 	t.Render()
