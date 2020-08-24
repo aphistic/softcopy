@@ -25,7 +25,7 @@ require (
 	github.com/go-sql-driver/mysql v1.4.1 // indirect
 	github.com/gobuffalo/packr v1.22.0 // indirect
 	github.com/gogo/protobuf v1.3.1
-	github.com/golang/protobuf v1.4.2
+	github.com/golang/protobuf v1.4.2 // indirect
 	github.com/google/uuid v1.0.0
 	github.com/gorilla/mux v1.7.0
 	github.com/gorilla/schema v1.0.2

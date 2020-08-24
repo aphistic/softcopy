@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # This can't have any space in the newlines or the Mgoogle lines don't get read correctly
+docker pull aphistic/protoc
 docker run --rm -it -u $(id -u):$(id -g) -v $PWD:/src:rw aphistic/protoc \
 -I . -I /go/src -I /go/src/github.com/gogo/protobuf/protobuf \
 --gogofast_out=\
