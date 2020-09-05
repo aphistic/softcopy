@@ -1,4 +1,4 @@
-package template
+package backend
 
 import (
 	"html/template"
@@ -9,25 +9,13 @@ import (
 	"github.com/aphistic/softcopy/internal/pkg/errors"
 )
 
-//go:generate goblin --name template --include ../../../../../web/template/*.tpl
+//go:generate /home/aphistic/dev/goblin/cmd/goblin/goblin --name backend --include-root ../../../../../web --include **/*.tpl
 
 type Template struct {
 	vault goblin.Vault
 
 	loadedLock sync.RWMutex
 	loaded     map[string]*template.Template
-}
-
-func LoadTemplates() (*Template, error) {
-	vault, err := loadVaultTemplate()
-	if err != nil {
-		return nil, err
-	}
-
-	return &Template{
-		vault: vault,
-		loaded: map[string]*template.Template{},
-	}, nil
 }
 
 func (t *Template) Template(file string) (*template.Template, error) {
@@ -40,13 +28,13 @@ func (t *Template) Template(file string) (*template.Template, error) {
 	t.loadedLock.RUnlock()
 
 	t.loadedLock.Lock()
-	data, ok := t.vault.File(file)
-	if !ok {
+	data, err := t.vault.ReadFile(file)
+	if err != nil {
 		t.loadedLock.Unlock()
 
 		return nil, errors.ErrNotFound
 	}
-	tpl, err := template.New(file).Parse(string(data))
+	tpl, err = template.New(file).Parse(string(data))
 	if err != nil {
 		return nil, err
 	}

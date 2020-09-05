@@ -38,6 +38,10 @@ func (gl *GomolLogger) Debug(format string, args ...interface{}) {
 	gl.base.Debugf(format, args...)
 }
 
+func (gl *GomolLogger) Info(format string, args ...interface{}) {
+	gl.base.Infof(format, args...)
+}
+
 func (gl *GomolLogger) Error(format string, args ...interface{}) {
 	gl.base.Errorf(format, args...)
 }

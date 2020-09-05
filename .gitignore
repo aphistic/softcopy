@@ -22,3 +22,5 @@ vendor/
 /softcopy
 elm-stuff
 /data
+
+/webui/static/js/app.js

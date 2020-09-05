@@ -13,8 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gorilla/mux"
-	"github.com/gorilla/schema"
+	"github.com/go-chi/chi"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 
@@ -29,13 +28,9 @@ import (
 )
 
 const (
-	mimeFolder = "application/vnd.google-apps.folder"
+	mimeFolder     = "application/vnd.google-apps.folder"
 	dupeFolderName = "duplicate"
 )
-
-type webToken struct {
-	Token string `schema:"token"`
-}
 
 type GoogleDriveImporter struct {
 	Logger nacelle.Logger `service:"logger"`
@@ -148,9 +143,9 @@ func (gdi *GoogleDriveImporter) Start(ctx context.Context) error {
 					if err == scerrors.ErrNotFound {
 						gdi.Logger.Debug("could not find duplicates folder, creating one")
 						newDupeFolder, err := client.Files.Create(&drive.File{
-							Name: dupeFolderName,
+							Name:     dupeFolderName,
 							MimeType: mimeFolder,
-							Parents: []string{importFolder.Id},
+							Parents:  []string{importFolder.Id},
 						}).
 							Fields("id, parents").
 							Do()
@@ -160,7 +155,6 @@ func (gdi *GoogleDriveImporter) Start(ctx context.Context) error {
 						}
 						dupeFolder = newDupeFolder
 					}
-
 
 					_, err = client.Files.Update(file.Id, nil).
 						AddParents(dupeFolder.Id).
@@ -260,7 +254,7 @@ func (gdi *GoogleDriveImporter) findFolder(folderPath string, client *drive.Serv
 
 		foundFolder := false
 		for _, file := range list.Files {
-			if file.MimeType == mimeFolder && file.Name == part && !file.Trashed  {
+			if file.MimeType == mimeFolder && file.Name == part && !file.Trashed {
 				prevFile = file
 				prevParent = file.Id
 				foundFolder = true
@@ -296,7 +290,7 @@ func (gdi *GoogleDriveImporter) Stop() error {
 	return nil
 }
 
-func (gdi *GoogleDriveImporter) SetupWebHandlers(router *mux.Router) error {
+func (gdi *GoogleDriveImporter) SetupWebHandlers(router chi.Router) {
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		authConfig := gdi.makeAuthConfig()
 		authURL := authConfig.AuthCodeURL(
@@ -322,21 +316,13 @@ func (gdi *GoogleDriveImporter) SetupWebHandlers(router *mux.Router) error {
 			return
 		}
 
-		decoder := schema.NewDecoder()
-
-		tokenData := &webToken{}
-		err = decoder.Decode(tokenData, r.PostForm)
-		if err != nil {
-			gdi.Logger.Error("could not decode form data: %s", err)
-			return
-		}
-
-		gdi.Logger.Debug("token: %#v", tokenData)
+		tokenData := r.Form.Get("token")
+		gdi.Logger.Debug("token: %s", tokenData)
 
 		authConfig := gdi.makeAuthConfig()
 
 		ctx := context.Background()
-		token, err := authConfig.Exchange(ctx, tokenData.Token)
+		token, err := authConfig.Exchange(ctx, tokenData)
 		if err != nil {
 			gdi.Logger.Error("could not exchange token data: %s", err)
 			return
@@ -344,7 +330,6 @@ func (gdi *GoogleDriveImporter) SetupWebHandlers(router *mux.Router) error {
 
 		fmt.Fprintf(w, "Refresh Token: %s", token.RefreshToken)
 	})
-	return nil
 }
 
 func (gdi *GoogleDriveImporter) makeAuthConfig() *oauth2.Config {

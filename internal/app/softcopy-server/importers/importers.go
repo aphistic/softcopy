@@ -4,7 +4,7 @@ import (
 	"context"
 	"sync"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi"
 
 	scerrors "github.com/aphistic/softcopy/internal/pkg/errors"
 )
@@ -17,7 +17,7 @@ type Importer interface {
 }
 
 type ImporterWebHandler interface {
-	SetupWebHandlers(*mux.Router) error
+	SetupWebHandlers(chi.Router)
 }
 
 type ImportRunners struct {
