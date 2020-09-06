@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"bazil.org/fuse"
 	"bazil.org/fuse/fs"
@@ -13,7 +15,7 @@ import (
 )
 
 var (
-	mountPath string
+	mountPath  string
 	serverHost string
 	serverPort int
 )
@@ -46,29 +48,52 @@ func main() {
 	}
 	defer logger.Shutdown()
 
+	logger.Info("mounting fuse filesystem at %s", mountPath)
 	conn, err := fuse.Mount(mountPath)
 	if err != nil {
 		logger.Error("Could not mount: %s", err)
 		return
 	}
 	defer func() {
+		logger.Info("umounting fuse filesystem")
 		err := fuse.Unmount(mountPath)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Could not unmount: %s\n", err)
+			logger.Error("could not unmount: %s\n", err)
 		}
 	}()
 	defer conn.Close()
 
-	connectedFS, err := scfs.NewFileSystem(
-		serverHost, serverPort,
-		scfs.WithLogger(logger),
-	)
-	if err != nil {
-		logger.Error("Error connecting to server: %s\n", err)
-		return
-	}
-	err = fs.Serve(conn, connectedFS)
-	if err != nil {
-		logger.Error("Error in serve: %s\n", err)
+	sigChan := make(chan os.Signal)
+	signal.Notify(sigChan)
+
+	go func() {
+		logger.Info("starting softcopy connection to %s:%d", serverHost, serverPort)
+		connectedFS, err := scfs.NewFileSystem(
+			serverHost, serverPort,
+			scfs.WithLogger(logger),
+		)
+		if err != nil {
+			logger.Error("Error connecting to server: %s\n", err)
+			return
+		}
+		err = fs.Serve(conn, connectedFS)
+		if err != nil {
+			logger.Error("Error in serve: %s\n", err)
+		}
+	}()
+
+mainLoop:
+	for {
+		select {
+		case sig := <-sigChan:
+			switch sig {
+			case syscall.SIGURG:
+			case os.Interrupt:
+				logger.Info("got interrupt")
+				break mainLoop
+			default:
+				logger.Info("got sig: %s", sig)
+			}
+		}
 	}
 }

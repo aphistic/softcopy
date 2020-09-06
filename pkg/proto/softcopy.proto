@@ -24,7 +24,7 @@ message TaggedFile {
 }
 
 message Tag {
-    int64 id        = 1;
+    string id       = 1;
     string name     = 2;
     string category = 3;
     bool system     = 4;
@@ -105,8 +105,22 @@ message CloseFileRequest {
     string handle_id = 1;
 }
 message CloseFileResponse {
-    string hash     = 2;
+    string hash = 2;
 }
+
+message GetTagsForFileRequest {
+    string file_id = 1;
+}
+message GetTagsForFileResponse {
+    repeated Tag tags = 1;
+}
+
+message UpdateFileTagsRequest {
+    string file_id                  = 1;
+    repeated string added_tags      = 2;
+    repeated string removed_tags    = 3;
+}
+message UpdateFileTagsResponse { }
 
 message UpdateFileDateRequest {
     string file_id                              = 1;
@@ -127,11 +141,11 @@ message FindTagByNameResponse {
     Tag tag = 1;
 }
 
-message CreateTagRequest {
-    string name = 1;
+message CreateTagsRequest {
+    repeated string names = 1;
 }
-message CreateTagResponse {
-    Tag tag = 1;
+message CreateTagsResponse {
+    repeated Tag tags = 1;
 }
 
 message GetFileWithDateRequest {
@@ -181,10 +195,12 @@ service Softcopy {
     rpc CloseFile(CloseFileRequest) returns (CloseFileResponse) {}
 
     rpc UpdateFileDate(UpdateFileDateRequest) returns (UpdateFileDateResponse) {}
+    rpc UpdateFileTags(UpdateFileTagsRequest) returns (UpdateFileTagsResponse) {}
 
     rpc GetAllTags(GetAllTagsRequest) returns (GetAllTagsResponse) {}
-    rpc CreateTag(CreateTagRequest) returns (CreateTagResponse) {}
     rpc FindTagByName(FindTagByNameRequest) returns (FindTagByNameResponse) {}
+    rpc GetTagsForFile(GetTagsForFileRequest) returns (GetTagsForFileResponse) {}
+    rpc CreateTags(CreateTagsRequest) returns (CreateTagsResponse) {}
 
     rpc FindFilesWithDate(FindFilesWithDateRequest) returns (FindFilesWithDateResponse) {}
     rpc FindFilesWithIdPrefix(FindFilesWithIdPrefixRequest) returns (FindFilesWithIdPrefixResponse) {}

@@ -9,7 +9,7 @@ import (
 	"github.com/aphistic/softcopy/internal/pkg/errors"
 )
 
-//go:generate /home/aphistic/dev/goblin/cmd/goblin/goblin --name backend --include-root ../../../../../web --include **/*.tpl
+//go:generate goblin --name backend --include-root ../../../../../web --include **/*.tpl
 
 type Template struct {
 	vault goblin.Vault

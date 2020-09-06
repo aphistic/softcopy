@@ -168,41 +168,110 @@ func (c *Client) FindTagByName(name string) (*records.Tag, error) {
 	return foundTag, nil
 }
 
-func (c *Client) CreateTag(name string) (int64, error) {
+func (c *Client) CreateTags(names []string) ([]uuid.UUID, error) {
 	tx, err := c.db.Begin()
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	rows, err := tx.Query("SELECT id FROM tags WHERE name = ?", name)
-	if err != nil {
-		tx.Rollback()
-		return 0, err
-	}
+	var ids []uuid.UUID
+	for _, name := range names {
+		rows, err := tx.Query("SELECT id FROM tags WHERE name = ?", name)
+		if err != nil {
+			tx.Rollback()
+			return nil, err
+		}
 
-	if rows.Next() {
+		if rows.Next() {
+			// If the tag already exists just return the current id
+			var dbID string
+			err = rows.Scan(&dbID)
+			if err != nil {
+				rows.Close()
+				tx.Rollback()
+				return nil, err
+			}
+
+			tagID, err := uuid.Parse(dbID)
+			if err != nil {
+				rows.Close()
+				tx.Rollback()
+				return nil, err
+			}
+
+			ids = append(ids, tagID)
+			rows.Close()
+			continue
+		}
 		rows.Close()
-		tx.Rollback()
-		return 0, scerrors.ErrExists
-	}
-	rows.Close()
 
-	res, err := tx.Exec("INSERT INTO tags(name) VALUES (?);", name)
-	if err != nil {
-		tx.Rollback()
-		return 0, err
-	}
+		tagID, err := uuid.NewRandom()
+		if err != nil {
+			tx.Rollback()
+			return nil, err
+		}
+		_, err = tx.Exec(
+			"INSERT INTO tags(id, name) VALUES (?, ?);",
+			tagID.String(), name,
+		)
+		if err != nil {
+			tx.Rollback()
+			return nil, err
+		}
 
-	id, err := res.LastInsertId()
-	if err != nil {
-		tx.Rollback()
-		return 0, err
+		ids = append(ids, tagID)
 	}
 
 	err = tx.Commit()
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	return id, nil
+	return ids, nil
+}
+
+func (c *Client) UpdateFileTags(id uuid.UUID, addedTags, removedTags []string) error {
+	added, err := c.GetTags(addedTags)
+	if err != nil {
+		return err
+	}
+
+	removed, err := c.GetTags(removedTags)
+	if err != nil {
+		return err
+	}
+
+	tx, err := c.db.Begin()
+	if err != nil {
+		return err
+	}
+
+	for _, addedTag := range added {
+		_, err = tx.Exec(
+			"INSERT OR REPLACE INTO file_tags (file_id, tag_id)	VALUES (?, ?);",
+			id.String(), addedTag.ID.String(),
+		)
+		if err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+
+	for _, removedTag := range removed {
+		_, err = tx.Exec(
+			"DELETE FROM file_tags WHERE file_id = ? AND tag_id = ?;",
+			id.String(), removedTag.ID.String(),
+		)
+		if err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

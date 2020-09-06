@@ -34,7 +34,7 @@ func (bdd *fsByDateDir) Attr(ctx context.Context, attr *fuse.Attr) error {
 }
 
 func (bdd *fsByDateDir) Lookup(ctx context.Context, name string) (fusefs.Node, error) {
-	year, err := strconv.ParseInt(name, 0, 0)
+	year, err := strconv.ParseInt(name, 10, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func (dyd *fsDateYearDir) Attr(ctx context.Context, attr *fuse.Attr) error {
 }
 
 func (dyd *fsDateYearDir) Lookup(ctx context.Context, name string) (fusefs.Node, error) {
-	month, err := strconv.ParseInt(name, 0, 0)
+	month, err := strconv.ParseInt(name, 10, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +128,7 @@ func (dmd *fsDateMonthDir) Attr(ctx context.Context, attr *fuse.Attr) error {
 }
 
 func (dmd *fsDateMonthDir) Lookup(ctx context.Context, name string) (fusefs.Node, error) {
-	day, err := strconv.ParseInt(name, 0, 0)
+	day, err := strconv.ParseInt(name, 10, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -239,6 +239,9 @@ func (td *fsDateDayDir) Rename(
 			0, 0, 0, 0, time.UTC,
 		),
 	)
+	if err != nil {
+		return err
+	}
 
 	_, err = td.fs.client.UpdateFileDate(ctx, &scproto.UpdateFileDateRequest{
 		FileId:          res.GetFile().GetId(),

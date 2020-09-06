@@ -6,6 +6,8 @@ require (
 	bazil.org/fuse v0.0.0-20200524192727-fb710f7dfd05
 	cloud.google.com/go v0.64.0 // indirect
 	github.com/alecthomas/kingpin v2.2.6+incompatible
+	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
+	github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d // indirect
 	github.com/aphistic/goblin v0.0.0-20200905190144-d3d41d6db832
 	github.com/aphistic/golf v0.0.0-20180712155816-02c07f170c5a // indirect
 	github.com/aphistic/gomol v0.0.0-20180529164937-9e5411a7a19b
@@ -42,6 +44,7 @@ require (
 	github.com/rogpeppe/go-internal v1.6.0 // indirect
 	github.com/rubenv/sql-migrate v0.0.0-20180704111356-3f452fc0ebeb
 	github.com/spaolacci/murmur3 v0.0.0-20180118202830-f09979ecbc72 // indirect
+	github.com/stretchr/testify v1.6.1
 	github.com/ziutek/mymysql v1.5.4 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	golang.org/x/net v0.0.0-20200822124328-c89045814202 // indirect

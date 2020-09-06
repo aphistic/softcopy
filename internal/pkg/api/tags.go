@@ -32,14 +32,20 @@ func (c *Client) FindTagByName(name string) (*records.Tag, error) {
 	return c.dataStorage.FindTagByName(name)
 }
 
-func (c *Client) CreateTag(name string) (*records.Tag, error) {
-	id, err := c.dataStorage.CreateTag(name)
+func (c *Client) CreateTags(names []string) ([]*records.Tag, error) {
+	ids, err := c.dataStorage.CreateTags(names)
 	if err != nil {
 		return nil, err
 	}
 
-	return &records.Tag{
-		ID:   int(id),
-		Name: name,
-	}, nil
+	var res []*records.Tag
+	for idx, id := range ids {
+		name := names[idx]
+		res = append(res, &records.Tag{
+			ID:   id,
+			Name: name,
+		})
+	}
+
+	return res, nil
 }

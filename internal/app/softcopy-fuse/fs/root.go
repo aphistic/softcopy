@@ -43,17 +43,17 @@ func (rd *fsRootDir) Lookup(ctx context.Context, name string) (fusefs.Node, erro
 
 func (rd *fsRootDir) ReadDirAll(ctx context.Context) ([]fuse.Dirent, error) {
 	return []fuse.Dirent{
-		fuse.Dirent{
+		{
 			Inode: rd.fs.inodeForID(byTagID),
 			Type:  fuse.DT_Dir,
 			Name:  "by-tag",
 		},
-		fuse.Dirent{
+		{
 			Inode: rd.fs.inodeForID(byDateID),
 			Type:  fuse.DT_Dir,
 			Name:  "by-date",
 		},
-		fuse.Dirent{
+		{
 			Inode: rd.fs.inodeForID(uploadID),
 			Type:  fuse.DT_Dir,
 			Name:  "upload",

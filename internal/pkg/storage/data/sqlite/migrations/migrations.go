@@ -8,7 +8,7 @@ import (
 	migrate "github.com/rubenv/sql-migrate"
 )
 
-//go:generate /home/aphistic/dev/goblin/cmd/goblin/goblin --name migrations -i *.sql
+//go:generate goblin --name migrations -i *.sql
 
 type VaultMigrationSource struct {
 	vault goblin.Vault

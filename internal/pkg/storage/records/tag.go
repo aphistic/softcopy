@@ -1,5 +1,7 @@
 package records
 
+import "github.com/google/uuid"
+
 type TagIterator interface {
 	Tags() <-chan *TagItem
 	Close() error
@@ -11,13 +13,13 @@ type TagItem struct {
 }
 
 type Tag struct {
-	ID       int
+	ID       uuid.UUID
 	Name     string
 	Category *TagCategory
 	System   bool
 }
 
 type TagCategory struct {
-	ID   int
+	ID   uuid.UUID
 	Name string
 }

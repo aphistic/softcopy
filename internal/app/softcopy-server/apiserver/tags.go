@@ -11,11 +11,12 @@ import (
 	scerrors "github.com/aphistic/softcopy/internal/pkg/errors"
 	"github.com/aphistic/softcopy/internal/pkg/storage/records"
 	scproto "github.com/aphistic/softcopy/pkg/proto"
+	"github.com/google/uuid"
 )
 
 func tagToGrpc(tag *records.Tag) (*scproto.Tag, error) {
 	return &scproto.Tag{
-		Id:     int64(tag.ID),
+		Id:     tag.ID.String(),
 		Name:   tag.Name,
 		System: tag.System,
 	}, nil
@@ -42,7 +43,7 @@ tagLoop:
 			}
 
 			tags = append(tags, &scproto.Tag{
-				Id:     int64(tagItem.Tag.ID),
+				Id:     tagItem.Tag.ID.String(),
 				Name:   tagItem.Tag.Name,
 				System: tagItem.Tag.System,
 			})
@@ -69,29 +70,93 @@ func (as *apiServer) FindTagByName(
 
 	return &scproto.FindTagByNameResponse{
 		Tag: &scproto.Tag{
-			Id:     int64(tag.ID),
+			Id:     tag.ID.String(),
 			Name:   tag.Name,
 			System: tag.System,
 		},
 	}, nil
 }
 
-func (as *apiServer) CreateTag(
+func (as *apiServer) GetTagsForFile(
 	ctx context.Context,
-	req *scproto.CreateTagRequest,
-) (*scproto.CreateTagResponse, error) {
-	tag, err := as.api.CreateTag(req.GetName())
-	if err == scerrors.ErrExists {
-		return nil, status.Error(codes.AlreadyExists, "tag exists")
-	} else if err != nil {
+	req *scproto.GetTagsForFileRequest,
+) (*scproto.GetTagsForFileResponse, error) {
+	tags, err := as.api.GetTagsForFile(req.FileId)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	defer tags.Close()
+
+	var res []*scproto.Tag
+	for {
+		select {
+		case tagItem := <-tags.Tags():
+			if tagItem.Error != nil {
+				return nil, status.Error(codes.Internal, err.Error())
+			}
+
+			res = append(res, &scproto.Tag{
+				Id:     tagItem.Tag.ID.String(),
+				Name:   tagItem.Tag.Name,
+				System: tagItem.Tag.System,
+			})
+		case <-ctx.Done():
+			return nil, status.Error(codes.Internal, "request cancelled")
+		}
+	}
+
+	return &scproto.GetTagsForFileResponse{
+		Tags: res,
+	}, nil
+}
+
+func (as *apiServer) UpdateFileTags(
+	ctx context.Context,
+	req *scproto.UpdateFileTagsRequest,
+) (*scproto.UpdateFileTagsResponse, error) {
+	id, err := uuid.Parse(req.GetFileId())
+	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &scproto.CreateTagResponse{
-		Tag: &scproto.Tag{
-			Id:     int64(tag.ID),
+	// First make sure all the added tags are created before we try to
+	// assign them.
+	_, err = as.api.CreateTags(req.GetAddedTags())
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	err = as.api.UpdateFileTags(
+		id,
+		req.GetAddedTags(),
+		req.GetRemovedTags(),
+	)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &scproto.UpdateFileTagsResponse{}, nil
+}
+
+func (as *apiServer) CreateTags(
+	ctx context.Context,
+	req *scproto.CreateTagsRequest,
+) (*scproto.CreateTagsResponse, error) {
+	tags, err := as.api.CreateTags(req.GetNames())
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	var res []*scproto.Tag
+	for _, tag := range tags {
+		res = append(res, &scproto.Tag{
+			Id:     tag.ID.String(),
 			Name:   tag.Name,
 			System: tag.System,
-		},
+		})
+	}
+
+	return &scproto.CreateTagsResponse{
+		Tags: res,
 	}, nil
 }

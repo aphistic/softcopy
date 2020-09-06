@@ -96,6 +96,24 @@ func (c *Client) RemoveFile(id string) error {
 	return c.dataStorage.RemoveFile(fileID)
 }
 
+func (c *Client) UpdateFileTags(
+	id uuid.UUID,
+	addedTags []string,
+	removedTags []string,
+) error {
+	// Make sure the current file exists
+	_, err := c.dataStorage.GetFile(id)
+	if err != nil {
+		return err
+	}
+
+	err = c.dataStorage.UpdateFileTags(id, addedTags, removedTags)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
 func (c *Client) UpdateFileDate(
 	id uuid.UUID,
 	newFilename string,

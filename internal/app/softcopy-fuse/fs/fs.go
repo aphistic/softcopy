@@ -1,12 +1,14 @@
 package fs
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 	"sync"
 	"sync/atomic"
 	"time"
 
+	"bazil.org/fuse"
 	fusefs "bazil.org/fuse/fs"
 	"github.com/google/uuid"
 	"google.golang.org/grpc"
@@ -79,11 +81,24 @@ func NewFileSystem(host string, port int, opts ...FileSystemOption) (*FileSystem
 		opt(fs)
 	}
 
+	// fuse.Debug = func(msg interface{}) {
+	// 	fs.logger.Debug("bazil debug: %v", msg)
+	// }
+
 	return fs, nil
 }
 
 func (f *FileSystem) Root() (fusefs.Node, error) {
 	return newFSRootDir(f), nil
+}
+
+func (f *FileSystem) Statfs(
+	ctx context.Context,
+	req *fuse.StatfsRequest,
+	res *fuse.StatfsResponse,
+) error {
+	res.Namelen = 255
+	return nil
 }
 
 func (f *FileSystem) inodeForID(id uuid.UUID) uint64 {

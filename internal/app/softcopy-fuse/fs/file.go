@@ -83,7 +83,7 @@ func (fh *fsFileHandle) Read(
 	protoRes, err := fh.fs.client.ReadFile(ctx, &scproto.ReadFileRequest{
 		HandleId: fh.handleID.String(),
 		Offset:   uint64(req.Offset),
-		ReadSize:     uint64(req.Size),
+		ReadSize: uint64(req.Size),
 	})
 	if err != nil {
 		fh.fs.logger.Error("read file error: %s", err)
