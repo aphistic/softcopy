@@ -15,9 +15,10 @@ import (
 )
 
 var (
-	mountPath  string
-	serverHost string
-	serverPort int
+	mountPath    string
+	serverHost   string
+	serverPort   int
+	fuseDebugLog bool
 )
 
 func main() {
@@ -34,6 +35,9 @@ func main() {
 		Short('p').
 		Default("6000").
 		IntVar(&serverPort)
+	app.Flag("fuse-debug", "Enable fuse debug logging").
+		Default("false").
+		BoolVar(&fuseDebugLog)
 
 	_, err := app.Parse(os.Args[1:])
 	if err != nil {
@@ -63,7 +67,7 @@ func main() {
 	}()
 	defer conn.Close()
 
-	sigChan := make(chan os.Signal)
+	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan)
 
 	go func() {

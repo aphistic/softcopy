@@ -18,6 +18,16 @@ import (
 	scproto "github.com/aphistic/softcopy/pkg/proto"
 )
 
+func isNumeric(str string) bool {
+	for _, r := range str {
+		if r < 0x30 || r > 0x39 {
+			return false
+		}
+	}
+
+	return true
+}
+
 type fsByDateDir struct {
 	fs *FileSystem
 }
@@ -34,6 +44,10 @@ func (bdd *fsByDateDir) Attr(ctx context.Context, attr *fuse.Attr) error {
 }
 
 func (bdd *fsByDateDir) Lookup(ctx context.Context, name string) (fusefs.Node, error) {
+	if !isNumeric(name) {
+		return nil, fuse.ENOENT
+	}
+
 	year, err := strconv.ParseInt(name, 10, 0)
 	if err != nil {
 		return nil, err
@@ -79,6 +93,10 @@ func (dyd *fsDateYearDir) Attr(ctx context.Context, attr *fuse.Attr) error {
 }
 
 func (dyd *fsDateYearDir) Lookup(ctx context.Context, name string) (fusefs.Node, error) {
+	if !isNumeric(name) {
+		return nil, fuse.ENOENT
+	}
+
 	month, err := strconv.ParseInt(name, 10, 0)
 	if err != nil {
 		return nil, err
@@ -128,6 +146,10 @@ func (dmd *fsDateMonthDir) Attr(ctx context.Context, attr *fuse.Attr) error {
 }
 
 func (dmd *fsDateMonthDir) Lookup(ctx context.Context, name string) (fusefs.Node, error) {
+	if !isNumeric(name) {
+		return nil, fuse.ENOENT
+	}
+
 	day, err := strconv.ParseInt(name, 10, 0)
 	if err != nil {
 		return nil, err
@@ -228,28 +250,38 @@ func (td *fsDateDayDir) Rename(
 		return err
 	}
 
-	newDateDir, ok := newDir.(*fsDateDayDir)
-	if !ok {
-		return fuse.ENOTSUP
+	file, err := protoutil.ProtoToFile(res.GetFile())
+	if err != nil {
+		return err
 	}
 
-	newDocDate, err := types.TimestampProto(
-		time.Date(
-			newDateDir.year, time.Month(newDateDir.month), newDateDir.day,
+	switch dir := newDir.(type) {
+	case *fsDateDayDir:
+		newDate := time.Date(
+			dir.year, time.Month(dir.month), dir.day,
 			0, 0, 0, 0, time.UTC,
-		),
-	)
-	if err != nil {
-		return err
-	}
+		)
 
-	_, err = td.fs.client.UpdateFileDate(ctx, &scproto.UpdateFileDateRequest{
-		FileId:          res.GetFile().GetId(),
-		NewFilename:     req.NewName,
-		NewDocumentDate: newDocDate,
-	})
-	if err != nil {
-		return err
+		td.fs.logger.Debug(
+			"changing date for %s to %s",
+			file, newDate,
+		)
+
+		newDocDate, err := types.TimestampProto(newDate)
+		if err != nil {
+			return err
+		}
+
+		_, err = td.fs.client.UpdateFileDate(ctx, &scproto.UpdateFileDateRequest{
+			FileId:          res.GetFile().GetId(),
+			NewFilename:     req.NewName,
+			NewDocumentDate: newDocDate,
+		})
+		if err != nil {
+			return err
+		}
+	default:
+		return fuse.ENOTSUP
 	}
 
 	return nil

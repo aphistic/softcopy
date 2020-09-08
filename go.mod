@@ -8,7 +8,7 @@ require (
 	github.com/alecthomas/kingpin v2.2.6+incompatible
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
 	github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d // indirect
-	github.com/aphistic/goblin v0.0.0-20200905190144-d3d41d6db832
+	github.com/aphistic/goblin v0.0.0-20200906193609-ce8253373aa3
 	github.com/aphistic/golf v0.0.0-20180712155816-02c07f170c5a // indirect
 	github.com/aphistic/gomol v0.0.0-20180529164937-9e5411a7a19b
 	github.com/aphistic/gomol-console v0.0.0-20180111152223-9fa1742697a8

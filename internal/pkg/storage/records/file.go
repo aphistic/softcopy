@@ -46,6 +46,10 @@ type File struct {
 	Size         uint64
 }
 
+func (f *File) String() string {
+	return f.DocumentDate.Format("2006-01-02") + "-" + f.Filename
+}
+
 type FileMetadata struct {
 	ID       uuid.UUID
 	Hash     string

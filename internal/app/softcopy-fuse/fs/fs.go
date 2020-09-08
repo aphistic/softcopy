@@ -51,9 +51,16 @@ func WithLogger(logger logging.Logger) FileSystemOption {
 	}
 }
 
+func WithFuseDebugLogs(fuseDebug bool) FileSystemOption {
+	return func(fs *FileSystem) {
+		fs.fuseDebugLogs = fuseDebug
+	}
+}
+
 type FileSystem struct {
-	logger logging.Logger
-	client scproto.SoftcopyClient
+	logger        logging.Logger
+	fuseDebugLogs bool
+	client        scproto.SoftcopyClient
 
 	inodeLock sync.RWMutex
 	inodeToID map[uint64]uuid.UUID
@@ -81,9 +88,11 @@ func NewFileSystem(host string, port int, opts ...FileSystemOption) (*FileSystem
 		opt(fs)
 	}
 
-	// fuse.Debug = func(msg interface{}) {
-	// 	fs.logger.Debug("bazil debug: %v", msg)
-	// }
+	if fs.fuseDebugLogs {
+		fuse.Debug = func(msg interface{}) {
+			fs.logger.Debug("bazil debug: %v", msg)
+		}
+	}
 
 	return fs, nil
 }

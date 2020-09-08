@@ -52,6 +52,8 @@ github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d h1:UQZhZ2O0vMHr2c
 github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d/go.mod h1:rBZYJk541a8SKzHPHnH3zbiI+7dagKZ0cgpgrD7Fyho=
 github.com/aphistic/goblin v0.0.0-20200905190144-d3d41d6db832 h1:uXuAL9pT0Z7zhgbuto/G8Y+Ry2aoAMThEhCBJepQzpE=
 github.com/aphistic/goblin v0.0.0-20200905190144-d3d41d6db832/go.mod h1:siekJOw36zDqeY4h/4cZDzegoQoyabci6nIK5ZIfK4s=
+github.com/aphistic/goblin v0.0.0-20200906193609-ce8253373aa3 h1:OiJ3X12PoPrrX+qkR1Wpf3XIZhiOjjShUnT72ptkTTk=
+github.com/aphistic/goblin v0.0.0-20200906193609-ce8253373aa3/go.mod h1:siekJOw36zDqeY4h/4cZDzegoQoyabci6nIK5ZIfK4s=
 github.com/aphistic/golf v0.0.0-20180712155816-02c07f170c5a h1:2KLQMJ8msqoPHIPDufkxVcoTtcmE5+1sL9950m4R9Pk=
 github.com/aphistic/golf v0.0.0-20180712155816-02c07f170c5a/go.mod h1:3NqKYiepwy8kCu4PNA+aP7WUV72eXWJeP9/r3/K9aLE=
 github.com/aphistic/gomol v0.0.0-20180529164937-9e5411a7a19b h1:+pppzzUwXERAQNaQY5TSexh2wsCLjPGk8/MHIZLNdKM=
