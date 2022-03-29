@@ -30,7 +30,7 @@ require (
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/go-sql-driver/mysql v1.4.1 // indirect
 	github.com/gobuffalo/packr v1.22.0 // indirect
-	github.com/gogo/protobuf v1.3.1
+	github.com/gogo/protobuf v1.3.2
 	github.com/google/uuid v1.0.0
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/mattn/go-isatty v0.0.6 // indirect
@@ -47,7 +47,6 @@ require (
 	github.com/stretchr/testify v1.6.1
 	github.com/ziutek/mymysql v1.5.4 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
-	golang.org/x/net v0.0.0-20200822124328-c89045814202 // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	google.golang.org/api v0.30.0
 	google.golang.org/grpc v1.31.0
